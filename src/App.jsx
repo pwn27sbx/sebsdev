@@ -92,16 +92,20 @@ const CustomCursor = ({ isHovering }) => {
 
 const HoverText = ({ text }) => {
   return (
-    <div className="flex">
+    // 1. Eliminamos el <div className="flex"> y usamos un Fragmento de React (<>)
+    // para que las letras fluyan naturalmente heredando el tracking del padre.
+    <>
       {text.split('').map((char, index) => (
         <span
           key={index}
-          className="transition-colors duration-150 hover:text-[#00A889] cursor-default font-anton shrink-0"
+          // 2. Eliminamos la clase 'shrink-0' ya que ya no estamos usando flex.
+          // 3. Agregamos 'inline-block' para que cada letra mantenga sus proporciones exactas.
+          className="inline-block transition-colors duration-150 hover:text-[#00A889] cursor-default font-anton"
         >
           {char}
         </span>
       ))}
-    </div>
+    </>
   );
 };
 
