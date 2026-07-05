@@ -155,7 +155,8 @@ const Hero = ({ setIsHovering, lang }) => {
 
         <div className="flex items-center justify-center w-full flex-nowrap">
           <div
-            className="text-[13vw] sm:text-[16vw] leading-[0.8] font-black uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
+            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
+            className="text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
@@ -168,7 +169,8 @@ const Hero = ({ setIsHovering, lang }) => {
           />
 
           <div
-            className="text-[13vw] sm:text-[16vw] leading-[0.8] font-black uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
+            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
+            className="text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
@@ -176,19 +178,18 @@ const Hero = ({ setIsHovering, lang }) => {
           </div>
         </div>
 
-        {/* SOLUCIÓN CAPTURA 1: Flex-col en móviles para acomodar el texto 'About' debajo de DEVELOPER */}
         <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-8 sm:mt-10 px-4 sm:px-10 gap-8 sm:gap-0">
           <div
-            className="text-[14vw] sm:text-[15vw] leading-[0.8] font-black uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
+            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
+            className="text-[14vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
             <HoverText text="DEVELOPER" />
           </div>
 
-          {/* El texto ya no está oculto en móviles y se centra automáticamente */}
           <div className="w-full sm:w-1/4 sm:pb-8 sm:pl-8 flex flex-col items-center sm:items-start text-center sm:text-left">
-            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium max-w-xs sm:max-w-none">
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light max-w-xs sm:max-w-none">
               <span className="text-xs uppercase tracking-widest text-[#00A889] font-bold block mb-2">
                 {lang === 'es' ? 'Acerca de' : 'About'}
               </span>
