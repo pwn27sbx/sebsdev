@@ -126,7 +126,7 @@ const Header = ({ setIsHovering, lang }) => {
       </div>
 
       <div className={`transition-all duration-500 ease-in-out ${isScrolled ? 'opacity-0 -translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0 pointer-events-auto'}`}>
-        <button
+        {/* <button
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           className="group relative px-6 py-2 overflow-hidden rounded-full border border-white text-xs font-medium uppercase tracking-widest transition-colors bg-transparent"
@@ -135,7 +135,7 @@ const Header = ({ setIsHovering, lang }) => {
             {lang === 'es' ? 'Contacto' : 'Contact'}
           </span>
           <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-        </button>
+        </button> */}
       </div>
     </header>
   );
@@ -184,7 +184,7 @@ const Hero = ({ setIsHovering, lang }) => {
 
           {/* El texto ya no está oculto en móviles y se centra automáticamente */}
           <div className="w-full sm:w-1/4 sm:pb-8 sm:pl-8 flex flex-col items-center sm:items-start text-center sm:text-left">
-            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light max-w-xs sm:max-w-none">
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium max-w-xs sm:max-w-none">
               <span className="text-xs uppercase tracking-widest text-[#00A889] font-bold block mb-2">
                 {lang === 'es' ? 'Acerca de' : 'About'}
               </span>
@@ -378,17 +378,59 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
 };
 
 const ProjectsGallery = ({ setIsHovering }) => {
+  // 1. Añadimos las propiedades 'link' y 'video' (opcional) a tu array de datos
   const projects = [
-    { id: 1, title: "Body Om", category: "Design", height: 350, img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&q=80&w=800" },
-    { id: 2, title: "Wokwi", category: "Productivity", height: 450, img: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&q=80&w=800" },
-    { id: 3, title: "123Apps", category: "Productivity", height: 250, img: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=800" },
-    { id: 4, title: "ReactBits", category: "Development", height: 400, img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=800" },
-    { id: 5, title: "QuickRef", category: "Productivity", height: 300, img: "https://images.unsplash.com/photo-1614088267258-294726bf68fc?auto=format&fit=crop&q=80&w=800" },
-    { id: 6, title: "PhetColorado", category: "Education", height: 500, img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800" }
+    {
+      id: 1,
+      title: "Nexus",
+      height: 350,
+      img: "/img/Nexus.png",
+      link: "https://nexus-drab-one.vercel.app/"
+    },
+    {
+      id: 2,
+      title: "Servicios Generales",
+      height: 450,
+      img: "/img/Servicios.png",
+    //   video: "https://www.w3schools.com/html/mov_bbb.mp4",
+      link: "https://roi-servicios.vercel.app/"
+    },
+    {
+      id: 3,
+      title: "Fuxion Oportunidad",
+      height: 250,
+      img: "/img/Fuxion.png",
+      link: "https://fuxionoportunidad.vercel.app/"
+    },
+    {
+      id: 4,
+      title: "Transportes Premium",
+      height: 400,
+      img: "/img/TransPremium.png",
+      link: "https://trasnportesjuan.vercel.app/"
+    },
+    {
+      id: 5,
+      title: "Grupo Hirbell",
+      height: 300,
+      img: "/img/Hirbell.png",
+      link: "https://grupohirbell.vercel.app/"
+    },
+    {
+      id: 6,
+      title: "Transportes Jirena",
+      height: 500,
+      img: "/img/Jirena.png",
+      link: "https://transportes-jirena.vercel.app/"
+    }
   ];
 
   const ProjectCard = ({ project }) => (
-    <div
+    // 2. Convertimos el contenedor principal en un <a> cliqueable
+    <a
+      href={project.link || "#"}
+      target="_blank" // Abre el proyecto en una nueva pestaña
+      rel="noopener noreferrer"
       className="flex flex-col group cursor-none w-full relative h-full"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -403,16 +445,27 @@ const ProjectsGallery = ({ setIsHovering }) => {
           className="relative w-full rounded-sm overflow-hidden bg-gray-100 dark:bg-gray-800 shrink-0"
           style={{ height: `${project.height}px`, minHeight: `${project.height}px` }}
         >
-          <div
-            /* SOLUCIÓN: blur-0 y scale-100 por defecto (móvil). blur-[3px] y scale-105 a partir de 'sm:' (PC) */
-            className="absolute inset-0 bg-cover bg-center transition-all duration-700 blur-0 scale-100 sm:blur-[3px] sm:scale-105 group-hover:blur-[0px] group-hover:scale-100"
-            style={{ backgroundImage: `url('${project.img}')` }}
-          />
+          {/* 3. Lógica condicional: Si hay video lo mostramos, sino mostramos la imagen */}
+          {project.video ? (
+            <video
+              src={project.video}
+              autoPlay
+              loop
+              muted
+              playsInline // playsInline es crucial para que los videos se reproduzcan sin abrir el reproductor en iOS
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-700 blur-0 scale-100 sm:blur-[3px] sm:scale-105 group-hover:blur-[0px] group-hover:scale-100"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-all duration-700 blur-0 scale-100 sm:blur-[3px] sm:scale-105 group-hover:blur-[0px] group-hover:scale-100"
+              style={{ backgroundImage: `url('${project.img}')` }}
+            />
+          )}
+
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
         </div>
-
       </div>
-    </div>
+    </a>
   );
 
   return (
@@ -490,10 +543,9 @@ const Footer = ({ setIsHovering, lang }) => {
       <div className="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-8 text-xs text-gray-500 uppercase tracking-widest border-t border-[#ddd] dark:border-[#222]">
         <p>Arequipa, Peru</p>
         <div className="flex gap-4 my-4 sm:my-0">
-          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Twitter</a>
-          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Instagram</a>
-          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Github</a>
-          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+          <a href="https://x.com/Fs3b4S" className="hover:text-black dark:hover:text-white transition-colors">X(Twitter)</a>
+          <a href="https://github.com/pwn27sbx/pwn27sbx/tree/main" className="hover:text-black dark:hover:text-white transition-colors">Github</a>
+          <a href="https://www.linkedin.com/in/pwnsxb/?isSelfProfile=true" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
         </div>
         <p>Design by Sebastian</p>
       </div>
