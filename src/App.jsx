@@ -382,12 +382,12 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
-const ProjectsGallery = ({ setIsHovering }) => {
-  // 1. Añadimos las propiedades 'link' y 'video' (opcional) a tu array de datos
+const ProjectsGallery = ({ setIsHovering, lang }) => {
   const projects = [
     {
       id: 1,
       title: "Nexus",
+      category: "Frontend",
       height: 350,
       img: "/img/Nexus.png",
       link: "https://nexus-drab-one.vercel.app/"
@@ -395,14 +395,15 @@ const ProjectsGallery = ({ setIsHovering }) => {
     {
       id: 2,
       title: "Servicios Generales",
+      category: "Fullstack",
       height: 450,
       img: "/img/Servicios.png",
-    //   video: "https://www.w3schools.com/html/mov_bbb.mp4",
       link: "https://roi-servicios.vercel.app/"
     },
     {
       id: 3,
       title: "Fuxion Oportunidad",
+      category: "Landing Page",
       height: 250,
       img: "/img/Fuxion.png",
       link: "https://fuxionoportunidad.vercel.app/"
@@ -410,6 +411,7 @@ const ProjectsGallery = ({ setIsHovering }) => {
     {
       id: 4,
       title: "Transportes Premium",
+      category: "UI/UX",
       height: 400,
       img: "/img/TransPremium.png",
       link: "https://trasnportesjuan.vercel.app/"
@@ -417,24 +419,17 @@ const ProjectsGallery = ({ setIsHovering }) => {
     {
       id: 5,
       title: "Grupo Hirbell",
+      category: "Corporate",
       height: 300,
       img: "/img/Hirbell.png",
       link: "https://grupohirbell.vercel.app/"
-    },
-    {
-      id: 6,
-      title: "Transportes Jirena",
-      height: 500,
-      img: "/img/Jirena.png",
-      link: "https://transportes-jirena.vercel.app/"
     }
   ];
 
   const ProjectCard = ({ project }) => (
-    // 2. Convertimos el contenedor principal en un <a> cliqueable
     <a
       href={project.link || "#"}
-      target="_blank" // Abre el proyecto en una nueva pestaña
+      target="_blank"
       rel="noopener noreferrer"
       className="flex flex-col group cursor-none w-full relative h-full"
       onMouseEnter={() => setIsHovering(true)}
@@ -450,14 +445,13 @@ const ProjectsGallery = ({ setIsHovering }) => {
           className="relative w-full rounded-sm overflow-hidden bg-gray-100 dark:bg-gray-800 shrink-0"
           style={{ height: `${project.height}px`, minHeight: `${project.height}px` }}
         >
-          {/* 3. Lógica condicional: Si hay video lo mostramos, sino mostramos la imagen */}
           {project.video ? (
             <video
               src={project.video}
               autoPlay
               loop
               muted
-              playsInline // playsInline es crucial para que los videos se reproduzcan sin abrir el reproductor en iOS
+              playsInline
               className="absolute inset-0 w-full h-full object-cover transition-all duration-700 blur-0 scale-100 sm:blur-[3px] sm:scale-105 group-hover:blur-[0px] group-hover:scale-100"
             />
           ) : (
@@ -468,6 +462,59 @@ const ProjectsGallery = ({ setIsHovering }) => {
           )}
 
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+        </div>
+      </div>
+    </a>
+  );
+
+  // Tarjeta interactiva de Llamada a la Acción
+  const ViewAllCard = () => (
+    <a
+      href="/proyectos" // <- Coloca aquí la ruta de tu página de todos los proyectos
+      className="flex flex-col group cursor-none w-full relative h-full"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <div className="bg-white dark:bg-[#1a1a1a] rounded-sm p-3 border border-gray-200 dark:border-gray-800 transition-colors w-full flex flex-col h-full gap-3">
+
+        <div className="flex justify-between items-center px-1 shrink-0">
+          <h3 className="font-semibold text-sm text-gray-800 dark:text-gray-200">
+            {lang === 'es' ? 'Archivo Completo' : 'Full Archive'}
+          </h3>
+          <span className="text-xs text-[#00A889] font-bold tracking-widest uppercase">
+            {lang === 'es' ? 'Explorar' : 'Explore'}
+          </span>
+        </div>
+
+        <div
+          className="relative w-full rounded-sm overflow-hidden bg-[#111] dark:bg-black shrink-0 flex flex-col items-center justify-center border border-transparent group-hover:border-[#00A889] transition-colors duration-500"
+          style={{ height: '500px', minHeight: '500px' }} // Altura que ocupaba Jirena
+        >
+          {/* Fondo Verde Animado */}
+          <div className="absolute inset-0 bg-[#00A889] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1] z-0" />
+
+          {/* Textos y Flecha */}
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            <h3 className="font-anton text-5xl sm:text-6xl text-white uppercase tracking-widest text-center group-hover:-translate-y-2 transition-transform duration-700 ease-out">
+              {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'}
+              <br />
+              <span className="text-3xl sm:text-4xl text-gray-400 group-hover:text-white/90 transition-colors duration-500">
+                {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
+              </span>
+            </h3>
+
+            <div className="w-16 h-16 rounded-full border border-gray-600 group-hover:border-white flex items-center justify-center transition-all duration-700 bg-transparent group-hover:bg-white text-white group-hover:text-[#00A889]">
+              <svg
+                className="w-6 h-6 transform group-hover:rotate-45 group-hover:scale-110 transition-all duration-500 ease-out"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </a>
@@ -487,7 +534,7 @@ const ProjectsGallery = ({ setIsHovering }) => {
           </div>
           <div className="flex-1 flex flex-col gap-6 w-full">
             <ProjectCard project={projects[2]} />
-            <ProjectCard project={projects[5]} />
+            <ViewAllCard /> {/* Tarjeta animada inyectada al final */}
           </div>
         </div>
       </div>
