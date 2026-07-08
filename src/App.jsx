@@ -221,45 +221,26 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
       id: "01",
       title: lang === 'es' ? "DESARROLLO FRONTEND" : "FRONTEND DEVELOPMENT",
       marquee: "REACT — NEXT.JS — ASTRO — TYPESCRIPT — TAILWIND CSS — JAVASCRIPT — ",
-      direction: "left",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1920"
+      direction: "left"
     },
     {
       id: "02",
       title: lang === 'es' ? "DISEÑO UI/UX" : "UI/UX DESIGN",
       marquee: "FIGMA — UI/UX — FRAMER — PROTOTYPING — DESIGN SYSTEMS — ACCESSIBILITY — ",
-      direction: "right",
-      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=1920"
+      direction: "right"
     },
     {
       id: "03",
       title: lang === 'es' ? "MOTION E INTERACCIÓN" : "MOTION & INTERACTION",
       marquee: "FRAMER MOTION — GSAP — WEBGL — THREE.JS — SVG ANIMATION — CREATIVE CODING — ",
-      direction: "left",
-      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1920"
+      direction: "left"
     }
   ];
 
   return (
     <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
-      {expertises.map((exp, index) => (
-        <div
-          key={`bg-${index}`}
-          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-out transform grayscale ${
-            hoveredIndex === index ? 'opacity-[0.03] dark:opacity-[0.05] scale-105 blur-xl' : 'opacity-0 scale-100 blur-none'
-          }`}
-        >
-          {/* Implementación de carga diferida (lazy loading) con object-cover */}
-          <img
-            src={exp.image}
-            alt={exp.title}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-[#f5f5f5]/95 dark:bg-[#0a0a0a]/95 transition-opacity duration-700" />
-        </div>
-      ))}
+
+      {/* Se eliminaron por completo las imágenes de fondo para mantener el diseño minimalista */}
 
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
