@@ -31,8 +31,8 @@ const Archive = ({ lang }) => {
   const moveY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e) => {
-    mouseX.set(e.clientX - 150);
-    mouseY.set(e.clientY - 100);
+    mouseX.set(e.clientX - 200);
+    mouseY.set(e.clientY - 112.5);
   };
 
   return (
@@ -102,7 +102,7 @@ const Archive = ({ lang }) => {
       </section>
 
       <motion.div
-        className="fixed top-0 left-0 w-[300px] h-[200px] pointer-events-none z-50 overflow-hidden rounded-xl shadow-2xl border-4 border-white dark:border-[#111]"
+        className="fixed top-0 left-0 w-[400px] aspect-video pointer-events-none z-50 overflow-hidden rounded-xl shadow-2xl border-4 border-white dark:border-[#111]"
         style={{
           x: moveX,
           y: moveY,
