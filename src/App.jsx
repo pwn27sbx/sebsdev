@@ -680,7 +680,6 @@ export default function Portfolio() {
                     <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
                     </div>
                     <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
-                    <ProjectsGallery setIsHovering={setIsHovering} />
                 <Footer setIsHovering={setIsHovering} lang={lang} />
                 </div>
             </div>
