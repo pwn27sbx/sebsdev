@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Arcade | Sebastian</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=block" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-panel: #111111;
+      --jade-green: #00A889;
+      --text-main: #eeeeee;
+      --text-muted: #666666;
+      --board-bg: #050505;
+      --board-border: #222222;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      /* Fondo con un degradado sutil para dar profundidad */
+      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+    }
+
+    .font-anton {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* BOTÓN DE VOLVER A PROYECTOS */
+    .back-link {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+      z-index: 50;
+    }
+
+    .back-link:hover {
+      color: var(--jade-green);
+    }
+
+    .back-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .back-link:hover .back-arrow {
+      transform: translateX(-5px);
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .subtitle {
+      font-size: 0.75rem;
+      color: var(--jade-green);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    /* MAIN CONTAINER */
+    #app-container {
+      display: flex;
+      gap: 4rem;
+      align-items: flex-end;
+      margin-top: 5rem;
+      z-index: 20;
+    }
+
+    /* CANVAS AREA CON EFECTO SCANLINES (CRT) */
+    .board-wrapper {
+      position: relative;
+      padding: 1.5rem;
+      background: var(--bg-panel);
+      border-radius: 8px;
+      border: 1px solid var(--board-border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+
+    /* Magia visual: Líneas de televisor antiguo sobre el juego */
+    .board-wrapper::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+      background-size: 100% 4px;
+      z-index: 5;
+      pointer-events: none; /* Deja pasar los clicks al juego */
+    }
+
+    canvas {
+      background: var(--board-bg);
+      display: block;
+      border-radius: 2px;
+    }
+
+    /* PANTALLA DE INICIO (OVERLAY) */
+    #start-screen {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 5, 5, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      transition: opacity 0.5s ease, visibility 0.5s;
+    }
+
+    .play-btn {
+      font-size: 3rem;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 20px rgba(0, 168, 137, 0.5);
+    }
+
+    #start-screen:hover .play-btn {
+      transform: scale(1.05) translateY(-5px);
+      color: var(--jade-green);
+    }
+
+    .instructions {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 2;
+    }
+
+    /* UI LATERAL */
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .score-box {
+      background: var(--bg-panel);
+      padding: 2rem;
+      border-left: 4px solid var(--jade-green);
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .score-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .score-value {
+      font-size: 4.5rem;
+      line-height: 1;
+      color: var(--text-main);
+    }
+
+    .controls-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      background: var(--bg-panel);
+      padding: 1.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--board-border);
+    }
+
+    .key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 0.5rem;
+      background: #1a1a1a;
+      border-radius: 4px;
+      color: #888;
+      margin: 0 0.3rem;
+      border-bottom: 2px solid #000;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/proyectos" class="back-link">
+    <span class="back-arrow">←</span> <span>Volver a Proyectos</span>
+  </a>
+
+  <header>
+    <h1 class="font-anton">Tetris Arcade</h1>
+    <div class="subtitle">JavaScript Engine</div>
+  </header>
+
+  <div id="app-container">
+    <div class="board-wrapper">
+      <div id="start-screen">
+        <div class="play-btn font-anton">Jugar</div>
+        <div class="instructions">Haz clic para iniciar<br/>usa las flechas para mover</div>
+      </div>
+      <canvas></canvas>
+    </div>
+
+    <div class="side-panel">
+      <div class="score-box">
+        <div class="score-label">Score</div>
+        <div class="score-value font-anton" id="score-display">0</div>
+      </div>
+
+      <div class="controls-hint">
+        <div style="margin-bottom: 12px;"><span class="key">↑</span> Rotar Pieza</div>
+        <div><span class="key">←</span> <span class="key">↓</span> <span class="key">→</span> Mover</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BLOCK_SIZE = 22 // Un poco más grande para mejor visibilidad
+    const BOARD_WIDTH = 14
+    const BOARD_HEIGHT = 28 // Ajustado para mantener proporción elegante
+
+    const EVENT_MOVEMENTS = {
+      LEFT: 'ArrowLeft',
+      DOWN: 'ArrowDown',
+      RIGHT: 'ArrowRight'
+    }
+
+    const PIECES = [
+      [ [1, 1], [1, 1] ],
+      [ [1, 1, 1, 1] ],
+      [ [0, 1, 0], [1, 1, 1] ],
+      [ [1, 1, 0], [0, 1, 1] ],
+      [ [0, 1, 1], [1, 1, 0] ],
+      [ [1, 0], [1, 0], [1, 1] ],
+      [ [0, 1], [0, 1], [1, 1] ]
+    ]
+
+    const canvas = document.querySelector('canvas')
+    const context = canvas.getContext('2d')
+    const $scoreDisplay = document.getElementById('score-display')
+    const $startScreen = document.getElementById('start-screen')
+
+    const audio = new window.Audio('https://video.aprendejs.dev/tetris.mp3')
+    audio.loop = true; // SOLUCIÓN: La música jamás se detendrá
+
+    let score = 0
+
+    canvas.width = BLOCK_SIZE * BOARD_WIDTH
+    canvas.height = BLOCK_SIZE * BOARD_HEIGHT
+
+    context.scale(BLOCK_SIZE, BLOCK_SIZE)
+
+    const board = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0))
+
+    const piece = {
+      position: { x: 5, y: 5 },
+      shape: [ [1, 1], [1, 1] ]
+    }
+
+    let dropCounter = 0
+    let lastTime = 0
+
+    function update (time = 0) {
+      const deltaTime = time - lastTime
+      lastTime = time
+      dropCounter += deltaTime
+
+      if (dropCounter > 1000) {
+        piece.position.y++
+        dropCounter = 0
+
+        if (checkCollision()) {
+          piece.position.y--
+          solidifyPiece()
+          removeRows()
+        }
+      }
+
+      draw()
+      window.requestAnimationFrame(update)
+    }
+
+    function draw () {
+      context.fillStyle = '#050505'
+      context.fillRect(0, 0, canvas.width, canvas.height)
+
+      board.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value === 1) {
+            context.fillStyle = '#2a2a2a' // Bloques grises premium
+            // Dibuja el bloque ligeramente más pequeño para crear el efecto de "grid" o red
+            context.fillRect(x + 0.05, y + 0.05, 0.9, 0.9)
+          }
+        })
+      })
+
+      piece.shape.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) {
+            context.fillStyle = '#00A889' // Bloque verde Jade
+            context.fillRect(x + piece.position.x + 0.05, y + piece.position.y + 0.05, 0.9, 0.9)
+          }
+        })
+      })
+
+      $scoreDisplay.innerText = score
+    }
+
+    document.addEventListener('keydown', event => {
+      if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(event.code) > -1) {
+          event.preventDefault();
+      }
+
+      if (event.key === EVENT_MOVEMENTS.LEFT) {
+        piece.position.x--
+        if (checkCollision()) { piece.position.x++ }
+      }
+      if (event.key === EVENT_MOVEMENTS.RIGHT) {
+        piece.position.x++
+        if (checkCollision()) { piece.position.x-- }
+      }
+      if (event.key === EVENT_MOVEMENTS.DOWN) {
+        piece.position.y++
+        if (checkCollision()) {
+          piece.position.y--
+          solidifyPiece()
+          removeRows()
+        }
+      }
+      if (event.key === 'ArrowUp') {
+        const rotated = []
+        for (let i = 0; i < piece.shape[0].length; i++) {
+          const row = []
+          for (let j = piece.shape.length - 1; j >= 0; j--) {
+            row.push(piece.shape[j][i])
+          }
+          rotated.push(row)
+        }
+        const previousShape = piece.shape
+        piece.shape = rotated
+        if (checkCollision()) { piece.shape = previousShape }
+      }
+    })
+
+    function checkCollision () {
+      return piece.shape.find((row, y) => {
+        return row.find((value, x) => {
+          return (
+            value === 1 &&
+            board[y + piece.position.y]?.[x + piece.position.x] !== 0
+          )
+        })
+      })
+    }
+
+    function solidifyPiece () {
+      piece.shape.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value === 1) {
+            board[y + piece.position.y][x + piece.position.x] = 1
+          }
+        })
+      })
+      resetPiece()
+    }
+
+    function resetPiece () {
+      piece.position.x = Math.floor(BOARD_WIDTH / 2 - 2)
+      piece.position.y = 0
+      piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)]
+      if (checkCollision()) {
+        window.alert('Game over! Tu puntuación final es: ' + score)
+        board.forEach((row) => row.fill(0))
+        score = 0
+        $scoreDisplay.innerText = score
+      }
+    }
+
+    function removeRows () {
+      const rowsToRemove = []
+      board.forEach((row, y) => {
+        if (row.every(value => value === 1)) {
+          rowsToRemove.push(y)
+        }
+      })
+      rowsToRemove.forEach(y => {
+        board.splice(y, 1)
+        const newRow = Array(BOARD_WIDTH).fill(0)
+        board.unshift(newRow)
+        score += 10
+      })
+    }
+
+    $startScreen.addEventListener('click', () => {
+      $startScreen.style.opacity = '0';
+      setTimeout(() => {
+        $startScreen.style.visibility = 'hidden';
+      }, 500);
+
+      update()
+
+      audio.volume = 0.05
+      audio.play().catch(e => console.log("Audio prevent"));
+    })
+  </script>
+</body>
+</html>
