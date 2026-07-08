@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Archive from './Archive'; // Importamos la nueva página que crearemos en el Paso 3
 
 const globalStyles = `
   ::-webkit-scrollbar {
@@ -47,14 +49,12 @@ const globalStyles = `
     animation: marquee-reverse-slow 120s linear infinite;
   }
 
-  /* Ocultar cursor en móviles */
   @media (hover: none) and (pointer: coarse) {
     .custom-cursor {
       display: none !important;
     }
   }
 
-  /* SOLUCIÓN CAPTURA 3: Pausa de marquesina solo en PC (evita el bug tactil de iPhone) */
   @media (hover: hover) and (pointer: fine) {
     .hover-pause:hover {
       animation-play-state: paused !important;
@@ -92,14 +92,10 @@ const CustomCursor = ({ isHovering }) => {
 
 const HoverText = ({ text }) => {
   return (
-    // 1. Eliminamos el <div className="flex"> y usamos un Fragmento de React (<>)
-    // para que las letras fluyan naturalmente heredando el tracking del padre.
     <>
       {text.split('').map((char, index) => (
         <span
           key={index}
-          // 2. Eliminamos la clase 'shrink-0' ya que ya no estamos usando flex.
-          // 3. Agregamos 'inline-block' para que cada letra mantenga sus proporciones exactas.
           className="inline-block transition-colors duration-150 hover:text-[#00A889] cursor-default font-anton"
         >
           {char}
@@ -130,16 +126,6 @@ const Header = ({ setIsHovering, lang }) => {
       </div>
 
       <div className={`transition-all duration-500 ease-in-out ${isScrolled ? 'opacity-0 -translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0 pointer-events-auto'}`}>
-        {/* <button
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className="group relative px-6 py-2 overflow-hidden rounded-full border border-white text-xs font-medium uppercase tracking-widest transition-colors bg-transparent"
-        >
-          <span className="relative z-10 transition-colors text-white group-hover:text-black">
-            {lang === 'es' ? 'Contacto' : 'Contact'}
-          </span>
-          <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-        </button> */}
       </div>
     </header>
   );
@@ -155,7 +141,6 @@ const Hero = ({ setIsHovering, lang }) => {
 
         <div className="flex items-center justify-center w-full flex-nowrap">
           <div
-            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
             className="text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
@@ -169,7 +154,6 @@ const Hero = ({ setIsHovering, lang }) => {
           />
 
           <div
-            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
             className="text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
@@ -180,7 +164,6 @@ const Hero = ({ setIsHovering, lang }) => {
 
         <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-8 sm:mt-10 px-4 sm:px-10 gap-8 sm:gap-0">
           <div
-            // SOLUCIÓN: Se eliminó 'font-black' de esta línea
             className="text-[14vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
@@ -239,9 +222,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 
   return (
     <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
-
-      {/* Se eliminaron por completo las imágenes de fondo para mantener el diseño minimalista */}
-
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
           <div
@@ -257,7 +237,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 {exp.id}
               </span>
 
-              {/* VISTA MÓVIL: Se muestra el título y el texto deslizante apilados */}
               <div className="flex sm:hidden flex-col w-full gap-2 mt-2">
                 <h2 className="font-anton text-4xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee]">
                   {exp.title}
@@ -267,7 +246,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 </div>
               </div>
 
-              {/* VISTA ESCRITORIO: Animación con posicionamiento absoluto al hacer hover */}
               <div className="hidden sm:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full">
                 <h2 className={`absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ${
                   hoveredIndex === index
@@ -307,7 +285,6 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   const CustomArrow = () => (
     <span className="flex items-center justify-center mx-4 sm:mx-8 shrink-0">
       <svg
-        /* SOLUCIÓN: text-current hace que herede el color del texto del contenedor padre automáticamente */
         className="w-10 h-10 sm:w-16 sm:h-16 text-current"
         viewBox="0 0 24 24"
         fill="none"
@@ -342,18 +319,14 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   return (
     <div
       className="relative w-full h-[250px] sm:h-[400px] md:h-[500px] overflow-hidden flex items-center justify-center bg-transparent shrink-0 z-30"
-      onMouseEnter={() => {
-        if (setIsHovering) setIsHovering(true);
-      }}
+      onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
-        if (setIsHovering) setIsHovering(false);
+        setIsHovering(false);
         setFocusedBand('front');
       }}
     >
-      {/* BANDA TRASERA (NEGRA EN LIGHT MODE, BLANCA EN DARK MODE) */}
       <div
         onMouseEnter={() => setFocusedBand('back')}
-        /* SOLUCIÓN: dark:bg-white dark:text-[#111] invierte los colores al activar el modo oscuro */
         className={`absolute w-[130%] bg-[#111] dark:bg-white text-white dark:text-[#111] py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${
           focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90'
         }`}
@@ -365,7 +338,6 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
         </motion.div>
       </div>
 
-      {/* BANDA DELANTERA (VERDE JADE) */}
       <div
         onMouseEnter={() => setFocusedBand('front')}
         className={`absolute w-[130%] bg-[#00A889] text-white py-4 sm:py-8 md:py-10 transform -rotate-[6deg] transition-all duration-700 ease-out z-[50] pointer-events-auto shadow-none ${
@@ -460,23 +432,21 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
               style={{ backgroundImage: `url('${project.img}')` }}
             />
           )}
-
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
         </div>
       </div>
     </a>
   );
 
-  // Tarjeta interactiva de Llamada a la Acción
+  // AQUI OCURRE LA MAGIA: Cambiamos la etiqueta <a> por <Link> de React Router
   const ViewAllCard = () => (
-    <a
-      href="/proyectos" // <- Coloca aquí la ruta de tu página de todos los proyectos
+    <Link
+      to="/proyectos"
       className="flex flex-col group cursor-none w-full relative h-full"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       <div className="bg-white dark:bg-[#1a1a1a] rounded-sm p-3 border border-gray-200 dark:border-gray-800 transition-colors w-full flex flex-col h-full gap-3">
-
         <div className="flex justify-between items-center px-1 shrink-0">
           <h3 className="font-semibold text-sm text-gray-800 dark:text-gray-200">
             {lang === 'es' ? 'Archivo Completo' : 'Full Archive'}
@@ -488,12 +458,9 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
         <div
           className="relative w-full rounded-sm overflow-hidden bg-[#111] dark:bg-black shrink-0 flex flex-col items-center justify-center border border-transparent group-hover:border-[#00A889] transition-colors duration-500"
-          style={{ height: '500px', minHeight: '500px' }} // Altura que ocupaba Jirena
+          style={{ height: '500px', minHeight: '500px' }}
         >
-          {/* Fondo Verde Animado */}
           <div className="absolute inset-0 bg-[#00A889] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1] z-0" />
-
-          {/* Textos y Flecha */}
           <div className="relative z-10 flex flex-col items-center gap-8">
             <h3 className="font-anton text-5xl sm:text-6xl text-white uppercase tracking-widest text-center group-hover:-translate-y-2 transition-transform duration-700 ease-out">
               {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'}
@@ -502,14 +469,10 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                 {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
               </span>
             </h3>
-
             <div className="w-16 h-16 rounded-full border border-gray-600 group-hover:border-white flex items-center justify-center transition-all duration-700 bg-transparent group-hover:bg-white text-white group-hover:text-[#00A889]">
               <svg
                 className="w-6 h-6 transform group-hover:rotate-45 group-hover:scale-110 transition-all duration-500 ease-out"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -517,7 +480,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 
   return (
@@ -534,7 +497,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           </div>
           <div className="flex-1 flex flex-col gap-6 w-full">
             <ProjectCard project={projects[2]} />
-            <ViewAllCard /> {/* Tarjeta animada inyectada al final */}
+            <ViewAllCard />
           </div>
         </div>
       </div>
@@ -570,7 +533,6 @@ const Footer = ({ setIsHovering, lang }) => {
           onMouseLeave={() => setIsHovering(false)}
         >
           <div
-            /* SOLUCIÓN: text-[#00A889] por defecto (móvil). sm:text-[#ccc] para escritorio. */
             className="flex animate-marquee font-anton text-6xl sm:text-[8vw] uppercase transition-colors duration-300 items-center h-full text-[#00A889] sm:text-[#ccc] sm:dark:text-[#444] group-hover:text-[#00A889] hover-pause"
             style={{ width: "max-content" }}
           >
@@ -605,8 +567,54 @@ const Footer = ({ setIsHovering, lang }) => {
   );
 };
 
-export default function Portfolio() {
+// Modificamos Portfolio para que sea un componente normal y reciba "lang" como propiedad
+function Portfolio({ lang }) {
   const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const applyTheme = (e) => {
+      if (e.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+    applyTheme(darkModeMediaQuery);
+    darkModeMediaQuery.addEventListener('change', applyTheme);
+    return () => darkModeMediaQuery.removeEventListener('change', applyTheme);
+  }, []);
+
+  return (
+    <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-clip">
+      <CustomCursor isHovering={isHovering} />
+      <Header setIsHovering={setIsHovering} lang={lang} />
+      <main className="w-full relative z-10">
+        <div className="relative z-10 w-full h-[100dvh] bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
+          <Hero setIsHovering={setIsHovering} lang={lang} />
+        </div>
+        <div className="relative z-10 h-[200vh]">
+          <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+            <ExpertiseSection setIsHovering={setIsHovering} lang={lang} />
+          </div>
+        </div>
+        <div className="relative z-20 -mt-[100vh] flex flex-col w-full transition-colors duration-300">
+          <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
+              <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative">
+                  <div className="-mt-32 sm:-mt-48 relative z-30">
+                  <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
+                  </div>
+                  <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
+              <Footer setIsHovering={setIsHovering} lang={lang} />
+              </div>
+          </div>
+      </main>
+    </div>
+  );
+}
+
+// Este es el nuevo punto de entrada principal que decide qué página mostrar
+export default function App() {
   const [lang, setLang] = useState('en');
 
   useEffect(() => {
@@ -616,58 +624,17 @@ export default function Portfolio() {
         setLang('es');
       }
     }
-
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const applyTheme = (e) => {
-      if (e.matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    };
-
-    applyTheme(darkModeMediaQuery);
-
-    darkModeMediaQuery.addEventListener('change', applyTheme);
-    return () => darkModeMediaQuery.removeEventListener('change', applyTheme);
   }, []);
 
   return (
     <>
       <style>{globalStyles}</style>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-      <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
-
-      <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-clip">
-        <CustomCursor isHovering={isHovering} />
-        <Header setIsHovering={setIsHovering} lang={lang} />
-
-        <main className="w-full relative z-10">
-
-          <div className="relative z-10 w-full h-[100dvh] bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
-            <Hero setIsHovering={setIsHovering} lang={lang} />
-          </div>
-
-          <div className="relative z-10 h-[200vh]">
-            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
-              <ExpertiseSection setIsHovering={setIsHovering} lang={lang} />
-            </div>
-          </div>
-
-          <div className="relative z-20 -mt-[100vh] flex flex-col w-full transition-colors duration-300">
-            <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
-                <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative">
-                    <div className="-mt-32 sm:-mt-48 relative z-30">
-                    <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
-                    </div>
-                    <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
-                <Footer setIsHovering={setIsHovering} lang={lang} />
-                </div>
-            </div>
-        </main>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Portfolio lang={lang} />} />
+          <Route path="/proyectos" element={<Archive lang={lang} />} />
+        </Routes>
+      </Router>
     </>
   );
 }
