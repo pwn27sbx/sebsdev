@@ -188,9 +188,9 @@ const Hero = ({ setIsHovering, lang }) => {
             <HoverText text="DEVELOPER" />
           </div>
 
-          <div className="w-full sm:w-1/4 sm:pb-8 sm:pl-8 flex flex-col items-center sm:items-start text-center sm:text-left">
-            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light max-w-xs sm:max-w-none">
-              <span className="text-xs uppercase tracking-widest text-[#00A889] font-bold block mb-2">
+          <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left">
+            <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed font-light max-w-xs sm:max-w-none">
+              <span className="text-sm uppercase tracking-widest text-[#00A889] font-bold block mb-2 sm:mb-3">
                 {lang === 'es' ? 'Acerca de' : 'About'}
               </span>
               {lang === 'es'
@@ -300,19 +300,15 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 const InteractiveBanner = ({ setIsHovering, lang }) => {
   const [focusedBand, setFocusedBand] = useState('front');
 
-  // 1. Leemos el scroll exacto de la ventana
   const { scrollY } = useScroll();
-
-  // 2. Mapeamos el scroll a píxeles de desplazamiento (Transformación)
-  // Cuando scrolleamos de 0 a 5000px, la banda verde se empuja 1500px extra a la izquierda
   const xFront = useTransform(scrollY, [0, 5000], [0, -1500]);
-  // La banda negra se empuja 1500px extra a la derecha
   const xBack = useTransform(scrollY, [0, 5000], [0, 1500]);
 
   const CustomArrow = () => (
     <span className="flex items-center justify-center mx-4 sm:mx-8 shrink-0">
       <svg
-        className="w-10 h-10 sm:w-16 sm:h-16 text-[#fff]"
+        /* SOLUCIÓN: text-current hace que herede el color del texto del contenedor padre automáticamente */
+        className="w-10 h-10 sm:w-16 sm:h-16 text-current"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -354,14 +350,14 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
         setFocusedBand('front');
       }}
     >
-      {/* BANDA TRASERA (NEGRA) */}
+      {/* BANDA TRASERA (NEGRA EN LIGHT MODE, BLANCA EN DARK MODE) */}
       <div
         onMouseEnter={() => setFocusedBand('back')}
-        className={`absolute w-[130%] bg-[#111] text-white py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${
+        /* SOLUCIÓN: dark:bg-white dark:text-[#111] invierte los colores al activar el modo oscuro */
+        className={`absolute w-[130%] bg-[#111] dark:bg-white text-white dark:text-[#111] py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${
           focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90'
         }`}
       >
-        {/* 3. Envolvemos la marquesina en motion.div aplicando el movimiento de scroll extra (xBack) */}
         <motion.div style={{ x: xBack, width: "max-content" }} className="flex">
           <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
             {[...Array(15)].map((_, i) => <TextBlockBack key={`back-${i}`} />)}
@@ -376,7 +372,6 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
           focusedBand === 'back' ? 'blur-[5px]' : 'blur-0 opacity-100'
         }`}
       >
-        {/* 3. Envolvemos la marquesina en motion.div aplicando el movimiento de scroll extra (xFront) */}
         <motion.div style={{ x: xFront, width: "max-content" }} className="flex">
           <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
             {[...Array(15)].map((_, i) => <TextBlockFront key={`front-${i}`} />)}
