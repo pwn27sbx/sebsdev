@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paint Studio | Sebastian</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=block" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-panel: #111111;
+      --jade-green: #00A889;
+      --text-main: #eeeeee;
+      --text-muted: #666666;
+      --border-color: #222222;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .font-anton {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* BARRA SUPERIOR */
+    header {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-panel);
+      flex-shrink: 0;
+    }
+
+    .back-link {
+      position: absolute;
+      left: 2rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover { color: var(--jade-green); }
+    .back-link:hover .back-arrow { transform: translateX(-5px); }
+    .back-arrow { transition: transform 0.3s ease; }
+
+    .branding {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      line-height: 1;
+    }
+
+    .subtitle {
+      font-size: 0.65rem;
+      color: var(--jade-green);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    /* LAYOUT PRINCIPAL */
+    #workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* BARRA DE HERRAMIENTAS LATERAL */
+    aside {
+      width: 80px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      align-items: center;
+    }
+
+    button {
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    button svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    button:hover:not([disabled]) {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+    }
+
+    button.active {
+      background: rgba(0, 168, 137, 0.1);
+      border-color: var(--jade-green);
+      color: var(--jade-green);
+    }
+
+    button[disabled] {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border-color);
+      margin: 0.5rem 0;
+    }
+
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: transparent;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: 2px solid var(--border-color); border-radius: 8px; }
+
+    /* Control de Grosor del Pincel */
+    .brush-size-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .brush-size-label {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    input[type="range"] {
+      width: 60px;
+      accent-color: var(--jade-green);
+      cursor: pointer;
+    }
+
+    /* ÁREA DE DIBUJO (MESA DE TRABAJO) */
+    main {
+      flex: 1;
+      background-color: #0f0f0f;
+      /* Fondo estilo diseño arquitectónico / Figma */
+      background-image: radial-gradient(#2a2a2a 1px, transparent 0);
+      background-size: 20px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    canvas {
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/proyectos" class="back-link">
+      <span class="back-arrow">←</span> <span>Volver</span>
+    </a>
+    <div class="branding">
+      <h1 class="font-anton">Paint Studio</h1>
+      <div class="subtitle">Canvas Engine</div>
+    </div>
+  </header>
+
+  <div id="workspace">
+    <aside>
+      <nav>
+        <button id="undo-btn" title="Deshacer (Ctrl+Z)">
+          <svg viewBox="0 0 24 24"><path d="M3 9l4-4m-4 4l4 4m-4-4h14a4 4 0 0 1 0 8h-3"></path></svg>
+        </button>
+        <button id="redo-btn" title="Rehacer (Ctrl+Y)">
+          <svg viewBox="0 0 24 24"><path d="M21 9l-4-4m4 4l-4 4m4-4H7a4 4 0 0 0 0 8h3"></path></svg>
+        </button>
+
+        <div class="divider"></div>
+
+        <button id="draw-btn" title="Pincel" class="active">
+          <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+        </button>
+        <button id="erase-btn" title="Borrar">
+          <svg viewBox="0 0 24 24"><path d="M20 20H7L3 16C2.5 15.5 2.5 14.5 3 14L13 4C13.5 3.5 14.5 3.5 15 4L20 9C20.5 9.5 20.5 10.5 20 11L11 20H20V20Z"></path><path d="M16 5L6 15"></path></svg>
+        </button>
+        <button id="picker-btn" title="Capturar Color" disabled>
+          <svg viewBox="0 0 24 24"><path d="M14.5 2L19.5 7L8.5 18H3.5V13L14.5 2Z"></path><path d="M12.5 4L17.5 9"></path></svg>
+        </button>
+
+        <div class="divider"></div>
+
+        <button id="line-btn" title="Línea Recta">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"></line></svg>
+        </button>
+        <button id="rectangle-btn" title="Rectángulo">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+        </button>
+        <button id="ellipse-btn" title="Elipse">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+        </button>
+
+        <div class="divider"></div>
+
+        <input type="color" id="color-picker" value="#00A889" title="Color Seleccionado" />
+
+        <div class="brush-size-container" title="Grosor">
+          <span class="brush-size-label" id="size-label">3px</span>
+          <input type="range" id="line-width" min="1" max="50" value="3">
+        </div>
+
+        <div class="divider"></div>
+
+        <button id="clear-btn" title="Limpiar Canvas">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+        <button id="save-btn" title="Guardar Imagen">
+          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button>
+      </nav>
+    </aside>
+
+    <main id="main-area">
+      <canvas id="canvas"></canvas>
+    </main>
+  </div>
+
+  <script type="module">
+    const MODES = {
+      DRAW: 'draw',
+      ERASE: 'erase',
+      LINE: 'line',
+      RECTANGLE: 'rectangle',
+      ELLIPSE: 'ellipse',
+      PICKER: 'picker',
+      SAVE: 'save'
+    }
+
+    const $ = selector => document.querySelector(selector)
+
+    const $canvas = $('#canvas')
+    const $mainArea = $('#main-area')
+    const $colorPicker = $('#color-picker')
+    const $lineWidth = $('#line-width')
+    const $sizeLabel = $('#size-label')
+
+    const $clearBtn = $('#clear-btn')
+    const $drawBtn = $('#draw-btn')
+    const $eraseBtn = $('#erase-btn')
+    const $lineBtn = $('#line-btn')
+    const $rectangleBtn = $('#rectangle-btn')
+    const $ellipseBtn = $('#ellipse-btn')
+    const $pickerBtn = $('#picker-btn')
+    const $saveBtn = $('#save-btn')
+    const $undoBtn = $('#undo-btn')
+    const $redoBtn = $('#redo-btn')
+
+    const ctx = $canvas.getContext('2d')
+
+    // STATE
+    let isDrawing = false
+    let isShiftPressed = false
+    let startX, startY
+    let lastX = 0
+    let lastY = 0
+    let mode = MODES.DRAW
+    let imageData
+
+    // HISTORY (Para Undo / Redo)
+    let history = []
+    let historyIndex = -1
+
+    // INICIALIZAR CANVAS DINÁMICO
+    function initCanvasSize() {
+      // Tomamos el tamaño del contenedor y le restamos un poco para que quede como un lienzo flotante
+      const rect = $mainArea.getBoundingClientRect();
+      $canvas.width = rect.width - 80;
+      $canvas.height = rect.height - 80;
+
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+
+      clearCanvas(false); // Fondea de blanco pero no resetea el historial aún
+      saveState(); // Guarda el lienzo en blanco como estado inicial
+    }
+
+    // EVENTOS
+    window.addEventListener('load', initCanvasSize);
+
+    $canvas.addEventListener('mousedown', startDrawing)
+    $canvas.addEventListener('mousemove', draw)
+    $canvas.addEventListener('mouseup', stopDrawing)
+    $canvas.addEventListener('mouseleave', () => { if(isDrawing) stopDrawing() })
+
+    $colorPicker.addEventListener('input', handleChangeColor)
+    $lineWidth.addEventListener('input', handleLineWidth)
+    $clearBtn.addEventListener('click', () => clearCanvas(true))
+
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keyup', handleKeyUp)
+
+    // Botones de herramientas
+    $undoBtn.addEventListener('click', undo)
+    $redoBtn.addEventListener('click', redo)
+    $pickerBtn.addEventListener('click', () => setMode(MODES.PICKER))
+    $eraseBtn.addEventListener('click', () => setMode(MODES.ERASE))
+    $lineBtn.addEventListener('click', () => setMode(MODES.LINE))
+    $rectangleBtn.addEventListener('click', () => setMode(MODES.RECTANGLE))
+    $ellipseBtn.addEventListener('click', () => setMode(MODES.ELLIPSE))
+    $drawBtn.addEventListener('click', () => setMode(MODES.DRAW))
+    $saveBtn.addEventListener('click', () => setMode(MODES.SAVE))
+
+    // HISTORIAL: Guardar estado
+    function saveState() {
+      // Si hacemos una acción nueva, borramos el "futuro" (redo)
+      if (historyIndex < history.length - 1) {
+        history = history.slice(0, historyIndex + 1);
+      }
+      history.push(ctx.getImageData(0, 0, $canvas.width, $canvas.height));
+      historyIndex++;
+    }
+
+    // HISTORIAL: Deshacer
+    function undo() {
+      if (historyIndex > 0) {
+        historyIndex--;
+        ctx.putImageData(history[historyIndex], 0, 0);
+      }
+    }
+
+    // HISTORIAL: Rehacer
+    function redo() {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        ctx.putImageData(history[historyIndex], 0, 0);
+      }
+    }
+
+    // MÉTODOS DE DIBUJO
+    function startDrawing(event) {
+      isDrawing = true
+      const { offsetX, offsetY } = event;
+      [startX, startY] = [offsetX, offsetY];
+      [lastX, lastY] = [offsetX, offsetY];
+      imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+    }
+
+    function draw(event) {
+      if (!isDrawing) return
+      const { offsetX, offsetY } = event
+
+      if (mode === MODES.DRAW || mode === MODES.ERASE) {
+        ctx.beginPath()
+        ctx.moveTo(lastX, lastY)
+        ctx.lineTo(offsetX, offsetY)
+        ctx.stroke();
+        [lastX, lastY] = [offsetX, offsetY]
+        return
+      }
+
+      if (mode === MODES.LINE) {
+        ctx.putImageData(imageData, 0, 0);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(offsetX, offsetY);
+        ctx.stroke();
+        return;
+      }
+
+      if (mode === MODES.RECTANGLE) {
+        ctx.putImageData(imageData, 0, 0);
+        let width = offsetX - startX
+        let height = offsetY - startY
+
+        if (isShiftPressed) {
+          const sideLength = Math.min(Math.abs(width), Math.abs(height))
+          width = width > 0 ? sideLength : -sideLength
+          height = height > 0 ? sideLength : -sideLength
+        }
+
+        ctx.beginPath()
+        ctx.rect(startX, startY, width, height)
+        ctx.stroke()
+        return
+      }
+
+      if (mode === MODES.ELLIPSE) {
+        ctx.putImageData(imageData, 0, 0);
+        let width = offsetX - startX;
+        let height = offsetY - startY;
+
+        ctx.beginPath();
+        if (isShiftPressed) {
+          const radius = Math.min(Math.abs(width), Math.abs(height)) / 2;
+          const centerX = startX + (width > 0 ? radius : -radius);
+          const centerY = startY + (height > 0 ? radius : -radius);
+          ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        } else {
+          const radiusX = Math.abs(width) / 2;
+          const radiusY = Math.abs(height) / 2;
+          const centerX = startX + width / 2;
+          const centerY = startY + height / 2;
+          ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
+        }
+        ctx.stroke();
+        return;
+      }
+    }
+
+    function stopDrawing() {
+      if (isDrawing) {
+        isDrawing = false
+        saveState() // Guardamos en el historial al levantar el clic
+      }
+    }
+
+    function handleChangeColor() {
+      ctx.strokeStyle = $colorPicker.value
+    }
+
+    function handleLineWidth() {
+      const size = $lineWidth.value;
+      ctx.lineWidth = size;
+      $sizeLabel.innerText = `${size}px`;
+    }
+
+    function clearCanvas(saveToHistory = true) {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+      if (saveToHistory) saveState();
+    }
+
+    async function setMode(newMode) {
+      let previousMode = mode
+      mode = newMode
+      $('button.active')?.classList.remove('active')
+
+      // Reseteamos el modo de composición siempre que cambiamos de herramienta
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineWidth = $lineWidth.value;
+
+      if (mode === MODES.DRAW) {
+        $drawBtn.classList.add('active')
+        return
+      }
+      if (mode === MODES.LINE) {
+        $lineBtn.classList.add('active')
+        return
+      }
+      if (mode === MODES.RECTANGLE) {
+        $rectangleBtn.classList.add('active')
+        return
+      }
+      if (mode === MODES.ELLIPSE) {
+        $ellipseBtn.classList.add('active')
+        return
+      }
+
+      if (mode === MODES.ERASE) {
+        $eraseBtn.classList.add('active')
+        ctx.globalCompositeOperation = 'destination-out' // El modo de borrar real en canvas
+        return
+      }
+
+      if (mode === MODES.PICKER) {
+        $pickerBtn.classList.add('active')
+        const eyeDropper = new window.EyeDropper()
+        try {
+          const result = await eyeDropper.open()
+          ctx.strokeStyle = result.sRGBHex
+          $colorPicker.value = result.sRGBHex
+          setMode(previousMode)
+        } catch (e) {}
+        return
+      }
+
+      if (mode === MODES.SAVE) {
+        // Fondo blanco garantizado al exportar
+        ctx.globalCompositeOperation='destination-over';
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+
+        const link = document.createElement('a');
+        link.href = $canvas.toDataURL()
+        link.download = 'my-paint-studio.png';
+        link.click()
+
+        // Volver a la normalidad
+        ctx.globalCompositeOperation = 'source-over';
+        setMode(previousMode)
+        return
+      }
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'Shift') isShiftPressed = true
+      // Atajos de teclado para Undo/Redo
+      if (e.ctrlKey && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+      if (e.ctrlKey && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+    }
+
+    function handleKeyUp({ key }) {
+      if (key === 'Shift') isShiftPressed = false
+    }
+
+    // INIT DE ESTILOS
+    ctx.strokeStyle = '#00A889';
+    ctx.lineWidth = 3;
+
+    if (typeof window.EyeDropper !== 'undefined') {
+      $pickerBtn.removeAttribute('disabled')
+    }
+  </script>
+</body>
+</html>
