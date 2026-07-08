@@ -7,9 +7,9 @@ const projects = [
   { id: "02", year: "2024", title: "SERVICIOS GENERALES", category: "Fullstack", video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://roi-servicios.vercel.app/" },
   { id: "03", year: "2024", title: "FUXION OPORTUNIDAD", category: "Landing Page", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/" },
   { id: "04", year: "2023", title: "TRANSPORTES PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/" },
-  { id: "05", year: "2023", title: "GRUPO HIRBELL", category: "Corporate", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/" },
-  { id: "06", year: "2025", title: "TETRIS ARCADE", category: "JavaScript / HTML", img: "/img/Tetris.webp", link: "/tetris/index.html" },
-  { id: "07", year: "2025", title: "PAINT", category: "JavaScript / HTML", img: "/img/Paint.webp", link: "/paint/index.html" }
+  { id: "05", year: "2024", title: "GRUPO HIRBELL", category: "Corporate", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/" },
+  { id: "06", year: "2023", title: "TETRIS ARCADE", category: "JavaScript / HTML", img: "/img/Tetris.webp", link: "/tetris/index.html" },
+  { id: "07", year: "2022", title: "PAINT", category: "JavaScript / HTML", img: "/img/Paint.webp", link: "/paint/index.html" }
 ];
 
 const Archive = ({ lang }) => {
