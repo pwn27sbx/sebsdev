@@ -245,11 +245,18 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
       {expertises.map((exp, index) => (
         <div
           key={`bg-${index}`}
-          className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 ease-out transform grayscale ${
+          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-out transform grayscale ${
             hoveredIndex === index ? 'opacity-[0.03] dark:opacity-[0.05] scale-105 blur-xl' : 'opacity-0 scale-100 blur-none'
           }`}
-          style={{ backgroundImage: `url(${exp.image})` }}
         >
+          {/* Implementación de carga diferida (lazy loading) con object-cover */}
+          <img
+            src={exp.image}
+            alt={exp.title}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-[#f5f5f5]/95 dark:bg-[#0a0a0a]/95 transition-opacity duration-700" />
         </div>
       ))}
@@ -269,7 +276,7 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 {exp.id}
               </span>
 
-              {/* SOLUCIÓN CAPTURA 2 (VISTA MÓVIL): Se muestra el título y el texto deslizante apilados sin depender de "hover" */}
+              {/* VISTA MÓVIL: Se muestra el título y el texto deslizante apilados */}
               <div className="flex sm:hidden flex-col w-full gap-2 mt-2">
                 <h2 className="font-anton text-4xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee]">
                   {exp.title}
@@ -279,7 +286,7 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 </div>
               </div>
 
-              {/* VISTA ESCRITORIO: Animación original con posicionamiento absoluto al hacer hover */}
+              {/* VISTA ESCRITORIO: Animación con posicionamiento absoluto al hacer hover */}
               <div className="hidden sm:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full">
                 <h2 className={`absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ${
                   hoveredIndex === index
@@ -406,7 +413,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       title: "Nexus",
       category: "Frontend",
       height: 350,
-      img: "/img/Nexus.png",
+      img: "/img/Nexus.webp",
       link: "https://nexus-drab-one.vercel.app/"
     },
     {
@@ -414,7 +421,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       title: "Servicios Generales",
       category: "Fullstack",
       height: 450,
-      img: "/img/Servicios.png",
+      img: "/img/Servicios.webp",
       link: "https://roi-servicios.vercel.app/"
     },
     {
@@ -422,7 +429,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       title: "Fuxion Oportunidad",
       category: "Landing Page",
       height: 250,
-      img: "/img/Fuxion.png",
+      img: "/img/Fuxion.webp",
       link: "https://fuxionoportunidad.vercel.app/"
     },
     {
@@ -430,7 +437,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       title: "Transportes Premium",
       category: "UI/UX",
       height: 400,
-      img: "/img/TransPremium.png",
+      img: "/img/TransPremium.webp",
       link: "https://trasnportesjuan.vercel.app/"
     },
     {
@@ -438,7 +445,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       title: "Grupo Hirbell",
       category: "Corporate",
       height: 300,
-      img: "/img/Hirbell.png",
+      img: "/img/Hirbell.webp",
       link: "https://grupohirbell.vercel.app/"
     }
   ];
