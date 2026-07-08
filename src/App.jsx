@@ -312,6 +312,15 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 const InteractiveBanner = ({ setIsHovering, lang }) => {
   const [focusedBand, setFocusedBand] = useState('front');
 
+  // 1. Leemos el scroll exacto de la ventana
+  const { scrollY } = useScroll();
+
+  // 2. Mapeamos el scroll a píxeles de desplazamiento (Transformación)
+  // Cuando scrolleamos de 0 a 5000px, la banda verde se empuja 1500px extra a la izquierda
+  const xFront = useTransform(scrollY, [0, 5000], [0, -1500]);
+  // La banda negra se empuja 1500px extra a la derecha
+  const xBack = useTransform(scrollY, [0, 5000], [0, 1500]);
+
   const CustomArrow = () => (
     <span className="flex items-center justify-center mx-4 sm:mx-8 shrink-0">
       <svg
@@ -357,26 +366,34 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
         setFocusedBand('front');
       }}
     >
+      {/* BANDA TRASERA (NEGRA) */}
       <div
         onMouseEnter={() => setFocusedBand('back')}
         className={`absolute w-[130%] bg-[#111] text-white py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${
           focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90'
         }`}
       >
-        <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
-          {[...Array(15)].map((_, i) => <TextBlockBack key={`back-${i}`} />)}
-        </div>
+        {/* 3. Envolvemos la marquesina en motion.div aplicando el movimiento de scroll extra (xBack) */}
+        <motion.div style={{ x: xBack, width: "max-content" }} className="flex">
+          <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
+            {[...Array(15)].map((_, i) => <TextBlockBack key={`back-${i}`} />)}
+          </div>
+        </motion.div>
       </div>
 
+      {/* BANDA DELANTERA (VERDE JADE) */}
       <div
         onMouseEnter={() => setFocusedBand('front')}
         className={`absolute w-[130%] bg-[#00A889] text-white py-4 sm:py-8 md:py-10 transform -rotate-[6deg] transition-all duration-700 ease-out z-[50] pointer-events-auto shadow-none ${
           focusedBand === 'back' ? 'blur-[5px]' : 'blur-0 opacity-100'
         }`}
       >
-        <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
-          {[...Array(15)].map((_, i) => <TextBlockFront key={`front-${i}`} />)}
-        </div>
+        {/* 3. Envolvemos la marquesina en motion.div aplicando el movimiento de scroll extra (xFront) */}
+        <motion.div style={{ x: xFront, width: "max-content" }} className="flex">
+          <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
+            {[...Array(15)].map((_, i) => <TextBlockFront key={`front-${i}`} />)}
+          </div>
+        </motion.div>
       </div>
     </div>
   );
@@ -662,6 +679,7 @@ export default function Portfolio() {
                     <div className="-mt-32 sm:-mt-48 relative z-30">
                     <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
                     </div>
+                    <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
                     <ProjectsGallery setIsHovering={setIsHovering} />
                 <Footer setIsHovering={setIsHovering} lang={lang} />
                 </div>
