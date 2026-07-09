@@ -60,6 +60,15 @@ const globalStyles = `
       animation-play-state: paused !important;
     }
   }
+
+  /* Clase para rellenar texto de abajo hacia arriba */
+  .hover-fill-text {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .group:hover .hover-fill-text {
+    clip-path: inset(0 0 0 0);
+  }
 `;
 
 const CustomCursor = ({ isHovering }) => {
@@ -323,31 +332,28 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
+
+// Palabra interactiva del fondo
+const HoverFillWord = ({ text, setIsHovering }) => (
+  <span
+    className="relative inline-block group pointer-events-auto cursor-none"
+    onMouseEnter={() => setIsHovering(true)}
+    onMouseLeave={() => setIsHovering(false)}
+  >
+    <span className="text-[#e5e5e5] dark:text-[#131313] block">
+      {text}
+    </span>
+    <span className="absolute top-0 left-0 text-[#00A889] hover-fill-text block pointer-events-none">
+      {text}
+    </span>
+  </span>
+);
+
+
 // ==========================================
-// GALERÍA MAESTRA: LA TRANSFORMACIÓN MORFOLÓGICA CORREGIDA
+// GALERÍA: STICKY BACKGROUND TEXT + FLOATING STAGGERED CARDS (CORREGIDA)
 // ==========================================
 const ProjectsGallery = ({ setIsHovering, lang }) => {
-  const sectionRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 85%", "start 25%"]
-  });
-
-  // ANIMACIONES DEL TÍTULO MASIVO (Ahora la escala empieza en 1.3 ya que el base es enorme: 8vw)
-  const titleScale = useTransform(scrollYProgress, [0, 1], [1.3, 1]);
-  // Baja a 0vw para centrarse a la izquierda perfectamente
-  const titleX = useTransform(scrollYProgress, [0, 1], ["10vw", "0vw"]);
-  const titleY = useTransform(scrollYProgress, [0, 1], ["-10vh", "0vh"]);
-
-  // ANIMACIONES DEL PÁRRAFO (Empieza SÚPER lejos (45vw) para que no choque con el texto gigante)
-  const descX = useTransform(scrollYProgress, [0, 1], ["45vw", "0vw"]);
-  const descY = useTransform(scrollYProgress, [0, 1], ["-10vh", "0vh"]);
-
-  // ANIMACIONES DE LAS CARTAS (Entrada desde la derecha)
-  const cardsX = useTransform(scrollYProgress, [0, 1], [300, 0]);
-  const cardsOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
   const projects = [
     {
       id: "01",
@@ -386,117 +392,117 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     }
   ];
 
+  // Función de alineación orgánica con márgenes fuertemente variados para evitar posiciones repetidas
+  const getCardAlignment = (index) => {
+    switch (index) {
+      case 0: return 'lg:self-start lg:ml-0';          // Totalmente a la izquierda
+      case 1: return 'lg:self-end lg:mr-[5%]';         // Casi totalmente a la derecha
+      case 2: return 'lg:self-start lg:ml-[25%]';      // Izquierda, pero empujado hacia el centro
+      case 3: return 'lg:self-end lg:mr-[20%]';        // Derecha, pero empujado hacia el centro
+      case 4: return 'lg:self-center lg:ml-0 lg:mr-0'; // Perfectamente centrado
+      default: return index % 2 === 0 ? 'lg:self-start' : 'lg:self-end';
+    }
+  };
+
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 py-24 sm:py-32 px-4 sm:px-8 lg:px-12 z-20 overflow-x-clip">
-      <div className="max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col lg:flex-row items-start relative gap-8 lg:gap-16">
+    <section className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-32 pt-24">
 
-        {/* LADO IZQUIERDO: Aumentamos a w-[45%] para darle MUCHO más espacio al texto de 8vw */}
-        <div className="w-full lg:w-[45%] lg:sticky lg:top-[30vh] mb-12 lg:mb-0 z-10 pt-4">
+      {/* BACKGROUND STICKY TEXT (La marca de agua gigante interactiva) */}
+      {/* El z-0 permite que las tarjetas floten por encima, pero sigue capturando el ratón si no hay nada encima */}
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden px-4 pointer-events-none">
+        <h2 className="font-anton text-[24vw] sm:text-[20vw] leading-[0.85] text-center uppercase tracking-tighter pointer-events-auto">
+          <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
+          <br />
+          <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
+        </h2>
+      </div>
 
+      {/* FOREGROUND CARDS (Flotando por encima) */}
+      {/* IMPORTANTE: Añadimos pointer-events-none a este contenedor gigante invisible para que deje atravesar el puntero al texto de fondo */}
+      <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
+        {projects.map((project, index) => (
           <motion.div
-            style={{ scale: titleScale, x: titleX, y: titleY }}
-            className="origin-top-left flex flex-col"
+            key={project.id}
+            initial={{ opacity: 0, y: 120 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            // IMPORTANTE: Le devolvemos pointer-events-auto exclusivamente a cada tarjeta
+            className={`w-full sm:w-[80%] lg:w-[55%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
           >
-            {/* Texto aumentado de lg:text-[6vw] a lg:text-[8vw] */}
-            <h2 className="font-anton text-7xl sm:text-[9vw] lg:text-[8vw] leading-[0.85] uppercase tracking-tighter text-[#111] dark:text-white mb-6">
-              {lang === 'es' ? 'TRABAJOS' : 'SELECTED'} <br />
-              <span className="text-[#00A889]">{lang === 'es' ? 'DESTACADOS' : 'WORKS'}</span>
-            </h2>
-          </motion.div>
-
-          <motion.div
-            style={{ x: descX, y: descY }}
-            className="hidden lg:block w-3/4"
-          >
-            <p className="text-gray-500 dark:text-gray-400 font-light text-sm sm:text-base">
-              {lang === 'es'
-                ? 'Una selección de mis proyectos más recientes. Explora el detalle y la construcción de cada interfaz.'
-                : 'A selection of my latest projects. Explore the detail and construction of each interface.'}
-            </p>
-          </motion.div>
-
-          {/* Párrafo estándar para móviles */}
-          <div className="block lg:hidden mt-4">
-            <p className="text-gray-500 dark:text-gray-400 font-light max-w-sm text-sm sm:text-base">
-              {lang === 'es'
-                ? 'Una selección de mis proyectos más recientes. Explora el detalle y la construcción de cada interfaz.'
-                : 'A selection of my latest projects. Explore the detail and construction of each interface.'}
-            </p>
-          </div>
-        </div>
-
-        {/* LADO DERECHO: CARTAS APILADAS CON ENTRADA ANIMADA (Ocupa el 55% restante) */}
-        <div className="w-full lg:w-[55%] relative flex flex-col gap-12 sm:gap-0 pb-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              style={{
-                top: `calc(15vh + ${index * 35}px)`,
-                zIndex: index + 1,
-                x: cardsX,
-                opacity: cardsOpacity
-              }}
-              className="sticky w-full h-[60vh]"
-            >
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                className="group block w-full h-full rounded-2xl overflow-hidden shadow-2xl flex flex-col sm:flex-row bg-[#0f0f0f] border border-[#222] cursor-none transform transition-transform duration-500 hover:-translate-y-2 hover:border-[#00A889]/50"
-              >
-                {/* Bloque Texto */}
-                <div className="w-full sm:w-2/5 p-8 sm:p-12 flex flex-col justify-center relative bg-[#0f0f0f] z-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/30 px-3 py-1 rounded-full">{project.id}</span>
-                    <span className="text-gray-400 text-xs tracking-widest uppercase">{project.category}</span>
-                  </div>
-                  <h3 className="font-anton text-5xl sm:text-6xl text-white uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-300">{project.title}</h3>
-                </div>
-
-                {/* Bloque Imagen */}
-                <div className="w-full sm:w-3/5 h-full relative overflow-hidden bg-[#111]">
-                  <img src={project.img} alt={project.title} className="w-full h-full object-cover object-top opacity-60 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-transparent to-transparent opacity-100 sm:opacity-80"></div>
-                </div>
-              </a>
-            </motion.div>
-          ))}
-
-          {/* Tarjeta Final */}
-          <motion.div
-            style={{
-              top: `calc(15vh + ${projects.length * 35}px)`,
-              zIndex: projects.length + 1,
-              x: cardsX,
-              opacity: cardsOpacity
-            }}
-            className="sticky w-full h-[60vh] mt-12 sm:mt-0"
-          >
-            <Link
-              to="/proyectos"
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
-              className="group block w-full h-full rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-transform duration-500 bg-[#00A889] border border-[#00A889] hover:-translate-y-2"
+              className="group flex flex-col gap-6 cursor-none"
             >
-              <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 text-center px-4">
-                <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-4 transition-transform duration-700 ease-out leading-[0.85]">
-                  {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
-                  <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">{lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}</span>
-                </h3>
-                <div className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center bg-white/10 backdrop-blur-sm transition-all duration-700 group-hover:bg-white text-white group-hover:text-[#00A889]">
-                  <svg className="w-6 h-6 transform group-hover:rotate-45 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              {/* Contenedor de la Imagen */}
+              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#111] shadow-2xl">
+                <img
+                  src={project.img}
+                  alt={project.title}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+              </div>
+
+              {/* Detalles del Proyecto */}
+              <div className="flex justify-between items-start px-2">
+                <div className="flex flex-col">
+                  <h3 className="font-anton text-4xl sm:text-5xl text-[#111] dark:text-white uppercase transition-colors duration-300 group-hover:text-[#00A889]">
+                    {project.title}
+                  </h3>
+                  <div className="flex gap-3 mt-2">
+                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
+                      {project.id}
+                    </span>
+                    <span className="text-gray-500 text-xs tracking-widest uppercase py-1">
+                      {project.category}
+                    </span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 rounded-full border border-gray-300 dark:border-[#333] flex items-center justify-center transition-all duration-500 group-hover:bg-[#00A889] group-hover:border-[#00A889] text-[#111] dark:text-white group-hover:text-white">
+                  <svg className="w-5 h-5 transform group-hover:rotate-45 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </div>
               </div>
-            </Link>
+            </a>
           </motion.div>
-        </div>
+        ))}
 
+        {/* TARJETA FINAL: VER ARCHIVO COMPLETO */}
+        <motion.div
+          initial={{ opacity: 0, y: 120 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-32 pointer-events-auto"
+        >
+          <Link
+            to="/proyectos"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className="group block w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-transform duration-500 bg-[#00A889] hover:-translate-y-4"
+          >
+            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 text-center px-4">
+              <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-4 transition-transform duration-700 ease-out leading-[0.85]">
+                {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
+                <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
+                  {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
+                </span>
+              </h3>
+              <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 group-hover:bg-white text-white group-hover:text-[#00A889]">
+                <svg className="w-6 h-6 transform group-hover:rotate-45 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </div>
+            </div>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
 };
+
 
 const Footer = ({ setIsHovering, lang }) => {
   const marqueeText = lang === 'es' ? "¿EMPEZAMOS ALGO? HABLEMOS" : "BE STARTING SOMETHING? LET'S TALK";
