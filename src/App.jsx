@@ -61,13 +61,16 @@ const globalStyles = `
     }
   }
 
-  /* Clase para rellenar texto de abajo hacia arriba */
+  /* * SOLUCIÓN DEL TINTADO FANTASMA:
+   * El inset al 150% asegura que la capa verde baje MUCHO más allá de la caja base,
+   * ocultando por completo las letras que desbordan por el leading apretado.
+   */
   .hover-fill-text {
-    clip-path: inset(100% 0 0 0);
+    clip-path: inset(150% -10% -10% -10%);
     transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .group:hover .hover-fill-text {
-    clip-path: inset(0 0 0 0);
+    clip-path: inset(-20% -10% -10% -10%);
   }
 `;
 
@@ -333,10 +336,10 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
 };
 
 
-// Palabra interactiva del fondo
+// COMPONENTE: Palabra interactiva del fondo
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
-    className="relative inline-block group pointer-events-auto cursor-none"
+    className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
     onMouseEnter={() => setIsHovering(true)}
     onMouseLeave={() => setIsHovering(false)}
   >
@@ -351,84 +354,77 @@ const HoverFillWord = ({ text, setIsHovering }) => (
 
 
 // ==========================================
-// GALERÍA: STICKY BACKGROUND TEXT + FLOATING STAGGERED CARDS (CORREGIDA)
+// GALERÍA MAESTRA
 // ==========================================
 const ProjectsGallery = ({ setIsHovering, lang }) => {
+  const sectionRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // ANIMACIONES DE SCROLL OPUESTO (AHORA NACEN MÁS LEJOS Y SE MUEVEN MÁS RÁPIDO)
+  // Selected va de derecha (100vw) a izquierda (-100vw)
+  const xSelected = useTransform(scrollYProgress, [0, 1], ["100vw", "-100vw"]);
+  // Works va de izquierda (-100vw) a derecha (100vw)
+  const xWorks = useTransform(scrollYProgress, [0, 1], ["-100vw", "100vw"]);
+
   const projects = [
-    {
-      id: "01",
-      title: "NEXUS",
-      category: "FRONTEND",
-      img: "/img/Nexus.webp",
-      link: "https://nexus-drab-one.vercel.app/"
-    },
-    {
-      id: "02",
-      title: "SERVICIOS GENERALES",
-      category: "FULLSTACK",
-      img: "/img/Servicios.webp",
-      link: "https://roi-servicios.vercel.app/"
-    },
-    {
-      id: "03",
-      title: "FUXION OPORTUNIDAD",
-      category: "LANDING PAGE",
-      img: "/img/Fuxion.webp",
-      link: "https://fuxionoportunidad.vercel.app/"
-    },
-    {
-      id: "04",
-      title: "TRANSPORTES PREMIUM",
-      category: "UI/UX",
-      img: "/img/TransPremium.webp",
-      link: "https://trasnportesjuan.vercel.app/"
-    },
-    {
-      id: "05",
-      title: "GRUPO HIRBELL",
-      category: "CORPORATE",
-      img: "/img/Hirbell.webp",
-      link: "https://grupohirbell.vercel.app/"
-    }
+    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/" },
+    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/" },
+    { id: "03", title: "FUXION OPORTUNIDAD", category: "LANDING PAGE", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/" },
+    { id: "04", title: "TRANSPORTES PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/" },
+    { id: "05", title: "GRUPO HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/" }
   ];
 
-  // Función de alineación orgánica con márgenes fuertemente variados para evitar posiciones repetidas
+  // LÓGICA DE ALINEACIÓN ASIMÉTRICA PERFECTA
   const getCardAlignment = (index) => {
-    switch (index) {
-      case 0: return 'lg:self-start lg:ml-0';          // Totalmente a la izquierda
-      case 1: return 'lg:self-end lg:mr-[5%]';         // Casi totalmente a la derecha
-      case 2: return 'lg:self-start lg:ml-[25%]';      // Izquierda, pero empujado hacia el centro
-      case 3: return 'lg:self-end lg:mr-[20%]';        // Derecha, pero empujado hacia el centro
-      case 4: return 'lg:self-center lg:ml-0 lg:mr-0'; // Perfectamente centrado
-      default: return index % 2 === 0 ? 'lg:self-start' : 'lg:self-end';
-    }
+    const alignments = [
+      'lg:ml-[5%] lg:mr-auto',   // 1. Cargado a la izquierda
+      'lg:mr-[10%] lg:ml-auto',  // 2. Cargado a la derecha
+      'lg:mx-auto',              // 3. Centro perfecto
+      'lg:ml-[15%] lg:mr-auto',  // 4. Izquierda moderada
+      'lg:mr-[5%] lg:ml-auto'    // 5. Extrema derecha
+    ];
+    return alignments[index % alignments.length];
   };
 
   return (
-    <section className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-32 pt-24">
+    // Redujimos el pt (padding-top) a 8 para eliminar el espacio vacío de arriba
+    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-32 pt-8 overflow-x-clip">
 
-      {/* BACKGROUND STICKY TEXT (La marca de agua gigante interactiva) */}
-      {/* El z-0 permite que las tarjetas floten por encima, pero sigue capturando el ratón si no hay nada encima */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden px-4 pointer-events-none">
-        <h2 className="font-anton text-[24vw] sm:text-[20vw] leading-[0.85] text-center uppercase tracking-tighter pointer-events-auto">
-          <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
-          <br />
-          <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
-        </h2>
+      {/* BACKGROUND STICKY TEXT */}
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
+
+        {/* Fila 1: SELECTED */}
+        <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
+          {/* Tamaño bestial aumentado a text-[28vw] */}
+          <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+            <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
+          </h2>
+        </motion.div>
+
+        {/* Fila 2: WORKS */}
+        <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
+          {/* Tamaño bestial aumentado a text-[28vw] */}
+          <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+            <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
+          </h2>
+        </motion.div>
+
       </div>
 
-      {/* FOREGROUND CARDS (Flotando por encima) */}
-      {/* IMPORTANTE: Añadimos pointer-events-none a este contenedor gigante invisible para que deje atravesar el puntero al texto de fondo */}
+      {/* FOREGROUND CARDS (CASCADA ORGÁNICA) */}
       <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
         {projects.map((project, index) => (
           <motion.div
             key={project.id}
-            initial={{ opacity: 0, y: 120 }}
+            initial={{ opacity: 0, y: 150 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            // IMPORTANTE: Le devolvemos pointer-events-auto exclusivamente a cada tarjeta
-            className={`w-full sm:w-[80%] lg:w-[55%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className={`w-full sm:w-[80%] lg:w-[50%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
           >
             <a
               href={project.link}
@@ -438,7 +434,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
               onMouseLeave={() => setIsHovering(false)}
               className="group flex flex-col gap-6 cursor-none"
             >
-              {/* Contenedor de la Imagen */}
               <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#111] shadow-2xl">
                 <img
                   src={project.img}
@@ -448,7 +443,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
               </div>
 
-              {/* Detalles del Proyecto */}
               <div className="flex justify-between items-start px-2">
                 <div className="flex flex-col">
                   <h3 className="font-anton text-4xl sm:text-5xl text-[#111] dark:text-white uppercase transition-colors duration-300 group-hover:text-[#00A889]">
@@ -471,9 +465,11 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           </motion.div>
         ))}
 
-        {/* TARJETA FINAL: VER ARCHIVO COMPLETO */}
+        {/* ========================================== */}
+        {/* TARJETA FINAL (VIEW ALL) CON HOVER EXTREMO */}
+        {/* ========================================== */}
         <motion.div
-          initial={{ opacity: 0, y: 120 }}
+          initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -483,17 +479,26 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
             to="/proyectos"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="group block w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-transform duration-500 bg-[#00A889] hover:-translate-y-4"
+            /* * ANIMACIÓN SUPERIOR:
+             * hover:-translate-y-8 (Gran elevación)
+             * hover:scale-[1.03] (Aumento general)
+             * hover:shadow-[0_0_100px_...] (Resplandor neón majestuoso)
+             */
+            className="group relative w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] border border-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
           >
-            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 text-center px-4">
-              <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-4 transition-transform duration-700 ease-out leading-[0.85]">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+            <div className="relative z-10 flex flex-col items-center gap-8 text-center px-4">
+              <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-6 group-hover:scale-110 transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
                 {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
                 <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
                   {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
                 </span>
               </h3>
-              <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 group-hover:bg-white text-white group-hover:text-[#00A889]">
-                <svg className="w-6 h-6 transform group-hover:rotate-45 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+
+              {/* Botón hace un Scale enorme y un giro de 360 grados */}
+              <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </div>
             </div>
           </Link>
@@ -502,7 +507,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     </section>
   );
 };
-
 
 const Footer = ({ setIsHovering, lang }) => {
   const marqueeText = lang === 'es' ? "¿EMPEZAMOS ALGO? HABLEMOS" : "BE STARTING SOMETHING? LET'S TALK";
