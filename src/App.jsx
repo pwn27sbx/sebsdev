@@ -246,23 +246,26 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
           >
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-12 w-full">
+            {/* Cambiamos sm por lg para que las tablets (iPad) se comporten como móvil en esta sección */}
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full">
               <span className={`font-mono text-sm md:text-base transition-colors duration-500 shrink-0 ${
                 hoveredIndex === index ? 'text-[#00A889]' : 'text-gray-400 dark:text-gray-600'
               }`}>
                 {exp.id}
               </span>
 
-              <div className="flex sm:hidden flex-col w-full gap-2 mt-2">
-                <h2 className="font-anton text-4xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee]">
+              {/* VERSIÓN MÓVIL Y TABLET (Sin hover, todo visible) */}
+              <div className="flex lg:hidden flex-col w-full gap-2 mt-4">
+                <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee]">
                   {exp.title}
                 </h2>
-                <div className="flex whitespace-nowrap font-anton text-2xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee" style={{ width: "max-content" }}>
+                <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee" style={{ width: "max-content" }}>
                   <span className="shrink-0 pr-4">{exp.marquee.repeat(2)}</span>
                 </div>
               </div>
 
-              <div className="hidden sm:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full">
+              {/* VERSIÓN ESCRITORIO (PC) (Con hover animado) */}
+              <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full">
                 <h2 className={`absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ${
                   hoveredIndex === index
                     ? '-translate-y-[120%] opacity-0'
@@ -343,7 +346,6 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
-// COMPONENTE PC: Palabra interactiva del fondo con Hover
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
     className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
@@ -359,7 +361,6 @@ const HoverFillWord = ({ text, setIsHovering }) => (
   </span>
 );
 
-// COMPONENTE MÓVIL: Palabra con Ola constante (sin necesidad de hover)
 const WaveFillWord = ({ text, delay = '0s' }) => (
   <span className="relative inline-flex whitespace-nowrap">
     <span className="text-[#e5e5e5] dark:text-[#131313] block">
@@ -382,12 +383,11 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     offset: ["start end", "end start"]
   });
 
-  // Animaciones de Scroll para PC y MÓVIL (nacen de los bordes y cruzan)
   const xSelected = useTransform(scrollYProgress, [0, 1], ["100vw", "-100vw"]);
   const xWorks = useTransform(scrollYProgress, [0, 1], ["-100vw", "100vw"]);
 
   const projects = [
-    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", link: "https://nexus4all.vercel.app/" },
+    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/" },
     { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/" },
     { id: "03", title: "FUXION OPORTUNIDAD", category: "LANDING PAGE", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/" },
     { id: "04", title: "TRANSPORTES PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/" },
@@ -396,11 +396,11 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
   const getCardAlignment = (index) => {
     const alignments = [
-      'lg:ml-[-5%] lg:mr-auto',   // Posición 1
-      'lg:mr-[-15%] lg:ml-auto',  // Posición 2
-      'lg:mr-[8%] lg:ml-auto',    // Posición 3
-      'lg:ml-[-5%] lg:mr-auto',   // Posición 4
-      'lg:mr-[-3%] lg:ml-auto'    // Posición 5
+      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 1
+      'lg:mr-[-15%] lg:ml-auto',  // Posición de la Tarjeta 2
+      'lg:mr-[8%] lg:ml-auto',    // Posición de la Tarjeta 3
+      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 4
+      'lg:mr-[-3%] lg:ml-auto'    // Posición de la Tarjeta 5
     ];
     return alignments[index % alignments.length];
   };
@@ -409,27 +409,23 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-12 pt-8 overflow-x-clip">
 
       {/* ======================================================== */}
-      {/* 1. VERSIÓN MÓVIL (block lg:hidden)                       */}
+      {/* 1. VERSIÓN MÓVIL Y TABLET (block lg:hidden)              */}
       {/* ======================================================== */}
       <div className="block lg:hidden w-full relative">
 
-        {/* TEXTO ANIMADO MÓVIL (Fijo arriba, animado en X, ola constante) */}
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start z-0 overflow-hidden pointer-events-none pt-[5vh]">
           <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-            {/* Reducido a text-[32vw] ("un poquito más pequeño") para que respire mejor en móvil */}
             <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
               <WaveFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} />
             </h2>
           </motion.div>
           <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2">
-            {/* Reducido a text-[32vw] ("un poquito más pequeño") para que respire mejor en móvil */}
             <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
               <WaveFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} delay="0.5s" />
             </h2>
           </motion.div>
         </div>
 
-        {/* CARDS APILADAS MÓVIL */}
         <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-24 pointer-events-none">
           {projects.map((project, index) => (
             <motion.div
@@ -443,12 +439,10 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                 rel="noopener noreferrer"
                 className="w-full h-full rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#c4c4c4] flex flex-col pointer-events-auto"
               >
-                {/* LADO IMAGEN EN MÓVIL: Totalmente visible, sin blur */}
                 <div className="w-full h-[50%] relative overflow-hidden bg-[#050505]">
                   <img src={project.img} alt={project.title} className="w-full h-full object-cover object-top opacity-100 scale-[1.02]" />
                 </div>
 
-                {/* LADO TEXTO EN MÓVIL */}
                 <div className="w-full h-[50%] p-6 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#c4c4c4]">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">{project.id}</span>
@@ -460,7 +454,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
             </motion.div>
           ))}
 
-          {/* TARJETA VIEW ALL (MÓVIL) */}
           <motion.div
             style={{ top: `calc(32vh + ${projects.length * 40}px)` }}
             className="sticky w-full h-[60vh] mt-8 mb-8 pointer-events-auto"
