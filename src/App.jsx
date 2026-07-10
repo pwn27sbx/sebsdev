@@ -414,17 +414,16 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       <div className="block lg:hidden w-full relative">
 
         {/* TEXTO ANIMADO MÓVIL (Fijo arriba, animado en X, ola constante) */}
-        {/* pt-[5vh] lo sube para que no lo tapen las cartas al apilarse */}
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start z-0 overflow-hidden pointer-events-none pt-[5vh]">
           <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-            {/* Texto GIGANTE para móvil */}
-            <h2 className="font-anton text-[35vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+            {/* Reducido a text-[32vw] ("un poquito más pequeño") para que respire mejor en móvil */}
+            <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
               <WaveFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} />
             </h2>
           </motion.div>
           <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2">
-            <h2 className="font-anton text-[35vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-              {/* Le damos un retraso para que la ola sea escalonada */}
+            {/* Reducido a text-[32vw] ("un poquito más pequeño") para que respire mejor en móvil */}
+            <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
               <WaveFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} delay="0.5s" />
             </h2>
           </motion.div>
@@ -435,7 +434,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           {projects.map((project, index) => (
             <motion.div
               key={`mob-${project.id}`}
-              // Empieza más abajo (32vh) para evitar tapar el texto de arriba
               style={{ top: `calc(32vh + ${index * 40}px)` }}
               className="sticky w-full h-[60vh] mb-6 pointer-events-auto"
             >
@@ -565,6 +563,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                     {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
                   </span>
                 </h3>
+
                 <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </div>
