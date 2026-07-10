@@ -332,8 +332,6 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
-
-// COMPONENTE: Palabra interactiva del fondo
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
     className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
@@ -349,10 +347,6 @@ const HoverFillWord = ({ text, setIsHovering }) => (
   </span>
 );
 
-
-// ==========================================
-// GALERÍA MAESTRA
-// ==========================================
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const sectionRef = useRef(null);
 
@@ -374,39 +368,31 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
   const getCardAlignment = (index) => {
     const alignments = [
-      'lg:ml-[5%] lg:mr-auto',   // 1. Cargado a la izquierda
-      'lg:mr-[10%] lg:ml-auto',  // 2. Cargado a la derecha
-      'lg:mx-auto',              // 3. Centro perfecto
-      'lg:ml-[15%] lg:mr-auto',  // 4. Izquierda moderada
-      'lg:mr-[5%] lg:ml-auto'    // 5. Extrema derecha
+      'lg:ml-[5%] lg:mr-auto',
+      'lg:mr-[10%] lg:ml-auto',
+      'lg:mx-auto',
+      'lg:ml-[15%] lg:mr-auto',
+      'lg:mr-[5%] lg:ml-auto'
     ];
     return alignments[index % alignments.length];
   };
 
   return (
-    // Reducido pb-32 a pb-12 para acortar el espacio muerto abajo
     <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-12 pt-8 overflow-x-clip">
 
-      {/* BACKGROUND STICKY TEXT */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
-
-        {/* Fila 1: SELECTED */}
         <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
           <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
             <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
           </h2>
         </motion.div>
-
-        {/* Fila 2: WORKS */}
         <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
           <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
             <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
           </h2>
         </motion.div>
-
       </div>
 
-      {/* FOREGROUND CARDS */}
       <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
         {projects.map((project, index) => (
           <motion.div
@@ -415,7 +401,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full sm:w-[80%] lg:w-[50%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
+            className={`w-full sm:w-[90%] lg:w-[65%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
           >
             <a
               href={project.link}
@@ -423,55 +409,50 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
               rel="noopener noreferrer"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
-              className="group flex flex-col gap-6 cursor-none"
+              /* ELIMINADAS SOMBRAS Y BORDES. REDUCIDO A rounded-md. Fondo dark a un gris sutil anti-fatiga (#e5e5e5) */
+              className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto"
             >
-              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#111] shadow-2xl">
+              {/* LADO IZQUIERDO: Fondo dark adaptado a #e5e5e5 */}
+              <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
+                    {project.id}
+                  </span>
+                  <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">
+                    {project.category}
+                  </span>
+                </div>
+                <h3 className="font-anton text-4xl sm:text-4xl md:text-5xl xl:text-6xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-words pr-2">
+                  {project.title}
+                </h3>
+              </div>
+
+              {/* LADO DERECHO: Degradado adaptado a #e5e5e5 en oscuro */}
+              <div className="w-full sm:w-[55%] h-full relative overflow-hidden bg-[#050505]">
                 <img
                   src={project.img}
                   alt={project.title}
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105"
+                  className="w-full h-full object-cover object-top opacity-70 blur-sm group-hover:blur-none group-hover:opacity-100 transition-all duration-700 scale-[1.02] group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
-              </div>
-
-              <div className="flex justify-between items-start px-2">
-                <div className="flex flex-col">
-                  <h3 className="font-anton text-4xl sm:text-5xl text-[#111] dark:text-white uppercase transition-colors duration-300 group-hover:text-[#00A889]">
-                    {project.title}
-                  </h3>
-                  <div className="flex gap-3 mt-2">
-                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
-                      {project.id}
-                    </span>
-                    <span className="text-gray-500 text-xs tracking-widest uppercase py-1">
-                      {project.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="w-12 h-12 rounded-full border border-gray-300 dark:border-[#333] flex items-center justify-center transition-all duration-500 group-hover:bg-[#00A889] group-hover:border-[#00A889] text-[#111] dark:text-white group-hover:text-white">
-                  <svg className="w-5 h-5 transform group-hover:rotate-45 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] dark:from-[#e5e5e5] via-transparent to-transparent opacity-100 sm:opacity-80"></div>
               </div>
             </a>
           </motion.div>
         ))}
 
-        {/* ========================================== */}
-        {/* TARJETA FINAL (VIEW ALL) */}
-        {/* ========================================== */}
+        {/* TARJETA FINAL (VIEW ALL) - Reducida a rounded-md para mantener la simetría */}
         <motion.div
           initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          // Reducido mb-32 a mb-8 para acortar el espacio con el footer
           className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-8 pointer-events-auto"
         >
           <Link
             to="/proyectos"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="group relative w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] border border-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
+            className="group relative w-full aspect-[2/1] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
 
