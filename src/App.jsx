@@ -368,11 +368,11 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
   const getCardAlignment = (index) => {
     const alignments = [
-      'lg:ml-[5%] lg:mr-auto',
-      'lg:mr-[10%] lg:ml-auto',
-      'lg:mx-auto',
-      'lg:ml-[15%] lg:mr-auto',
-      'lg:mr-[5%] lg:ml-auto'
+      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 1
+      'lg:mr-[-15%] lg:ml-auto',  // Posición de la Tarjeta 2
+      'lg:mr-[8%] lg:ml-auto',              // Posición de la Tarjeta 3
+      'lg:ml-[-5%] lg:mr-auto',  // Posición de la Tarjeta 4
+      'lg:mr-[-3%] lg:ml-auto'    // Posición de la Tarjeta 5
     ];
     return alignments[index % alignments.length];
   };
