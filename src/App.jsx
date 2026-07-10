@@ -70,12 +70,12 @@ const globalStyles = `
     clip-path: inset(-20% -10% -10% -10%);
   }
 
-  /* OLA MÓVIL: Animación constante en bucle (Sube desde abajo, sale por arriba) */
+  /* OLA MÓVIL: Animación constante en bucle */
   @keyframes wave-fill {
     0%   { clip-path: inset(150% -10% -10% -10%); }
-    40%  { clip-path: inset(-20% -10% -10% -10%); } /* Totalmente verde */
-    60%  { clip-path: inset(-20% -10% -10% -10%); } /* Pausa verde */
-    100% { clip-path: inset(-20% -10% 150% -10%); } /* Desaparece por arriba */
+    40%  { clip-path: inset(-20% -10% -10% -10%); }
+    60%  { clip-path: inset(-20% -10% -10% -10%); }
+    100% { clip-path: inset(-20% -10% 150% -10%); }
   }
   .animate-wave-text {
     animation: wave-fill 3.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
@@ -194,7 +194,7 @@ const Hero = ({ setIsHovering, lang }) => {
               </span>
               {lang === 'es'
                 ? 'Soy un desarrollador enfocado en crear experiencias digitales interactivas, fusionando diseño de alta calidad con tecnología moderna para marcas y proyectos creativos.'
-                : 'I am a developer focused on creating interactive digital experiences, merging high-quality design with modern technology for creative brands and projects.'}
+                : 'I am a developer focused on creating interactive digital experiences, merging high-quality design con modern technology for creative brands and projects.'}
             </p>
           </div>
         </div>
@@ -218,7 +218,8 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
   const expertises = [
     {
       id: "01",
-      title: lang === 'es' ? "DESARROLLO FRONTEND" : "FRONTEND DEVELOPMENT",
+      // Salto de línea para móviles
+      title: lang === 'es' ? "DESARROLLO\nFRONTEND" : "FRONTEND\nDEVELOPMENT",
       marquee: "REACT — NEXT.JS — ASTRO — TYPESCRIPT — TAILWIND CSS — JAVASCRIPT — ",
       direction: "left"
     },
@@ -230,7 +231,8 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
     },
     {
       id: "03",
-      title: lang === 'es' ? "MOTION E INTERACCIÓN" : "MOTION & INTERACTION",
+      // Salto de línea para móviles
+      title: lang === 'es' ? "MOTION &\nINTERACCIÓN" : "MOTION &\nINTERACTION",
       marquee: "FRAMER MOTION — GSAP — WEBGL — THREE.JS — SVG ANIMATION — CREATIVE CODING — ",
       direction: "left"
     }
@@ -238,6 +240,7 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 
   return (
     <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
+      {/* Contenedor principal sin items-center para mantener la alineación a la izquierda general */}
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
           <div
@@ -246,17 +249,16 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
           >
-            {/* Cambiamos sm por lg para que las tablets (iPad) se comporten como móvil en esta sección */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full text-left">
               <span className={`font-mono text-sm md:text-base transition-colors duration-500 shrink-0 ${
                 hoveredIndex === index ? 'text-[#00A889]' : 'text-gray-400 dark:text-gray-600'
               }`}>
                 {exp.id}
               </span>
 
-              {/* VERSIÓN MÓVIL Y TABLET (Sin hover, todo visible) */}
-              <div className="flex lg:hidden flex-col w-full gap-2 mt-4">
-                <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee]">
+              {/* VERSIÓN MÓVIL Y TABLET: text-left y items-start restaurados */}
+              <div className="flex lg:hidden flex-col w-full gap-2 mt-4 items-start text-left">
+                <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee] whitespace-pre-wrap text-left">
                   {exp.title}
                 </h2>
                 <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee" style={{ width: "max-content" }}>
@@ -264,8 +266,8 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 </div>
               </div>
 
-              {/* VERSIÓN ESCRITORIO (PC) (Con hover animado) */}
-              <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full">
+              {/* VERSIÓN ESCRITORIO (PC) */}
+              <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full justify-start">
                 <h2 className={`absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ${
                   hoveredIndex === index
                     ? '-translate-y-[120%] opacity-0'
@@ -273,7 +275,7 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                       ? 'text-gray-400/30 dark:text-gray-600/30 translate-y-0 opacity-100'
                       : 'text-[#111] dark:text-[#eee] translate-y-0 opacity-100'
                 }`}>
-                  {exp.title}
+                  {exp.title.replace('\n', ' ')} {/* Eliminamos saltos de línea en escritorio */}
                 </h2>
 
                 <div className={`absolute left-0 w-full transition-all duration-500 transform origin-top ${
@@ -406,7 +408,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   };
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-12 pt-8 overflow-x-clip">
+    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 overflow-x-clip">
 
       {/* ======================================================== */}
       {/* 1. VERSIÓN MÓVIL Y TABLET (block lg:hidden)              */}
@@ -426,39 +428,42 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           </motion.div>
         </div>
 
-        <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-24 pointer-events-none">
+        {/* CORRECCIÓN DE ESPACIO: pb-24 cambiado a pb-4 para que el footer suba */}
+        <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-4 pointer-events-none">
           {projects.map((project, index) => (
             <motion.div
               key={`mob-${project.id}`}
-              style={{ top: `calc(32vh + ${index * 40}px)` }}
-              className="sticky w-full h-[60vh] mb-6 pointer-events-auto"
+              style={{ top: `calc(25vh + ${index * 40}px)` }}
+              className="sticky w-full h-[65vh] mb-6 pointer-events-auto"
             >
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full h-full rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#c4c4c4] flex flex-col pointer-events-auto"
+                className="w-full h-full rounded-md overflow-hidden shadow-2xl bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col pointer-events-auto"
               >
                 <div className="w-full h-[50%] relative overflow-hidden bg-[#050505]">
                   <img src={project.img} alt={project.title} className="w-full h-full object-cover object-top opacity-100 scale-[1.02]" />
                 </div>
 
-                <div className="w-full h-[50%] p-6 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#c4c4c4]">
+                <div className="w-full h-[50%] p-6 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">{project.id}</span>
                     <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">{project.category}</span>
                   </div>
-                  <h3 className="font-anton text-4xl text-white dark:text-[#111] uppercase leading-[0.9] break-words">{project.title}</h3>
+                  <h3 className="font-anton text-[9vw] text-white dark:text-[#111] uppercase leading-[0.9] break-normal">
+                    {project.title}
+                  </h3>
                 </div>
               </a>
             </motion.div>
           ))}
 
           <motion.div
-            style={{ top: `calc(32vh + ${projects.length * 40}px)` }}
-            className="sticky w-full h-[60vh] mt-8 mb-8 pointer-events-auto"
+            style={{ top: `calc(25vh + ${projects.length * 40}px)` }}
+            className="sticky w-full h-[65vh] mt-8 mb-8 pointer-events-auto"
           >
-            <Link to="/proyectos" className="w-full h-full rounded-md overflow-hidden flex flex-col items-center justify-center bg-[#00A889]">
+            <Link to="/proyectos" className="w-full h-full rounded-md overflow-hidden shadow-2xl flex flex-col items-center justify-center bg-[#00A889]">
               <div className="relative z-10 flex flex-col items-center gap-6 text-center px-4">
                 <h3 className="font-anton text-5xl text-white uppercase tracking-widest leading-[0.85]">
                   {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
@@ -476,7 +481,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       {/* ======================================================== */}
       {/* 2. VERSIÓN PC (hidden lg:block)                          */}
       {/* ======================================================== */}
-      <div className="hidden lg:block w-full relative">
+      <div className="hidden lg:block w-full relative pb-6">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
           <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
             <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
@@ -500,15 +505,8 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className={`w-full sm:w-[90%] lg:w-[65%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
             >
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#c4c4c4] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto"
-              >
-                <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#c4c4c4]">
+              <a href={project.link} target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto shadow-2xl">
+                <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
                   <div className="flex items-center gap-4 mb-6">
                     <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
                       {project.id}
@@ -517,7 +515,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                       {project.category}
                     </span>
                   </div>
-                  <h3 className="font-anton text-4xl sm:text-4xl md:text-5xl xl:text-6xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-words pr-2">
+                  <h3 className="font-anton text-3xl sm:text-3xl md:text-4xl xl:text-5xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-normal pr-2">
                     {project.title}
                   </h3>
                 </div>
@@ -582,7 +580,7 @@ const Footer = ({ setIsHovering, lang }) => {
   return (
     <footer className="relative flex flex-col justify-end pt-2 w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
       <div className="max-w-md text-center px-4 mb-8 mx-auto z-10">
-        <p className="text-gray-600 dark:text-gray-400 text-sm font-light leading-relaxed">
+        <p className="text-gray-600 dark:text-gray-400 text-base font-light leading-relaxed">
           {lang === 'es' ? '¿Tienes una pregunta, propuesta o proyecto, o quieres que trabajemos juntos en algo? No dudes en contactarme.' : 'Got a question, proposal or project or want to work together on something? Feel free to reach out.'}
         </p>
       </div>
@@ -596,7 +594,7 @@ const Footer = ({ setIsHovering, lang }) => {
         </a>
       </div>
 
-      <div className="mt-16 mb-24 z-10 text-center">
+      <div className="my-8 z-10 text-center">
         <a href="mailto:pwn27sbx@gmail.com" className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           pwn27sbx@gmail.com
           <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
