@@ -61,10 +61,7 @@ const globalStyles = `
     }
   }
 
-  /* * SOLUCIÓN DEL TINTADO FANTASMA:
-   * El inset al 150% asegura que la capa verde baje MUCHO más allá de la caja base,
-   * ocultando por completo las letras que desbordan por el leading apretado.
-   */
+  /* Clase para rellenar texto de abajo hacia arriba */
   .hover-fill-text {
     clip-path: inset(150% -10% -10% -10%);
     transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -364,10 +361,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     offset: ["start end", "end start"]
   });
 
-  // ANIMACIONES DE SCROLL OPUESTO (AHORA NACEN MÁS LEJOS Y SE MUEVEN MÁS RÁPIDO)
-  // Selected va de derecha (100vw) a izquierda (-100vw)
   const xSelected = useTransform(scrollYProgress, [0, 1], ["100vw", "-100vw"]);
-  // Works va de izquierda (-100vw) a derecha (100vw)
   const xWorks = useTransform(scrollYProgress, [0, 1], ["-100vw", "100vw"]);
 
   const projects = [
@@ -378,7 +372,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     { id: "05", title: "GRUPO HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/" }
   ];
 
-  // LÓGICA DE ALINEACIÓN ASIMÉTRICA PERFECTA
   const getCardAlignment = (index) => {
     const alignments = [
       'lg:ml-[5%] lg:mr-auto',   // 1. Cargado a la izquierda
@@ -391,15 +384,14 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   };
 
   return (
-    // Redujimos el pt (padding-top) a 8 para eliminar el espacio vacío de arriba
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-32 pt-8 overflow-x-clip">
+    // Reducido pb-32 a pb-12 para acortar el espacio muerto abajo
+    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-12 pt-8 overflow-x-clip">
 
       {/* BACKGROUND STICKY TEXT */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
 
         {/* Fila 1: SELECTED */}
         <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-          {/* Tamaño bestial aumentado a text-[28vw] */}
           <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
             <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
           </h2>
@@ -407,7 +399,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
         {/* Fila 2: WORKS */}
         <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
-          {/* Tamaño bestial aumentado a text-[28vw] */}
           <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
             <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
           </h2>
@@ -415,7 +406,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
       </div>
 
-      {/* FOREGROUND CARDS (CASCADA ORGÁNICA) */}
+      {/* FOREGROUND CARDS */}
       <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
         {projects.map((project, index) => (
           <motion.div
@@ -466,24 +457,20 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
         ))}
 
         {/* ========================================== */}
-        {/* TARJETA FINAL (VIEW ALL) CON HOVER EXTREMO */}
+        {/* TARJETA FINAL (VIEW ALL) */}
         {/* ========================================== */}
         <motion.div
           initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-32 pointer-events-auto"
+          // Reducido mb-32 a mb-8 para acortar el espacio con el footer
+          className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-8 pointer-events-auto"
         >
           <Link
             to="/proyectos"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            /* * ANIMACIÓN SUPERIOR:
-             * hover:-translate-y-8 (Gran elevación)
-             * hover:scale-[1.03] (Aumento general)
-             * hover:shadow-[0_0_100px_...] (Resplandor neón majestuoso)
-             */
             className="group relative w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] border border-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
@@ -496,7 +483,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                 </span>
               </h3>
 
-              {/* Botón hace un Scale enorme y un giro de 360 grados */}
               <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </div>
