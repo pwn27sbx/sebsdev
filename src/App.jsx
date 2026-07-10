@@ -61,13 +61,24 @@ const globalStyles = `
     }
   }
 
-  /* Clase para rellenar texto de abajo hacia arriba */
+  /* HOVER PC: Rellenar texto de abajo hacia arriba */
   .hover-fill-text {
     clip-path: inset(150% -10% -10% -10%);
     transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .group:hover .hover-fill-text {
     clip-path: inset(-20% -10% -10% -10%);
+  }
+
+  /* OLA MÓVIL: Animación constante en bucle (Sube desde abajo, sale por arriba) */
+  @keyframes wave-fill {
+    0%   { clip-path: inset(150% -10% -10% -10%); }
+    40%  { clip-path: inset(-20% -10% -10% -10%); } /* Totalmente verde */
+    60%  { clip-path: inset(-20% -10% -10% -10%); } /* Pausa verde */
+    100% { clip-path: inset(-20% -10% 150% -10%); } /* Desaparece por arriba */
+  }
+  .animate-wave-text {
+    animation: wave-fill 3.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
   }
 `;
 
@@ -332,6 +343,7 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
+// COMPONENTE PC: Palabra interactiva del fondo con Hover
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
     className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
@@ -347,6 +359,21 @@ const HoverFillWord = ({ text, setIsHovering }) => (
   </span>
 );
 
+// COMPONENTE MÓVIL: Palabra con Ola constante (sin necesidad de hover)
+const WaveFillWord = ({ text, delay = '0s' }) => (
+  <span className="relative inline-flex whitespace-nowrap">
+    <span className="text-[#e5e5e5] dark:text-[#131313] block">
+      {text}
+    </span>
+    <span
+      className="absolute top-0 left-0 text-[#00A889] animate-wave-text block pointer-events-none"
+      style={{ animationDelay: delay }}
+    >
+      {text}
+    </span>
+  </span>
+);
+
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const sectionRef = useRef(null);
 
@@ -355,6 +382,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     offset: ["start end", "end start"]
   });
 
+  // Animaciones de Scroll para PC y MÓVIL (nacen de los bordes y cruzan)
   const xSelected = useTransform(scrollYProgress, [0, 1], ["100vw", "-100vw"]);
   const xWorks = useTransform(scrollYProgress, [0, 1], ["-100vw", "100vw"]);
 
@@ -368,11 +396,11 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
   const getCardAlignment = (index) => {
     const alignments = [
-      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 1
-      'lg:mr-[-15%] lg:ml-auto',  // Posición de la Tarjeta 2
-      'lg:mr-[8%] lg:ml-auto',              // Posición de la Tarjeta 3
-      'lg:ml-[-5%] lg:mr-auto',  // Posición de la Tarjeta 4
-      'lg:mr-[-3%] lg:ml-auto'    // Posición de la Tarjeta 5
+      'lg:ml-[-5%] lg:mr-auto',   // Posición 1
+      'lg:mr-[-15%] lg:ml-auto',  // Posición 2
+      'lg:mr-[8%] lg:ml-auto',    // Posición 3
+      'lg:ml-[-5%] lg:mr-auto',   // Posición 4
+      'lg:mr-[-3%] lg:ml-auto'    // Posición 5
     ];
     return alignments[index % alignments.length];
   };
@@ -380,96 +408,170 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   return (
     <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pb-12 pt-8 overflow-x-clip">
 
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
-        <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-          <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-            <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
-          </h2>
-        </motion.div>
-        <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
-          <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-            <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
-          </h2>
-        </motion.div>
+      {/* ======================================================== */}
+      {/* 1. VERSIÓN MÓVIL (block lg:hidden)                       */}
+      {/* ======================================================== */}
+      <div className="block lg:hidden w-full relative">
+
+        {/* TEXTO ANIMADO MÓVIL (Fijo arriba, animado en X, ola constante) */}
+        {/* pt-[5vh] lo sube para que no lo tapen las cartas al apilarse */}
+        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start z-0 overflow-hidden pointer-events-none pt-[5vh]">
+          <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
+            {/* Texto GIGANTE para móvil */}
+            <h2 className="font-anton text-[35vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+              <WaveFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} />
+            </h2>
+          </motion.div>
+          <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2">
+            <h2 className="font-anton text-[35vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+              {/* Le damos un retraso para que la ola sea escalonada */}
+              <WaveFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} delay="0.5s" />
+            </h2>
+          </motion.div>
+        </div>
+
+        {/* CARDS APILADAS MÓVIL */}
+        <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-24 pointer-events-none">
+          {projects.map((project, index) => (
+            <motion.div
+              key={`mob-${project.id}`}
+              // Empieza más abajo (32vh) para evitar tapar el texto de arriba
+              style={{ top: `calc(32vh + ${index * 40}px)` }}
+              className="sticky w-full h-[60vh] mb-6 pointer-events-auto"
+            >
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full h-full rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#c4c4c4] flex flex-col pointer-events-auto"
+              >
+                {/* LADO IMAGEN EN MÓVIL: Totalmente visible, sin blur */}
+                <div className="w-full h-[50%] relative overflow-hidden bg-[#050505]">
+                  <img src={project.img} alt={project.title} className="w-full h-full object-cover object-top opacity-100 scale-[1.02]" />
+                </div>
+
+                {/* LADO TEXTO EN MÓVIL */}
+                <div className="w-full h-[50%] p-6 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#c4c4c4]">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">{project.id}</span>
+                    <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">{project.category}</span>
+                  </div>
+                  <h3 className="font-anton text-4xl text-white dark:text-[#111] uppercase leading-[0.9] break-words">{project.title}</h3>
+                </div>
+              </a>
+            </motion.div>
+          ))}
+
+          {/* TARJETA VIEW ALL (MÓVIL) */}
+          <motion.div
+            style={{ top: `calc(32vh + ${projects.length * 40}px)` }}
+            className="sticky w-full h-[60vh] mt-8 mb-8 pointer-events-auto"
+          >
+            <Link to="/proyectos" className="w-full h-full rounded-md overflow-hidden flex flex-col items-center justify-center bg-[#00A889]">
+              <div className="relative z-10 flex flex-col items-center gap-6 text-center px-4">
+                <h3 className="font-anton text-5xl text-white uppercase tracking-widest leading-[0.85]">
+                  {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
+                  <span className="text-3xl text-[#004d3e]">{lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}</span>
+                </h3>
+                <div className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 text-white shadow-lg">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
-        {projects.map((project, index) => (
+      {/* ======================================================== */}
+      {/* 2. VERSIÓN PC (hidden lg:block)                          */}
+      {/* ======================================================== */}
+      <div className="hidden lg:block w-full relative">
+        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
+          <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
+            <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+              <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
+            </h2>
+          </motion.div>
+          <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
+            <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+              <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
+            </h2>
+          </motion.div>
+        </div>
+
+        <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
+          {projects.map((project, index) => (
+            <motion.div
+              key={`pc-${project.id}`}
+              initial={{ opacity: 0, y: 150 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className={`w-full sm:w-[90%] lg:w-[65%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
+            >
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#c4c4c4] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto"
+              >
+                <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#c4c4c4]">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
+                      {project.id}
+                    </span>
+                    <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">
+                      {project.category}
+                    </span>
+                  </div>
+                  <h3 className="font-anton text-4xl sm:text-4xl md:text-5xl xl:text-6xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-words pr-2">
+                    {project.title}
+                  </h3>
+                </div>
+
+                <div className="w-full sm:w-[55%] h-full relative overflow-hidden bg-[#050505]">
+                  <img
+                    src={project.img}
+                    alt={project.title}
+                    className="w-full h-full object-cover object-top opacity-70 blur-sm group-hover:blur-none group-hover:opacity-100 transition-all duration-700 scale-[1.02] group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] dark:from-[#c4c4c4] via-transparent to-transparent opacity-100 sm:opacity-80"></div>
+                </div>
+              </a>
+            </motion.div>
+          ))}
+
           <motion.div
-            key={project.id}
             initial={{ opacity: 0, y: 150 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full sm:w-[90%] lg:w-[65%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-8 pointer-events-auto"
           >
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/proyectos"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
-              /* ELIMINADAS SOMBRAS Y BORDES. REDUCIDO A rounded-md. Fondo dark a un gris sutil anti-fatiga (#e5e5e5) */
-              className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto"
+              className="group relative w-full aspect-[2/1] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
             >
-              {/* LADO IZQUIERDO: Fondo dark adaptado a #e5e5e5 */}
-              <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
-                    {project.id}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+
+              <div className="relative z-10 flex flex-col items-center gap-8 text-center px-4">
+                <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-6 group-hover:scale-110 transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
+                  {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
+                  <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
+                    {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
                   </span>
-                  <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">
-                    {project.category}
-                  </span>
-                </div>
-                <h3 className="font-anton text-4xl sm:text-4xl md:text-5xl xl:text-6xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-words pr-2">
-                  {project.title}
                 </h3>
+                <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
               </div>
-
-              {/* LADO DERECHO: Degradado adaptado a #e5e5e5 en oscuro */}
-              <div className="w-full sm:w-[55%] h-full relative overflow-hidden bg-[#050505]">
-                <img
-                  src={project.img}
-                  alt={project.title}
-                  className="w-full h-full object-cover object-top opacity-70 blur-sm group-hover:blur-none group-hover:opacity-100 transition-all duration-700 scale-[1.02] group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] dark:from-[#e5e5e5] via-transparent to-transparent opacity-100 sm:opacity-80"></div>
-              </div>
-            </a>
+            </Link>
           </motion.div>
-        ))}
-
-        {/* TARJETA FINAL (VIEW ALL) - Reducida a rounded-md para mantener la simetría */}
-        <motion.div
-          initial={{ opacity: 0, y: 150 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-8 pointer-events-auto"
-        >
-          <Link
-            to="/proyectos"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            className="group relative w-full aspect-[2/1] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
-
-            <div className="relative z-10 flex flex-col items-center gap-8 text-center px-4">
-              <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-6 group-hover:scale-110 transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
-                {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
-                <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
-                  {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
-                </span>
-              </h3>
-
-              <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
