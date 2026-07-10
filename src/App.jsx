@@ -218,7 +218,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
   const expertises = [
     {
       id: "01",
-      // Salto de línea para móviles
       title: lang === 'es' ? "DESARROLLO\nFRONTEND" : "FRONTEND\nDEVELOPMENT",
       marquee: "REACT — NEXT.JS — ASTRO — TYPESCRIPT — TAILWIND CSS — JAVASCRIPT — ",
       direction: "left"
@@ -231,7 +230,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
     },
     {
       id: "03",
-      // Salto de línea para móviles
       title: lang === 'es' ? "MOTION &\nINTERACCIÓN" : "MOTION &\nINTERACTION",
       marquee: "FRAMER MOTION — GSAP — WEBGL — THREE.JS — SVG ANIMATION — CREATIVE CODING — ",
       direction: "left"
@@ -240,7 +238,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 
   return (
     <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
-      {/* Contenedor principal sin items-center para mantener la alineación a la izquierda general */}
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
           <div
@@ -256,7 +253,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 {exp.id}
               </span>
 
-              {/* VERSIÓN MÓVIL Y TABLET: text-left y items-start restaurados */}
               <div className="flex lg:hidden flex-col w-full gap-2 mt-4 items-start text-left">
                 <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee] whitespace-pre-wrap text-left">
                   {exp.title}
@@ -266,7 +262,6 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                 </div>
               </div>
 
-              {/* VERSIÓN ESCRITORIO (PC) */}
               <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full justify-start">
                 <h2 className={`absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ${
                   hoveredIndex === index
@@ -275,7 +270,7 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
                       ? 'text-gray-400/30 dark:text-gray-600/30 translate-y-0 opacity-100'
                       : 'text-[#111] dark:text-[#eee] translate-y-0 opacity-100'
                 }`}>
-                  {exp.title.replace('\n', ' ')} {/* Eliminamos saltos de línea en escritorio */}
+                  {exp.title.replace('\n', ' ')}
                 </h2>
 
                 <div className={`absolute left-0 w-full transition-all duration-500 transform origin-top ${
@@ -348,13 +343,14 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
+// ACÁ ESTÁ LA MAGIA: Cambiamos dark:text-[#131313] a dark:text-[#2a2a2a] para que se vea genial en PC
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
     className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
     onMouseEnter={() => setIsHovering(true)}
     onMouseLeave={() => setIsHovering(false)}
   >
-    <span className="text-[#e5e5e5] dark:text-[#131313] block">
+    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
       {text}
     </span>
     <span className="absolute top-0 left-0 text-[#00A889] hover-fill-text block pointer-events-none">
@@ -363,9 +359,10 @@ const HoverFillWord = ({ text, setIsHovering }) => (
   </span>
 );
 
+// LO MISMO AQUÍ: dark:text-[#2a2a2a] para que destaque en móviles sin perder la sutileza
 const WaveFillWord = ({ text, delay = '0s' }) => (
   <span className="relative inline-flex whitespace-nowrap">
-    <span className="text-[#e5e5e5] dark:text-[#131313] block">
+    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
       {text}
     </span>
     <span
@@ -428,7 +425,6 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           </motion.div>
         </div>
 
-        {/* CORRECCIÓN DE ESPACIO: pb-24 cambiado a pb-4 para que el footer suba */}
         <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-4 pointer-events-none">
           {projects.map((project, index) => (
             <motion.div
@@ -579,8 +575,8 @@ const Footer = ({ setIsHovering, lang }) => {
 
   return (
     <footer className="relative flex flex-col justify-end pt-2 w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
-      <div className="max-w-md text-center px-4 mb-8 mx-auto z-10">
-        <p className="text-gray-600 dark:text-gray-400 text-base font-light leading-relaxed">
+      <div className="max-w-md text-center px-4 mb-8 lg:mb-8 mx-auto z-10">
+        <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-light leading-relaxed">
           {lang === 'es' ? '¿Tienes una pregunta, propuesta o proyecto, o quieres que trabajemos juntos en algo? No dudes en contactarme.' : 'Got a question, proposal or project or want to work together on something? Feel free to reach out.'}
         </p>
       </div>
