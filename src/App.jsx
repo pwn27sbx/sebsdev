@@ -292,40 +292,42 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
 };
 
 // ========================================================
-// NUEVO COLLAGE (BENTO 2.0 SIN BORDES SUPERIORES)
-// ========================================================
+// NUEVA SECCIÓN: COLLAGE BENTO 2.0 (CAÓTICO Y CONTROLADO POR SCROLL)
+// ==========================================
 const WorksCollageSection = ({ setIsHovering, lang }) => {
   const { scrollY } = useScroll();
-  // El texto SOLO se mueve al hacer scroll (sin animate-marquee)
+
+  // Transformamos el Scroll directamente en Movimiento Horizontal.
+  // Negativo significa que al scrollear hacia abajo, el texto se mueve hacia la izquierda.
   const xMarquee = useTransform(scrollY, (v) => -v * 0.8);
 
-  // Array de proyectos: Aquí está la magia Bento 2.0
-  // Distribuimos span-2 (anchos), row-span-2 (altos) y 1x1 (normales) para romper el bloque perfecto
+  // Array de proyectos matemáticamente desordenado para rellenar una cuadrícula.
+  // En PC (md) usamos un grid de 6 columnas y 4 filas (24 celdas).
+  // En Móvil usamos un grid de 2 columnas y 10 filas (20 celdas).
   const collageProjects = [
-    { id: "01", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-2" }, // ALTO a la izquierda
-    { id: "02", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "03", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-2 row-span-1 md:col-span-2 md:row-span-1" }, // ANCHO arriba a la derecha
+    { id: "01", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-2 row-span-2 md:col-span-2 md:row-span-2" },
+    { id: "02", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-2 row-span-1 md:col-span-3 md:row-span-1" },
+    { id: "03", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-1 row-span-2 md:col-span-1 md:row-span-2" },
     { id: "04", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "05", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "06", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-2 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "07", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-2 row-span-1 md:col-span-2 md:row-span-1" }, // ANCHO al centro
-    { id: "08", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "09", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", span: "col-span-1 row-span-2 md:col-span-1 md:row-span-2" }, // ALTO abajo
+    { id: "05", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", span: "col-span-2 row-span-1 md:col-span-2 md:row-span-1" },
+    { id: "06", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-2 row-span-2 md:col-span-2 md:row-span-2" },
+    { id: "07", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-1 row-span-2 md:col-span-2 md:row-span-2" },
+    { id: "08", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-1 row-span-1 md:col-span-2 md:row-span-1" },
+    { id: "09", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
     { id: "10", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "11", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
-    { id: "12", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-2 row-span-1 md:col-span-1 md:row-span-1" },
   ];
 
   return (
-    <section className="w-full bg-[#00A889] flex flex-col pt-4 sm:pt-8 pb-16 sm:pb-24 shadow-2xl relative z-30">
+    <section className="w-full bg-[#00A889] flex flex-col pt-4 sm:pt-8 pb-12 sm:pb-24 shadow-2xl relative z-30">
 
-      {/* 1. BANDA SUPERIOR (Sin border-y) */}
-      <div className="w-full py-2 sm:py-3 mb-8 sm:mb-12 overflow-hidden flex items-center bg-[#00A889]">
-        <motion.div style={{ x: xMarquee }} className="flex font-anton text-2xl sm:text-4xl uppercase text-white whitespace-nowrap">
+      {/* 1. BANDA SUPERIOR (Ajustada, limpia y ligada al scroll) */}
+      <div className="w-full py-1 sm:py-2 mb-6 sm:mb-10 overflow-hidden flex items-center bg-[#00A889]">
+        <motion.div style={{ x: xMarquee }} className="flex font-anton text-2xl sm:text-4xl uppercase text-white whitespace-nowrap w-max">
+          {/* Renderizamos 50 veces para asegurarnos de que la tira nunca termine por más que hagas scroll */}
           {[...Array(50)].map((_, i) => (
-            <span key={i} className="flex items-center shrink-0 pr-6 sm:pr-10">
+            <span key={i} className="flex items-center shrink-0 pr-6 sm:pr-8">
               {lang === 'es' ? 'TRABAJOS' : 'WORKS'}
-              <svg className="w-6 h-6 sm:w-10 sm:h-10 ml-3 sm:ml-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-6 h-6 sm:w-8 sm:h-8 ml-3 sm:ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 19V5M5 12l7-7 7 7"/>
               </svg>
             </span>
@@ -333,9 +335,8 @@ const WorksCollageSection = ({ setIsHovering, lang }) => {
         </motion.div>
       </div>
 
-      {/* 2. COLLAGE BENTO 2.0 */}
-      {/* Eliminamos el 'aspect-square' de las tarjetas. Su forma ahora depende del grid y auto-rows. */}
-      <div className="w-[90vw] mx-auto grid grid-cols-2 md:grid-cols-4 auto-rows-[20vh] sm:auto-rows-[25vh] gap-0">
+      {/* 2. COLLAGE BENTO CAÓTICO (Sin gaps y con altura controlada para que quepa en pantalla) */}
+      <div className="w-[95vw] md:w-[90vw] h-[65vh] md:h-[75vh] mx-auto grid grid-cols-2 md:grid-cols-6 grid-rows-[10] md:grid-rows-[4] grid-flow-dense gap-0">
         {collageProjects.map((proj, idx) => (
           <a
             key={idx}
@@ -344,14 +345,15 @@ const WorksCollageSection = ({ setIsHovering, lang }) => {
             rel="noopener noreferrer"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className={`group relative overflow-hidden cursor-none bg-[#050505] ${proj.span}`}
+            // 'rounded-none' asegura que no haya curvas y queden pegadas como la referencia
+            className={`group relative overflow-hidden cursor-none bg-[#050505] rounded-none ${proj.span}`}
           >
             <img
               src={proj.img}
               alt={`Project ${proj.id}`}
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
             />
-            {/* Overlay sutil para añadir vida al pasar el ratón */}
+            {/* Sutil sombra interna o tinte oscuro para darles unificación */}
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none"></div>
           </a>
         ))}
