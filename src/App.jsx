@@ -291,13 +291,65 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
   );
 };
 
+const InteractiveBanner = ({ setIsHovering, lang }) => {
+  const [focusedBand, setFocusedBand] = useState('front');
+
+  const { scrollY } = useScroll();
+  const xFront = useTransform(scrollY, [0, 5000], [0, -1500]);
+  const xBack = useTransform(scrollY, [0, 5000], [0, 1500]);
+
+  const CustomArrow = () => (
+    <span className="flex items-center justify-center mx-4 sm:mx-8 shrink-0">
+      <svg className="w-10 h-10 sm:w-16 sm:h-16 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </span>
+  );
+
+  const TextBlockFront = () => (
+    <span className="shrink-0 flex items-center pr-4">
+      {lang === 'es' ? 'EXPERIENCIAS' : 'EXPERIENCES'} <CustomArrow /> {lang === 'es' ? 'DIGITALES' : 'DIGITAL'} <CustomArrow />
+    </span>
+  );
+
+  const TextBlockBack = () => (
+    <span className="shrink-0 flex items-center pr-4">
+      {lang === 'es' ? 'INNOVACIÓN' : 'INNOVATION'} <CustomArrow /> {lang === 'es' ? 'CREATIVIDAD' : 'CREATIVITY'} <CustomArrow />
+    </span>
+  );
+
+  return (
+    <div
+      className="relative w-full h-[250px] sm:h-[400px] md:h-[500px] overflow-hidden flex items-center justify-center bg-transparent shrink-0 z-30"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => { setIsHovering(false); setFocusedBand('front'); }}
+    >
+      <div className={`absolute w-[130%] bg-[#111] dark:bg-white text-white dark:text-[#111] py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90'}`} onMouseEnter={() => setFocusedBand('back')}>
+        <motion.div style={{ x: xBack, width: "max-content" }} className="flex">
+          <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
+            {[...Array(15)].map((_, i) => <TextBlockBack key={`back-${i}`} />)}
+          </div>
+        </motion.div>
+      </div>
+
+      <div className={`absolute w-[130%] bg-[#00A889] text-white py-4 sm:py-8 md:py-10 transform -rotate-[6deg] transition-all duration-700 ease-out z-[50] pointer-events-auto shadow-none ${focusedBand === 'back' ? 'blur-[5px]' : 'blur-0 opacity-100'}`} onMouseEnter={() => setFocusedBand('front')}>
+        <motion.div style={{ x: xFront, width: "max-content" }} className="flex">
+          <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
+            {[...Array(15)].map((_, i) => <TextBlockFront key={`front-${i}`} />)}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
 const HoverFillWord = ({ text, setIsHovering }) => (
   <span
     className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
     onMouseEnter={() => setIsHovering(true)}
     onMouseLeave={() => setIsHovering(false)}
   >
-    <span className="text-[#e5e5e5] dark:text-[#131313] block">
+    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block transition-colors duration-300">
       {text}
     </span>
     <span className="absolute top-0 left-0 text-[#00A889] hover-fill-text block pointer-events-none">
@@ -306,142 +358,128 @@ const HoverFillWord = ({ text, setIsHovering }) => (
   </span>
 );
 
-const WaveFillWord = ({ text, delay = '0s' }) => (
-  <span className="relative inline-flex whitespace-nowrap">
-    <span className="text-[#e5e5e5] dark:text-[#131313] block">
-      {text}
-    </span>
-    <span
-      className="absolute top-0 left-0 text-[#00A889] animate-wave-text block pointer-events-none"
-      style={{ animationDelay: delay }}
-    >
-      {text}
-    </span>
-  </span>
-);
 
-// COMPONENTE INTERNO: LA POLAROID ARRASTRABLE QUE CAE CON EL SCROLL
+// ========================================================
+// POLAROID ARRASTRABLE
+// ========================================================
 const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) => {
-  // Calculamos el inicio y fin de la caída basado en el índice (caen en cascada)
-  const startDrop = index * 0.12;
-  const endDrop = startDrop + 0.25;
+  const startDrop = index * 0.05;
+  const endDrop = startDrop + 0.20;
 
-  // Transformación del Scroll a la posición Y de la tarjeta
-  // Empieza a -150vh (fuera de la pantalla arriba) y cae suavemente al centro (0vh)
   const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ["-150vh", "0vh"]);
-  const opacityFade = useTransform(scrollYProgress, [startDrop, startDrop + 0.05], [0, 1]);
+
+  const [zIndex, setZIndex] = useState(10);
 
   return (
     <motion.div
-      style={{ y: yDrop, opacity: opacityFade }}
-      className={`absolute flex items-center justify-center w-full h-full pointer-events-none z-10`}
+      style={{ y: yDrop, zIndex }}
+      className="absolute flex items-center justify-center w-full h-full pointer-events-none"
     >
-      <motion.div
-        drag
-        // Límites elásticos para que no se pierdan fuera de la pantalla
-        dragConstraints={{ left: -300, right: 300, top: -200, bottom: 200 }}
-        dragElastic={0.2}
-        initial={{ rotate: project.rot, x: project.xOffset, y: project.yOffset }}
-        // Al arrastrar o hacer hover, la tarjeta salta al frente (z-index gigante)
-        whileDrag={{ scale: 1.05, zIndex: 100, cursor: "grabbing" }}
-        whileHover={{ zIndex: 50 }}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-        className="pointer-events-auto cursor-grab w-[75vw] sm:w-[50vw] lg:w-[28vw] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-gray-200 dark:border-gray-800 bg-[#fdfdfd] dark:bg-[#111] p-3 pb-8 sm:p-5 sm:pb-12 transition-transform duration-300"
+      <div
+        style={{ marginLeft: project.xOffset, marginTop: project.yOffset }}
+        className="pointer-events-none"
       >
-        <a
-          draggable="false" // Desactiva el drag nativo del navegador para links
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group block w-full h-full"
+        <motion.div
+          drag
+          dragTransition={{ power: 0.05, timeConstant: 150 }}
+          initial={{ rotate: project.rot }}
+          whileDrag={{ scale: 1.05, rotate: 0, cursor: "grabbing" }}
+
+          onDragStart={() => setZIndex(100)}
+          onDragEnd={() => setZIndex(10)}
+          onHoverStart={() => setZIndex(50)}
+          onHoverEnd={() => setZIndex(10)}
+
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+
+          className="group pointer-events-auto cursor-grab w-[65vw] sm:w-[40vw] lg:w-[26vw] shadow-[0_25px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.7)] border border-gray-100 dark:border-gray-800 bg-[#fdfdfd] dark:bg-[#111] p-3 pb-4 sm:p-4 sm:pb-6 transition-colors duration-300"
         >
-          {/* Contenedor de Imagen Polaroid */}
-          <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#050505] rounded-sm pointer-events-none">
+          <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#050505] rounded-sm pointer-events-none">
             <img
-              draggable="false" // Desactiva el drag nativo de la imagen
+              draggable="false"
               src={project.img}
               alt={project.title}
               className="w-full h-full object-cover object-top grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
             />
-            {/* Tinte oscuro sutil */}
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
           </div>
 
-          {/* Textos inferirores de la Polaroid */}
-          <div className="flex flex-col xl:flex-row xl:items-end justify-between w-full mt-4 sm:mt-6 px-1 sm:px-2 gap-2 pointer-events-none">
-            <h3 className="font-anton text-3xl sm:text-4xl xl:text-5xl uppercase leading-[0.8] text-[#111] dark:text-[#eee] group-hover:text-[#00A889] transition-colors duration-400 break-normal">
+          <div className="flex justify-between items-start mt-4 px-1 w-full pointer-events-none">
+            <h3 className="font-anton text-3xl sm:text-4xl uppercase leading-[0.85] text-[#111] dark:text-[#eee] group-hover:text-[#00A889] transition-colors duration-400 break-normal w-2/3">
               {project.title}
             </h3>
-            <div className="flex items-center xl:flex-col xl:items-end gap-3 xl:gap-1 shrink-0">
-              <span className="text-[#00A889] font-mono text-[10px] sm:text-xs border border-[#00A889]/40 px-2 py-0.5 rounded-full">
+            <div className="flex flex-col items-end shrink-0 w-1/3">
+              <span className="text-[#00A889] font-mono text-[10px] sm:text-xs border border-[#00A889]/40 px-2 py-0.5 rounded-full mb-1">
                 {project.id}
               </span>
-              <span className="text-gray-400 dark:text-gray-500 text-[10px] tracking-widest uppercase hidden sm:block">
+              <span className="text-gray-400 dark:text-gray-500 text-[8px] sm:text-[9px] tracking-widest uppercase">
                 {project.category}
               </span>
             </div>
           </div>
-        </a>
-      </motion.div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
 
 
 // ========================================================
-// GALERÍA PRINCIPAL ACTUALIZADA (PINNING + DRAG POLAROIDS)
+// GALERÍA PRINCIPAL (LLUVIA DE 15 POLAROIDS)
 // ========================================================
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const sectionRef = useRef(null);
 
-  // La sección es muy alta (300vh) para permitir que el scroll alimente la caída de todas las cartas
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"]
   });
 
-  // Animación del texto de fondo
   const xSelected = useTransform(scrollYProgress, [0, 1], ["0vw", "-100vw"]);
   const xWorks = useTransform(scrollYProgress, [0, 1], ["0vw", "100vw"]);
 
-  // Proyectos desordenados matemáticamente (xOffset, yOffset y Rotación caótica)
   const projects = [
-    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", rot: -6, xOffset: "-15vw", yOffset: "-15vh" },
-    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", rot: 8, xOffset: "18vw", yOffset: "-5vh" },
-    { id: "03", title: "FUXION OPORTUNIDAD", category: "LANDING PAGE", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", rot: -4, xOffset: "-8vw", yOffset: "12vh" },
-    { id: "04", title: "TRANSPORTES PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", rot: 5, xOffset: "22vw", yOffset: "20vh" },
-    { id: "05", title: "GRUPO HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", rot: -2, xOffset: "5vw", yOffset: "30vh" }
+    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: -12, xOffset: "-45vw", yOffset: "-25vh" },
+    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: 15, xOffset: "40vw", yOffset: "-10vh" },
+    { id: "03", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: -8, xOffset: "-20vw", yOffset: "12vh" },
+    { id: "04", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: 10, xOffset: "45vw", yOffset: "25vh" },
+    { id: "05", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: -5, xOffset: "0vw", yOffset: "38vh" },
+    { id: "06", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: 20, xOffset: "-55vw", yOffset: "5vh" },
+    { id: "07", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: -15, xOffset: "50vw", yOffset: "0vh" },
+    { id: "08", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: 7, xOffset: "-30vw", yOffset: "30vh" },
+    { id: "09", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: -22, xOffset: "25vw", yOffset: "-35vh" },
+    { id: "10", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: 12, xOffset: "-10vw", yOffset: "-35vh" },
+    { id: "11", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: -18, xOffset: "55vw", yOffset: "35vh" },
+    { id: "12", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: 25, xOffset: "-60vw", yOffset: "-25vh" },
+    { id: "13", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: -10, xOffset: "15vw", yOffset: "-15vh" },
+    { id: "14", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: 16, xOffset: "-35vw", yOffset: "40vh" },
+    { id: "15", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: -5, xOffset: "45vw", yOffset: "42vh" },
   ];
 
   return (
     <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8">
 
-      {/* CONTENEDOR MÁGICO DE 300VH */}
       <div className="h-[300vh] w-full relative">
-
-        {/* LA CÁMARA SE DETIENE AQUÍ MIENTRAS HACES SCROLL (Sticky) */}
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
 
-          {/* TEXTO GIGANTE DE FONDO (Mobile y PC) */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-20 dark:opacity-30">
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
             <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[-10vh] sm:mt-[-5vh]">
-              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter">
-                <span className="text-[#111] dark:text-[#eee]">{lang === 'es' ? 'TRABAJOS' : 'SELECTED'}</span>
+              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+                <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
               </h2>
             </motion.div>
             <motion.div style={{ x: xWorks }} className="w-full flex justify-center mt-2 sm:mt-6">
-              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter">
-                <span className="text-[#111] dark:text-[#eee]">{lang === 'es' ? 'DESTACADOS' : 'WORKS'}</span>
+              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+                <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
               </h2>
             </motion.div>
           </div>
 
-          {/* CAPA DE POLAROIDS CAYENDO Y ARRASTRABLES */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             {projects.map((project, index) => (
               <DraggablePolaroid
-                key={project.id}
+                key={`${project.id}-${index}`}
                 project={project}
                 index={index}
                 scrollYProgress={scrollYProgress}
@@ -452,38 +490,43 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 
         </div>
       </div>
-
-      {/* LA ÚLTIMA CARD VERDE INTACTA (Aparece al terminar los 300vh de caída libre) */}
-      <div className="relative z-50 w-full flex justify-center pb-24 pt-12">
-        <div className="w-[90vw] sm:w-[80%] lg:w-[60%] flex flex-col pointer-events-auto">
-          <Link
-            to="/proyectos"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            className="group relative w-full aspect-[2/1] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
-
-            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 text-center px-4">
-              <h3 className="font-anton text-5xl sm:text-6xl md:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-6 group-hover:scale-110 transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
-                {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
-                <span className="text-3xl sm:text-4xl md:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
-                  {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
-                </span>
-              </h3>
-
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </div>
-
     </section>
   );
 };
 
+
+// ========================================================
+// BLOQUE DE CIERRE (VIEW ALL) CON ANIMACIÓN RESTAURADA Y TAMAÑO AJUSTADO
+// ========================================================
+const ViewAllBlock = ({ setIsHovering, lang }) => (
+  <div className="relative w-full flex justify-center pb-8 pt-4 sm:pt-8">
+    <div className="w-[90vw] sm:w-[80%] lg:w-[60%] flex flex-col pointer-events-auto">
+      <Link
+        to="/proyectos"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        className="group relative w-full aspect-[2/1] sm:aspect-[3/1] max-h-[35vh] sm:max-h-[40vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+        <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-6 text-center px-4">
+          <h3 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
+            {lang === 'es' ? 'VER TODOS LOS' : 'VIEW ALL'} <br />
+            <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500 block mt-1 sm:mt-2">
+              {lang === 'es' ? 'PROYECTOS' : 'PROJECTS'}
+            </span>
+          </h3>
+          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.3] group-hover:rotate-[360deg] shadow-lg">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </div>
+        </div>
+      </Link>
+    </div>
+  </div>
+);
+
+// ========================================================
+// FOOTER COMPACTADO PARA CABER EN 100VH
+// ========================================================
 const Footer = ({ setIsHovering, lang }) => {
   const marqueeText = lang === 'es' ? "¿EMPEZAMOS ALGO? HABLEMOS" : "BE STARTING SOMETHING? LET'S TALK";
 
@@ -496,31 +539,31 @@ const Footer = ({ setIsHovering, lang }) => {
 
   return (
     <footer className="relative flex flex-col justify-end pt-2 w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
-      <div className="max-w-md text-center px-4 mb-8 mx-auto z-10">
-        <p className="text-gray-600 dark:text-gray-400 text-sm font-light leading-relaxed">
+      <div className="max-w-md text-center px-4 mb-4 mx-auto z-10">
+        <p className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-sm font-light leading-relaxed">
           {lang === 'es' ? '¿Tienes una pregunta, propuesta o proyecto, o quieres que trabajemos juntos en algo? No dudes en contactarme.' : 'Got a question, proposal or project or want to work together on something? Feel free to reach out.'}
         </p>
       </div>
 
-      <div className="w-full border-y border-[#ddd] dark:border-[#333] py-4 sm:py-8 overflow-hidden relative flex items-center h-full">
+      <div className="w-full border-y border-[#ddd] dark:border-[#333] py-2 sm:py-4 overflow-hidden relative flex items-center h-full">
         <a href="mailto:pwn27sbx@gmail.com" className="flex cursor-none w-full items-center h-full group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <div className="flex animate-marquee font-anton text-6xl sm:text-[8vw] uppercase transition-colors duration-300 items-center h-full text-[#00A889] sm:text-[#ccc] sm:dark:text-[#444] group-hover:text-[#00A889] hover-pause" style={{ width: "max-content" }}>
+          <div className="flex animate-marquee font-anton text-5xl sm:text-[7vw] uppercase transition-colors duration-300 items-center h-full text-[#00A889] sm:text-[#ccc] sm:dark:text-[#444] group-hover:text-[#00A889] hover-pause" style={{ width: "max-content" }}>
             <TextBlock /><TextBlock /><TextBlock /><TextBlock />
             <TextBlock /><TextBlock /><TextBlock /><TextBlock />
           </div>
         </a>
       </div>
 
-      <div className="my-8 z-10 text-center">
-        <a href="mailto:pwn27sbx@gmail.com" className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+      <div className="mt-6 mb-10 z-10 text-center">
+        <a href="mailto:pwn27sbx@gmail.com" className="text-xl sm:text-3xl text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           pwn27sbx@gmail.com
-          <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
         </a>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-8 text-xs text-gray-500 uppercase tracking-widest border-t border-[#ddd] dark:border-[#222]">
-        <p>Arequipa, Peru</p>
-        <div className="flex gap-4 my-4 sm:my-0">
+      <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-4 sm:px-8 text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest border-t border-[#ddd] dark:border-[#222]">
+        <p className="mb-3 sm:mb-0">Arequipa, Peru</p>
+        <div className="flex gap-4 sm:gap-6 mb-3 sm:mb-0">
           <a href="https://x.com/Fs3b4S" className="hover:text-black dark:hover:text-white transition-colors">X(Twitter)</a>
           <a href="https://github.com/pwn27sbx/pwn27sbx/tree/main" className="hover:text-black dark:hover:text-white transition-colors">Github</a>
           <a href="https://www.linkedin.com/in/pwnsxb/?isSelfProfile=true" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
@@ -565,12 +608,31 @@ function Portfolio({ lang }) {
           <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
               <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative">
 
-                  {/* SECCIÓN GALERÍA POLAROID CAÓTICA */}
+                  {/* BANNERS RESTAURADOS */}
+                  <div className="-mt-32 sm:-mt-48 relative z-30">
+                    <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
+                  </div>
+
+                  {/* SECCIÓN GALERÍA POLAROID */}
                   <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
 
-              <Footer setIsHovering={setIsHovering} lang={lang} />
               </div>
           </div>
+
+          {/* ========================================================= */}
+          {/* EL BLOQUE OVERLAP RESTAURADO CON ANIMACIÓN DE SUBIDA        */}
+          {/* ========================================================= */}
+          <div className="relative z-40 -mt-[100vh] flex flex-col w-full transition-colors duration-300 pointer-events-none">
+            {/* Gradiente transparente para difuminar la entrada */}
+            <div className="w-full h-24 sm:h-32 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
+
+            {/* Contenedor sólido que devora la pantalla mientras subes */}
+            <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative z-50 pointer-events-auto pb-4">
+              <ViewAllBlock setIsHovering={setIsHovering} lang={lang} />
+              <Footer setIsHovering={setIsHovering} lang={lang} />
+            </div>
+          </div>
+
       </main>
     </div>
   );
