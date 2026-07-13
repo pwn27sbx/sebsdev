@@ -291,274 +291,72 @@ const ExpertiseSection = ({ setIsHovering, lang }) => {
   );
 };
 
-const InteractiveBanner = ({ setIsHovering, lang }) => {
-  const [focusedBand, setFocusedBand] = useState('front');
-
+// ========================================================
+// NUEVO COLLAGE (BENTO 2.0 SIN BORDES SUPERIORES)
+// ========================================================
+const WorksCollageSection = ({ setIsHovering, lang }) => {
   const { scrollY } = useScroll();
-  const xFront = useTransform(scrollY, [0, 5000], [0, -1500]);
-  const xBack = useTransform(scrollY, [0, 5000], [0, 1500]);
+  // El texto SOLO se mueve al hacer scroll (sin animate-marquee)
+  const xMarquee = useTransform(scrollY, (v) => -v * 0.8);
 
-  const CustomArrow = () => (
-    <span className="flex items-center justify-center mx-4 sm:mx-8 shrink-0">
-      <svg className="w-10 h-10 sm:w-16 sm:h-16 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 19V5M5 12l7-7 7 7"/>
-      </svg>
-    </span>
-  );
-
-  const TextBlockFront = () => (
-    <span className="shrink-0 flex items-center pr-4">
-      {lang === 'es' ? 'PROYECTOS' : 'PROJECTS'} <CustomArrow /> {lang === 'es' ? 'TRABAJOS' : 'WORKS'} <CustomArrow />
-    </span>
-  );
-
-  const TextBlockBack = () => (
-    <span className="shrink-0 flex items-center pr-4">
-      {lang === 'es' ? 'MÁS DE 100 CLIENTES' : 'OVER 100 CUSTOMERS'} <CustomArrow /> {lang === 'es' ? '8 AÑOS DE EXPERIENCIA' : '8 YEARS OF EXPERIENCE'} <CustomArrow />
-    </span>
-  );
-
-  return (
-    <div
-      className="relative w-full h-[250px] sm:h-[400px] md:h-[500px] overflow-hidden flex items-center justify-center bg-transparent shrink-0 z-30"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => { setIsHovering(false); setFocusedBand('front'); }}
-    >
-      <div className={`absolute w-[130%] bg-[#111] dark:bg-white text-white dark:text-[#111] py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ${focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90'}`} onMouseEnter={() => setFocusedBand('back')}>
-        <motion.div style={{ x: xBack, width: "max-content" }} className="flex">
-          <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
-            {[...Array(15)].map((_, i) => <TextBlockBack key={`back-${i}`} />)}
-          </div>
-        </motion.div>
-      </div>
-
-      <div className={`absolute w-[130%] bg-[#00A889] text-white py-4 sm:py-8 md:py-10 transform -rotate-[6deg] transition-all duration-700 ease-out z-[50] pointer-events-auto shadow-none ${focusedBand === 'back' ? 'blur-[5px]' : 'blur-0 opacity-100'}`} onMouseEnter={() => setFocusedBand('front')}>
-        <motion.div style={{ x: xFront, width: "max-content" }} className="flex">
-          <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: "max-content" }}>
-            {[...Array(15)].map((_, i) => <TextBlockFront key={`front-${i}`} />)}
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-};
-
-// ACÁ ESTÁ LA MAGIA: Cambiamos dark:text-[#131313] a dark:text-[#2a2a2a] para que se vea genial en PC
-const HoverFillWord = ({ text, setIsHovering }) => (
-  <span
-    className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
-    onMouseEnter={() => setIsHovering(true)}
-    onMouseLeave={() => setIsHovering(false)}
-  >
-    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
-      {text}
-    </span>
-    <span className="absolute top-0 left-0 text-[#00A889] hover-fill-text block pointer-events-none">
-      {text}
-    </span>
-  </span>
-);
-
-// LO MISMO AQUÍ: dark:text-[#2a2a2a] para que destaque en móviles sin perder la sutileza
-const WaveFillWord = ({ text, delay = '0s' }) => (
-  <span className="relative inline-flex whitespace-nowrap">
-    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
-      {text}
-    </span>
-    <span
-      className="absolute top-0 left-0 text-[#00A889] animate-wave-text block pointer-events-none"
-      style={{ animationDelay: delay }}
-    >
-      {text}
-    </span>
-  </span>
-);
-
-const ProjectsGallery = ({ setIsHovering, lang }) => {
-  const sectionRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-
-  const xSelected = useTransform(scrollYProgress, [0, 1], ["100vw", "-100vw"]);
-  const xWorks = useTransform(scrollYProgress, [0, 1], ["-100vw", "100vw"]);
-
-  const projects = [
-    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", link: "https://nexusallinone.vercel.app/" },
-    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/" },
-    { id: "03", title: "FUXION OPORTUNIDAD", category: "LANDING PAGE", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/" },
-    { id: "04", title: "TRANSPORTES PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/" },
-    { id: "05", title: "GRUPO HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/" }
+  // Array de proyectos: Aquí está la magia Bento 2.0
+  // Distribuimos span-2 (anchos), row-span-2 (altos) y 1x1 (normales) para romper el bloque perfecto
+  const collageProjects = [
+    { id: "01", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-2" }, // ALTO a la izquierda
+    { id: "02", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "03", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-2 row-span-1 md:col-span-2 md:row-span-1" }, // ANCHO arriba a la derecha
+    { id: "04", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "05", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "06", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-2 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "07", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-2 row-span-1 md:col-span-2 md:row-span-1" }, // ANCHO al centro
+    { id: "08", img: "/img/Fuxion.webp", link: "https://fuxionoportunidad.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "09", img: "/img/TransPremium.webp", link: "https://trasnportesjuan.vercel.app/", span: "col-span-1 row-span-2 md:col-span-1 md:row-span-2" }, // ALTO abajo
+    { id: "10", img: "/img/Hirbell.webp", link: "https://grupohirbell.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "11", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/", span: "col-span-1 row-span-1 md:col-span-1 md:row-span-1" },
+    { id: "12", img: "/img/Servicios.webp", link: "https://roi-servicios.vercel.app/", span: "col-span-2 row-span-1 md:col-span-1 md:row-span-1" },
   ];
 
-  const getCardAlignment = (index) => {
-    const alignments = [
-      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 1
-      'lg:mr-[-15%] lg:ml-auto',  // Posición de la Tarjeta 2
-      'lg:mr-[8%] lg:ml-auto',    // Posición de la Tarjeta 3
-      'lg:ml-[-5%] lg:mr-auto',   // Posición de la Tarjeta 4
-      'lg:mr-[-3%] lg:ml-auto'    // Posición de la Tarjeta 5
-    ];
-    return alignments[index % alignments.length];
-  };
-
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 overflow-x-clip">
+    <section className="w-full bg-[#00A889] flex flex-col pt-4 sm:pt-8 pb-16 sm:pb-24 shadow-2xl relative z-30">
 
-      {/* ======================================================== */}
-      {/* 1. VERSIÓN MÓVIL Y TABLET (block lg:hidden)              */}
-      {/* ======================================================== */}
-      <div className="block lg:hidden w-full relative">
-
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start z-0 overflow-hidden pointer-events-none pt-[5vh]">
-          <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-            <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-              <WaveFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} />
-            </h2>
-          </motion.div>
-          <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2">
-            <h2 className="font-anton text-[32vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-              <WaveFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} delay="0.5s" />
-            </h2>
-          </motion.div>
-        </div>
-
-        <div className="relative z-10 w-[90vw] mx-auto flex flex-col pb-4 pointer-events-none">
-          {projects.map((project, index) => (
-            <motion.div
-              key={`mob-${project.id}`}
-              style={{ top: `calc(25vh + ${index * 40}px)` }}
-              className="sticky w-full h-[65vh] mb-6 pointer-events-auto"
-            >
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full h-full rounded-md overflow-hidden shadow-2xl bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col pointer-events-auto"
-              >
-                <div className="w-full h-[50%] relative overflow-hidden bg-[#050505]">
-                  <img src={project.img} alt={project.title} className="w-full h-full object-cover object-top opacity-100 scale-[1.02]" />
-                </div>
-
-                <div className="w-full h-[50%] p-6 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">{project.id}</span>
-                    <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">{project.category}</span>
-                  </div>
-                  <h3 className="font-anton text-[9vw] text-white dark:text-[#111] uppercase leading-[0.9] break-normal">
-                    {project.title}
-                  </h3>
-                </div>
-              </a>
-            </motion.div>
+      {/* 1. BANDA SUPERIOR (Sin border-y) */}
+      <div className="w-full py-2 sm:py-3 mb-8 sm:mb-12 overflow-hidden flex items-center bg-[#00A889]">
+        <motion.div style={{ x: xMarquee }} className="flex font-anton text-2xl sm:text-4xl uppercase text-white whitespace-nowrap">
+          {[...Array(50)].map((_, i) => (
+            <span key={i} className="flex items-center shrink-0 pr-6 sm:pr-10">
+              {lang === 'es' ? 'TRABAJOS' : 'WORKS'}
+              <svg className="w-6 h-6 sm:w-10 sm:h-10 ml-3 sm:ml-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+              </svg>
+            </span>
           ))}
-
-          <motion.div
-            style={{ top: `calc(25vh + ${projects.length * 40}px)` }}
-            className="sticky w-full h-[65vh] mt-8 mb-8 pointer-events-auto"
-          >
-            <Link to="/proyectos" className="w-full h-full rounded-md overflow-hidden shadow-2xl flex flex-col items-center justify-center bg-[#00A889]">
-              <div className="relative z-10 flex flex-col items-center gap-6 text-center px-4">
-                <h3 className="font-anton text-5xl text-white uppercase tracking-widest leading-[0.85]">
-                  {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
-                  <span className="text-3xl text-[#004d3e]">{lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}</span>
-                </h3>
-                <div className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 text-white shadow-lg">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* ======================================================== */}
-      {/* 2. VERSIÓN PC (hidden lg:block)                          */}
-      {/* ======================================================== */}
-      <div className="hidden lg:block w-full relative pb-6">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden pointer-events-none">
-          <motion.div style={{ x: xSelected }} className="w-full flex justify-center pointer-events-none">
-            <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-              <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
-            </h2>
-          </motion.div>
-          <motion.div style={{ x: xWorks }} className="w-full flex justify-center pointer-events-none mt-2 sm:mt-6 lg:-mt-4">
-            <h2 className="font-anton text-[30vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-              <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
-            </h2>
-          </motion.div>
-        </div>
-
-        <div className="relative z-10 max-w-[95vw] lg:max-w-7xl mx-auto flex flex-col gap-24 sm:gap-40 pt-[15vh] pointer-events-none">
-          {projects.map((project, index) => (
-            <motion.div
-              key={`pc-${project.id}`}
-              initial={{ opacity: 0, y: 150 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`w-full sm:w-[90%] lg:w-[65%] flex flex-col pointer-events-auto ${getCardAlignment(index)}`}
-            >
-              <a href={project.link} target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group w-full h-[55vh] sm:h-[45vh] rounded-md overflow-hidden bg-[#0f0f0f] dark:bg-[#e5e5e5] flex flex-col sm:flex-row cursor-none transform transition-transform duration-500 hover:-translate-y-2 pointer-events-auto shadow-2xl">
-                <div className="w-full sm:w-[45%] p-6 sm:p-10 flex flex-col justify-center relative z-10 bg-[#0f0f0f] dark:bg-[#e5e5e5]">
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-[#00A889] font-mono text-xs border border-[#00A889]/40 px-3 py-1 rounded-full">
-                      {project.id}
-                    </span>
-                    <span className="text-gray-400 dark:text-gray-500 text-xs tracking-widest uppercase">
-                      {project.category}
-                    </span>
-                  </div>
-                  <h3 className="font-anton text-3xl sm:text-3xl md:text-4xl xl:text-5xl text-white dark:text-[#111] uppercase leading-[0.9] group-hover:text-[#00A889] transition-colors duration-400 break-normal pr-2">
-                    {project.title}
-                  </h3>
-                </div>
-
-                <div className="w-full sm:w-[55%] h-full relative overflow-hidden bg-[#050505]">
-                  <img
-                    src={project.img}
-                    alt={project.title}
-                    className="w-full h-full object-cover object-top opacity-70 blur-sm group-hover:blur-none group-hover:opacity-100 transition-all duration-700 scale-[1.02] group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] dark:from-[#c4c4c4] via-transparent to-transparent opacity-100 sm:opacity-80"></div>
-                </div>
-              </a>
-            </motion.div>
-          ))}
-
-          <motion.div
-            initial={{ opacity: 0, y: 150 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full sm:w-[80%] lg:w-[60%] flex flex-col self-center mt-12 mb-8 pointer-events-auto"
+      {/* 2. COLLAGE BENTO 2.0 */}
+      {/* Eliminamos el 'aspect-square' de las tarjetas. Su forma ahora depende del grid y auto-rows. */}
+      <div className="w-[90vw] mx-auto grid grid-cols-2 md:grid-cols-4 auto-rows-[20vh] sm:auto-rows-[25vh] gap-0">
+        {collageProjects.map((proj, idx) => (
+          <a
+            key={idx}
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className={`group relative overflow-hidden cursor-none bg-[#050505] ${proj.span}`}
           >
-            <Link
-              to="/proyectos"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              className="group relative w-full aspect-[2/1] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-8 hover:scale-[1.03] hover:rotate-1 hover:shadow-[0_0_100px_-20px_rgba(0,168,137,0.8)]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
-
-              <div className="relative z-10 flex flex-col items-center gap-8 text-center px-4">
-                <h3 className="font-anton text-6xl sm:text-8xl text-white uppercase tracking-widest group-hover:-translate-y-6 group-hover:scale-110 transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
-                  {lang === 'es' ? 'VER TODOS' : 'VIEW ALL'} <br />
-                  <span className="text-4xl sm:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500">
-                    {lang === 'es' ? 'LOS PROYECTOS' : 'PROJECTS'}
-                  </span>
-                </h3>
-
-                <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.5] group-hover:rotate-[360deg] shadow-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        </div>
+            <img
+              src={proj.img}
+              alt={`Project ${proj.id}`}
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+            />
+            {/* Overlay sutil para añadir vida al pasar el ratón */}
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none"></div>
+          </a>
+        ))}
       </div>
+
     </section>
   );
 };
@@ -575,8 +373,8 @@ const Footer = ({ setIsHovering, lang }) => {
 
   return (
     <footer className="relative flex flex-col justify-end pt-2 w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
-      <div className="max-w-md text-center px-4 mb-8 lg:mb-8 mx-auto z-10">
-        <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-light leading-relaxed">
+      <div className="max-w-md text-center px-4 mb-8 mx-auto z-10">
+        <p className="text-gray-600 dark:text-gray-400 text-sm font-light leading-relaxed">
           {lang === 'es' ? '¿Tienes una pregunta, propuesta o proyecto, o quieres que trabajemos juntos en algo? No dudes en contactarme.' : 'Got a question, proposal or project or want to work together on something? Feel free to reach out.'}
         </p>
       </div>
@@ -590,7 +388,7 @@ const Footer = ({ setIsHovering, lang }) => {
         </a>
       </div>
 
-      <div className="my-8 z-10 text-center">
+      <div className="mt-16 mb-24 z-10 text-center">
         <a href="mailto:pwn27sbx@gmail.com" className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           pwn27sbx@gmail.com
           <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
@@ -608,7 +406,7 @@ const Footer = ({ setIsHovering, lang }) => {
       </div>
     </footer>
   );
-};
+}
 
 function Portfolio({ lang }) {
   const [isHovering, setIsHovering] = useState(false);
@@ -644,9 +442,8 @@ function Portfolio({ lang }) {
           <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
               <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative">
                   <div className="-mt-32 sm:-mt-48 relative z-30">
-                  <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
+                  <WorksCollageSection setIsHovering={setIsHovering} lang={lang} />
                   </div>
-                  <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
               <Footer setIsHovering={setIsHovering} lang={lang} />
               </div>
           </div>
