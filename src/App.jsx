@@ -53,6 +53,27 @@ const globalStyles = `
     .custom-cursor {
       display: none !important;
     }
+
+    /* FIX PARA DISPOSITIVOS TÁCTILES: Polaroids a todo color por defecto */
+    .polaroid-img {
+      filter: grayscale(0) !important;
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+    .polaroid-overlay {
+      background-color: transparent !important;
+    }
+
+    /* BUCLE AUTOMÁTICO DE TINTADO VERDE PARA MÓVILES */
+    .mobile-wave-1 .hover-fill-text {
+      animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
+      clip-path: inset(150% -10% -10% -10%);
+    }
+    .mobile-wave-2 .hover-fill-text {
+      animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
+      animation-delay: 2s !important;
+      clip-path: inset(150% -10% -10% -10%);
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -360,13 +381,14 @@ const HoverFillWord = ({ text, setIsHovering }) => (
 
 
 // ========================================================
-// POLAROID ARRASTRABLE
+// POLAROID ARRASTRABLE: CAÍDA UNO POR UNO RESTAURADA
 // ========================================================
 const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) => {
+  // Las polaroids vuelven a caer espaciadas de forma natural a lo largo de todo el scroll
   const startDrop = index * 0.05;
-  const endDrop = startDrop + 0.20;
+  const endDrop = startDrop + 0.25;
 
-  const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ["-150vh", "0vh"]);
+  const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ["-120vh", "0vh"]);
 
   const [zIndex, setZIndex] = useState(10);
 
@@ -400,9 +422,9 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) =
               draggable="false"
               src={project.img}
               alt={project.title}
-              className="w-full h-full object-cover object-top grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
+              className="polaroid-img w-full h-full object-cover object-top grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
             />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+            <div className="polaroid-overlay absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
           </div>
 
           <div className="flex justify-between items-start mt-4 px-1 w-full pointer-events-none">
@@ -426,18 +448,39 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) =
 
 
 // ========================================================
-// GALERÍA PRINCIPAL (LLUVIA DE 15 POLAROIDS)
+// GALERÍA PRINCIPAL (TIMING DE TEXTO RESPONSIVE Y CERO HUECOS)
 // ========================================================
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"]
   });
 
-  const xSelected = useTransform(scrollYProgress, [0, 1], ["0vw", "-100vw"]);
-  const xWorks = useTransform(scrollYProgress, [0, 1], ["0vw", "100vw"]);
+  // ANIMACIÓN DE ESCRITORIO (Entra, espera y sale temprano)
+  const xSelectedDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ["100vw", "0vw", "0vw", "-100vw"]);
+  const xWorksDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ["-100vw", "0vw", "0vw", "100vw"]);
+
+  // ANIMACIÓN MÓVIL (Entra, se queda en el centro y no sale hacia los lados)
+  const xSelectedMobile = useTransform(scrollYProgress, [0, 0.25], ["100vw", "0vw"]);
+  const xWorksMobile = useTransform(scrollYProgress, [0, 0.25], ["-100vw", "0vw"]);
+
+  // ELEVACIÓN MÓVIL (Sube al final para asomarse por detrás de las polaroids)
+  const yTextMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-35vh"]);
+  const yTextDesktop = useTransform(scrollYProgress, [0, 1], ["0vh", "0vh"]); // En PC se mantiene en el centro
+
+  const xSelected = isMobile ? xSelectedMobile : xSelectedDesktop;
+  const xWorks = isMobile ? xWorksMobile : xWorksDesktop;
+  const yText = isMobile ? yTextMobile : yTextDesktop;
 
   const projects = [
     { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: -12, xOffset: "-45vw", yOffset: "-25vh" },
@@ -458,23 +501,25 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8">
+    // ELIMINADO EL ESPACIO EN BLANCO: Margen negativo leve (-mt-[5vh]) permite respirar sin chocar con la banda verde.
+    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
 
       <div className="h-[300vh] w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-            <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[-10vh] sm:mt-[-5vh]">
+          {/* TEXTO DE FONDO CON COMPORTAMIENTO MÓVIL/PC */}
+          <motion.div style={{ y: yText }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+            <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[-10vh] sm:mt-[-5vh] mobile-wave-1">
               <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
                 <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
               </h2>
             </motion.div>
-            <motion.div style={{ x: xWorks }} className="w-full flex justify-center mt-2 sm:mt-6">
+            <motion.div style={{ x: xWorks }} className="w-full flex justify-center mt-2 sm:mt-6 mobile-wave-2">
               <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
                 <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
               </h2>
             </motion.div>
-          </div>
+          </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             {projects.map((project, index) => (
@@ -495,27 +540,24 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
 };
 
 
-// ========================================================
-// BLOQUE DE CIERRE (VIEW ALL) CON ANIMACIÓN RESTAURADA Y TAMAÑO AJUSTADO
-// ========================================================
 const ViewAllBlock = ({ setIsHovering, lang }) => (
-  <div className="relative w-full flex justify-center pb-8 pt-4 sm:pt-8">
-    <div className="w-[90vw] sm:w-[80%] lg:w-[60%] flex flex-col pointer-events-auto">
+  <div className="relative w-full flex justify-center px-4">
+    <div className="w-full sm:w-[70%] lg:w-[45%] max-w-3xl flex flex-col pointer-events-auto">
       <Link
         to="/proyectos"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
-        className="group relative w-full aspect-[2/1] sm:aspect-[3/1] max-h-[35vh] sm:max-h-[40vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
+        className="group relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[50vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
       >
         <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
         <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-6 text-center px-4">
-          <h3 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white uppercase tracking-widest transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
+          <h3 className="font-anton text-4xl sm:text-5xl md:text-7xl text-white uppercase tracking-widest transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
             {lang === 'es' ? 'VER TODOS LOS' : 'VIEW ALL'} <br />
-            <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-[#004d3e] group-hover:text-white transition-colors duration-500 block mt-1 sm:mt-2">
+            <span className="text-3xl sm:text-4xl md:text-5xl text-[#004d3e] group-hover:text-white transition-colors duration-500 block mt-1 sm:mt-2">
               {lang === 'es' ? 'PROYECTOS' : 'PROJECTS'}
             </span>
           </h3>
-          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.3] group-hover:rotate-[360deg] shadow-lg">
+          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:bg-white text-white group-hover:text-[#00A889] group-hover:scale-[1.3] group-hover:rotate-[360deg] shadow-lg mt-2">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </div>
         </div>
@@ -524,9 +566,6 @@ const ViewAllBlock = ({ setIsHovering, lang }) => (
   </div>
 );
 
-// ========================================================
-// FOOTER COMPACTADO PARA CABER EN 100VH
-// ========================================================
 const Footer = ({ setIsHovering, lang }) => {
   const marqueeText = lang === 'es' ? "¿EMPEZAMOS ALGO? HABLEMOS" : "BE STARTING SOMETHING? LET'S TALK";
 
@@ -554,7 +593,7 @@ const Footer = ({ setIsHovering, lang }) => {
         </a>
       </div>
 
-      <div className="mt-6 mb-10 z-10 text-center">
+      <div className="mt-8 mb-8 z-10 text-center">
         <a href="mailto:pwn27sbx@gmail.com" className="text-xl sm:text-3xl text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           pwn27sbx@gmail.com
           <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
@@ -606,29 +645,24 @@ function Portfolio({ lang }) {
         </div>
         <div className="relative z-20 -mt-[100vh] flex flex-col w-full transition-colors duration-300">
           <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
-              <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative">
+              <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative z-30">
 
-                  {/* BANNERS RESTAURADOS */}
                   <div className="-mt-32 sm:-mt-48 relative z-30">
                     <InteractiveBanner setIsHovering={setIsHovering} lang={lang} />
                   </div>
 
-                  {/* SECCIÓN GALERÍA POLAROID */}
                   <ProjectsGallery setIsHovering={setIsHovering} lang={lang} />
 
               </div>
           </div>
 
-          {/* ========================================================= */}
-          {/* EL BLOQUE OVERLAP RESTAURADO CON ANIMACIÓN DE SUBIDA        */}
-          {/* ========================================================= */}
-          <div className="relative z-40 -mt-[100vh] flex flex-col w-full transition-colors duration-300 pointer-events-none">
-            {/* Gradiente transparente para difuminar la entrada */}
-            <div className="w-full h-24 sm:h-32 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
+          <div className="relative z-40 -mt-[100vh] w-full transition-colors duration-300 pointer-events-none">
+            <div className="w-full h-[15vh] bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
 
-            {/* Contenedor sólido que devora la pantalla mientras subes */}
-            <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative z-50 pointer-events-auto pb-4">
-              <ViewAllBlock setIsHovering={setIsHovering} lang={lang} />
+            <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4">
+              <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12">
+                <ViewAllBlock setIsHovering={setIsHovering} lang={lang} />
+              </div>
               <Footer setIsHovering={setIsHovering} lang={lang} />
             </div>
           </div>
