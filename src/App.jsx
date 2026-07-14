@@ -483,21 +483,21 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   const yText = isMobile ? yTextMobile : yTextDesktop;
 
   const projects = [
-    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: -12, xOffset: "-45vw", yOffset: "-25vh" },
-    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: 15, xOffset: "40vw", yOffset: "-10vh" },
-    { id: "03", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: -8, xOffset: "-20vw", yOffset: "12vh" },
-    { id: "04", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: 10, xOffset: "45vw", yOffset: "25vh" },
-    { id: "05", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: -5, xOffset: "0vw", yOffset: "38vh" },
-    { id: "06", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: 20, xOffset: "-55vw", yOffset: "5vh" },
-    { id: "07", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: -15, xOffset: "50vw", yOffset: "0vh" },
-    { id: "08", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: 7, xOffset: "-30vw", yOffset: "30vh" },
-    { id: "09", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: -22, xOffset: "25vw", yOffset: "-35vh" },
-    { id: "10", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: 12, xOffset: "-10vw", yOffset: "-35vh" },
-    { id: "11", title: "NEXUS", category: "FRONTEND", img: "/img/Nexus.webp", rot: -18, xOffset: "55vw", yOffset: "35vh" },
-    { id: "12", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/Servicios.webp", rot: 25, xOffset: "-60vw", yOffset: "-25vh" },
-    { id: "13", title: "FUXION", category: "LANDING", img: "/img/Fuxion.webp", rot: -10, xOffset: "15vw", yOffset: "-15vh" },
-    { id: "14", title: "PREMIUM", category: "UI/UX", img: "/img/TransPremium.webp", rot: 16, xOffset: "-35vw", yOffset: "40vh" },
-    { id: "15", title: "HIRBELL", category: "CORPORATE", img: "/img/Hirbell.webp", rot: -5, xOffset: "45vw", yOffset: "42vh" },
+    { id: "01", title: "NEXUS", category: "FRONTEND", img: "/img/1.webp", rot: -12, xOffset: "-45vw", yOffset: "-25vh" },
+    { id: "02", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/8.webp", rot: 15, xOffset: "40vw", yOffset: "-10vh" },
+    { id: "03", title: "FUXION", category: "LANDING", img: "/img/2.webp", rot: -8, xOffset: "-20vw", yOffset: "12vh" },
+    { id: "04", title: "PREMIUM", category: "UI/UX", img: "/img/12.webp", rot: 10, xOffset: "45vw", yOffset: "25vh" },
+    { id: "05", title: "HIRBELL", category: "CORPORATE", img: "/img/3.webp", rot: -5, xOffset: "0vw", yOffset: "38vh" },
+    { id: "06", title: "NEXUS", category: "FRONTEND", img: "/img/9.webp", rot: 20, xOffset: "-55vw", yOffset: "5vh" },
+    { id: "07", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/13.webp", rot: -15, xOffset: "50vw", yOffset: "0vh" },
+    { id: "08", title: "FUXION", category: "LANDING", img: "/img/4.webp", rot: 7, xOffset: "-30vw", yOffset: "30vh" },
+    { id: "09", title: "PREMIUM", category: "UI/UX", img: "/img/10.webp", rot: -22, xOffset: "25vw", yOffset: "-35vh" },
+    { id: "10", title: "HIRBELL", category: "CORPORATE", img: "/img/5.webp", rot: 12, xOffset: "-10vw", yOffset: "-35vh" },
+    { id: "11", title: "NEXUS", category: "FRONTEND", img: "/img/15.webp", rot: -18, xOffset: "55vw", yOffset: "35vh" },
+    { id: "12", title: "SERVICIOS GENERALES", category: "FULLSTACK", img: "/img/11.webp", rot: 25, xOffset: "-60vw", yOffset: "-25vh" },
+    { id: "13", title: "FUXION", category: "LANDING", img: "/img/14.webp", rot: -10, xOffset: "15vw", yOffset: "-15vh" },
+    { id: "14", title: "PREMIUM", category: "UI/UX", img: "/img/7.webp", rot: 16, xOffset: "-35vw", yOffset: "40vh" },
+    { id: "15", title: "HIRBELL", category: "CORPORATE", img: "/img/6.webp", rot: -5, xOffset: "45vw", yOffset: "42vh" },
   ];
 
   return (
