@@ -49,39 +49,22 @@ const globalStyles = `
     animation: marquee-reverse-slow 120s linear infinite;
   }
 
-  /* Grano fotográfico realista */
-  .film-grain {
-    position: relative;
-  }
-  .film-grain::after {
-    content: "";
+  /* REFLEJO DE CRISTAL PARA POLAROIDS */
+  .hover-shine-effect {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.06"/%3E%3C/svg%3E');
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg);
+    transition: none;
     pointer-events: none;
-    z-index: 10;
+    z-index: 50;
   }
-
-  /* Reflejo de cristal al hacer hover */
+  .group:hover .hover-shine-effect {
+    animation: glass-shine 0.8s ease-in-out forwards;
+  }
   @keyframes glass-shine {
-    0% { transform: translateX(-150%) skewX(-15deg); opacity: 0; }
-    20% { opacity: 0.4; }
-    100% { transform: translateX(200%) skewX(-15deg); opacity: 0; }
-  }
-  .hover-shine::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-15deg) translateX(-150%);
-    pointer-events: none;
-    z-index: 20;
-  }
-  .hover-shine:hover::before {
-    animation: glass-shine 1s ease-out forwards;
+    0% { left: -100%; }
+    100% { left: 200%; }
   }
 
   @media (hover: none) and (pointer: coarse) {
@@ -105,12 +88,12 @@ const globalStyles = `
     /* BUCLE AUTOMÁTICO DE TINTADO VERDE PARA MÓVILES */
     .mobile-wave-1 .hover-fill-text {
       animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
-      clip-path: inset(150% -10% -10% -10%);
+      clip-path: inset(150% -50% -50% -50%);
     }
     .mobile-wave-2 .hover-fill-text {
       animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
       animation-delay: 2s !important;
-      clip-path: inset(150% -10% -10% -10%);
+      clip-path: inset(150% -50% -50% -50%);
     }
   }
 
@@ -120,21 +103,12 @@ const globalStyles = `
     }
   }
 
-  /* HOVER PC: Rellenar texto de abajo hacia arriba */
-  .hover-fill-text {
-    clip-path: inset(150% -10% -10% -10%);
-    transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .group:hover .hover-fill-text {
-    clip-path: inset(-20% -10% -10% -10%);
-  }
-
   /* OLA MÓVIL: Animación constante en bucle */
   @keyframes wave-fill {
-    0%   { clip-path: inset(150% -10% -10% -10%); }
-    40%  { clip-path: inset(-20% -10% -10% -10%); }
-    60%  { clip-path: inset(-20% -10% -10% -10%); }
-    100% { clip-path: inset(-20% -10% 150% -10%); }
+    0%   { clip-path: inset(150% -50% -50% -50%); }
+    40%  { clip-path: inset(-50% -50% -50% -50%); }
+    60%  { clip-path: inset(-50% -50% -50% -50%); }
+    100% { clip-path: inset(-50% -50% 150% -50%); }
   }
   .animate-wave-text {
     animation: wave-fill 3.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
@@ -402,16 +376,76 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
   );
 };
 
-const HoverFillWord = ({ text, setIsHovering }) => (
-  <span
-    className="relative inline-flex group pointer-events-auto cursor-none whitespace-nowrap"
-    onMouseEnter={() => setIsHovering(true)}
-    onMouseLeave={() => setIsHovering(false)}
-  >
-    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block transition-colors duration-300">
+
+// ========================================================
+// TEXTO DE ESCRITORIO: TINTADO Y DESTINTADO PERFECTO
+// ========================================================
+const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
+  const chars = text.split('');
+
+  // RANKING ÚNICO GLOBAL (0 al 19). Garantiza que NINGUNA letra
+  // comparta el mismo instante de scroll. Se separan al máximo.
+  const strictRanks = [
+    14, 2, 17, 5, 11, 8, 1, 19, 6, 15, // Palabra 1: offset 0 a 9
+    9, 18, 0, 12, 4, 16, 7, 13, 3, 10  // Palabra 2: offset 10 a 19
+  ];
+
+  return (
+    <span className="flex relative leading-[0.85] pb-2">
+      {chars.map((char, i) => {
+        // Obtenemos su turno de aparición único (del 0 al 19)
+        const globalIndex = (i + globalOffset) % strictRanks.length;
+        const rank = strictRanks[globalIndex];
+
+        // PASO 1: AUMENTAMOS LA SEPARACIÓN MATEMÁTICA ENTRE LETRAS (0.018 en vez de 0.012)
+        // Esto evita que tirones del scroll pinten dos letras a la vez.
+        const step = 0.018;
+
+        // FASE 1: TINTAR (Retrasado a 0.12 para que asome bien en la pantalla antes de empezar)
+        const tintStart = 0.12 + (rank * step);
+        const tintEnd = tintStart + 0.001; // Cero difuminado, salto a verde instantáneo
+
+        // FASE 2: DESTINTAR (Desde el 42% del scroll, antes de que salgan de pantalla)
+        const untintStart = 0.42 + (rank * step);
+        const untintEnd = untintStart + 0.001; // Cero difuminado, salto a gris instantáneo
+
+        // Opacidad mapeada estrictamente:
+        // 0 -> Inactivo | 1 -> Activo (Verde) | Vuelve a 0 para destintar al bajar
+        const opacity = useTransform(
+          scrollYProgress,
+          [0, tintStart, tintEnd, untintStart, untintEnd, 1],
+          [0, 0, 1, 1, 0, 0]
+        );
+
+        return (
+          <span key={i} className="relative inline-block whitespace-pre">
+            {/* Letra Gris Inactiva */}
+            <span className="text-[#e5e5e5] dark:text-[#2a2a2a]">{char}</span>
+            {/* Letra Verde Activa */}
+            <motion.span
+              className="absolute top-0 left-0 text-[#00A889] pointer-events-none"
+              style={{ opacity }}
+            >
+              {char}
+            </motion.span>
+          </span>
+        );
+      })}
+    </span>
+  );
+};
+
+// ========================================================
+// TEXTO PARA MÓVILES (Ola Vertical)
+// ========================================================
+const MobileVerticalWaveText = ({ text }) => (
+  <span className="relative inline-flex whitespace-nowrap leading-[0.85] pb-2">
+    <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
       {text}
     </span>
-    <span className="absolute top-0 left-0 text-[#00A889] hover-fill-text block pointer-events-none">
+    <span
+      className="absolute top-0 left-0 text-[#00A889] block pointer-events-none hover-fill-text"
+    >
       {text}
     </span>
   </span>
@@ -419,7 +453,7 @@ const HoverFillWord = ({ text, setIsHovering }) => (
 
 
 // ========================================================
-// NUEVO DISEÑO: "EL MONOLITO" (Elegante, Full-Image, Edge-to-Edge)
+// POLAROID ARRASTRABLE
 // ========================================================
 const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) => {
   const startDrop = index * 0.05;
@@ -443,6 +477,7 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) =
           dragTransition={{ power: 0.05, timeConstant: 150 }}
           initial={{ rotate: project.rot }}
           whileDrag={{ scale: 1.05, rotate: 0, cursor: "grabbing" }}
+
           onDragStart={() => setZIndex(100)}
           onDragEnd={() => setZIndex(10)}
           onHoverStart={() => setZIndex(50)}
@@ -450,37 +485,28 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) =
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
 
-          // Rediseño radical: Eliminamos los bordes gruesos de "papel" y ajustamos proporciones.
-          className="group pointer-events-auto cursor-grab w-[55vw] sm:w-[32vw] lg:w-[22vw] aspect-[4/5] sm:aspect-[3/4]
-                     bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.4)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.9)]
-                     border border-gray-300/50 dark:border-white/10
-                     rounded-sm transition-all duration-300 relative overflow-hidden hover-shine film-grain"
+          className="group relative pointer-events-auto cursor-grab w-[60vw] sm:w-[36vw] lg:w-[22vw] bg-[#fdfdfd] dark:bg-[#111] p-3 pb-12 sm:p-4 sm:pb-16 shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-gray-200/50 dark:border-white/5 overflow-hidden"
         >
-          {/* Imagen Full-Bleed (Cubre toda la tarjeta) */}
-          <img
-            draggable="false"
-            src={project.img}
-            alt="Project Visual"
-            className="polaroid-img absolute inset-0 w-full h-full object-cover object-top grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100"
-          />
+          {/* REFLEJO DE CRISTAL AL HOVER */}
+          <div className="hover-shine-effect"></div>
 
-          {/* Gradiente oscuro inferior para dar profundidad y hacer legible el texto flotante */}
-          <div className="polaroid-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+          <div className="relative w-full aspect-[4/5] sm:aspect-square overflow-hidden bg-[#050505] rounded-sm pointer-events-none">
+            <img
+              draggable="false"
+              src={project.img}
+              alt="Project Visual"
+              className="polaroid-img w-full h-full object-cover object-top grayscale opacity-80 transition-[transform,filter,opacity] duration-700 scale-105 group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
+            />
+            <div className="polaroid-overlay absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+          </div>
 
-          {/* Información elegante sobreimpresa en la parte inferior */}
-          <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex justify-between items-end pointer-events-none overflow-hidden">
-
-            <span className="text-[#00A889] font-mono text-[10px] sm:text-[11px] font-bold tracking-widest mix-blend-screen drop-shadow-md">
+          <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 flex justify-between items-center pointer-events-none">
+            <span className="text-gray-400 dark:text-gray-500 font-mono text-[9px] sm:text-[10px] tracking-widest uppercase">
+              {project.category}
+            </span>
+            <span className="text-[#00A889] font-mono text-[10px] sm:text-xs font-bold px-2 py-0.5 border border-[#00A889]/30 rounded-sm">
               {project.id}
             </span>
-
-            {/* Contenedor con overflow-hidden para la animación de deslizamiento vertical */}
-            <div className="overflow-hidden py-1">
-              <span className="mobile-reveal block text-white/90 group-hover:text-white text-[8px] sm:text-[9px] tracking-[0.25em] uppercase font-light translate-y-[120%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                {project.category}
-              </span>
-            </div>
-
           </div>
         </motion.div>
       </div>
@@ -548,12 +574,19 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
           <motion.div style={{ y: yText }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
             <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[-10vh] sm:mt-[-5vh] mobile-wave-1">
               <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-                <HoverFillWord text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} setIsHovering={setIsHovering} />
+                {isMobile ?
+                  <MobileVerticalWaveText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} /> :
+                  <DesktopScrollText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} scrollYProgress={scrollYProgress} globalOffset={0} />
+                }
               </h2>
             </motion.div>
+
             <motion.div style={{ x: xWorks }} className="w-full flex justify-center mt-2 sm:mt-6 mobile-wave-2">
               <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
-                <HoverFillWord text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} setIsHovering={setIsHovering} />
+                {isMobile ?
+                  <MobileVerticalWaveText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} /> :
+                  <DesktopScrollText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} scrollYProgress={scrollYProgress} globalOffset={10} />
+                }
               </h2>
             </motion.div>
           </motion.div>
