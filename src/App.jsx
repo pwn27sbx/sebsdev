@@ -49,21 +49,32 @@ const globalStyles = `
     animation: marquee-reverse-slow 120s linear infinite;
   }
 
-  /* REFLEJO DE CRISTAL PARA POLAROIDS */
+  /* TEXTURA DE GRANO FOTOGRÁFICO */
+  .film-grain::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.08"/%3E%3C/svg%3E');
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* REFLEJO DE CRISTAL OPTIMIZADO */
   .hover-shine-effect {
     position: absolute;
-    top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-20deg);
+    top: 0; left: -150%; width: 60%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg) translateZ(0);
     transition: none;
     pointer-events: none;
     z-index: 50;
+    will-change: left;
   }
   .group:hover .hover-shine-effect {
     animation: glass-shine 0.8s ease-in-out forwards;
   }
   @keyframes glass-shine {
-    0% { left: -100%; }
+    0% { left: -150%; }
     100% { left: 200%; }
   }
 
@@ -72,20 +83,15 @@ const globalStyles = `
       display: none !important;
     }
 
-    /* FIX PARA DISPOSITIVOS TÁCTILES */
     .polaroid-img {
       filter: grayscale(0) !important;
       opacity: 1 !important;
-      transform: scale(1) !important;
+      transform: scale(1) translateZ(0) !important;
     }
     .polaroid-overlay {
       opacity: 0.9 !important;
     }
-    .mobile-reveal {
-      transform: translateY(0) !important;
-    }
 
-    /* BUCLE AUTOMÁTICO DE TINTADO VERDE PARA MÓVILES */
     .mobile-wave-1 .hover-fill-text {
       animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
       clip-path: inset(150% -50% -50% -50%);
@@ -103,15 +109,11 @@ const globalStyles = `
     }
   }
 
-  /* OLA MÓVIL: Animación constante en bucle */
   @keyframes wave-fill {
     0%   { clip-path: inset(150% -50% -50% -50%); }
     40%  { clip-path: inset(-50% -50% -50% -50%); }
     60%  { clip-path: inset(-50% -50% -50% -50%); }
     100% { clip-path: inset(-50% -50% 150% -50%); }
-  }
-  .animate-wave-text {
-    animation: wave-fill 3.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
   }
 `;
 
@@ -378,39 +380,27 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
 
 
 // ========================================================
-// TEXTO DE ESCRITORIO: TINTADO Y DESTINTADO PERFECTO
+// TEXTO ESCRITORIO: SOMBRA 3D Y TAMAÑO AUMENTADO
 // ========================================================
 const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
   const chars = text.split('');
-
-  // RANKING ÚNICO GLOBAL (0 al 19). Garantiza que NINGUNA letra
-  // comparta el mismo instante de scroll. Se separan al máximo.
-  const strictRanks = [
-    14, 2, 17, 5, 11, 8, 1, 19, 6, 15, // Palabra 1: offset 0 a 9
-    9, 18, 0, 12, 4, 16, 7, 13, 3, 10  // Palabra 2: offset 10 a 19
-  ];
+  const shuffleArray = [10, 2, 8, 4, 12, 1, 6, 9, 3, 11, 0, 7, 5];
 
   return (
-    <span className="flex relative leading-[0.85] pb-2">
+    <span className="flex relative leading-normal py-2 sm:py-4">
       {chars.map((char, i) => {
-        // Obtenemos su turno de aparición único (del 0 al 19)
-        const globalIndex = (i + globalOffset) % strictRanks.length;
-        const rank = strictRanks[globalIndex];
+        const globalIdx = i + globalOffset;
+        const turn = shuffleArray.indexOf(globalIdx) !== -1 ? shuffleArray.indexOf(globalIdx) : i;
+        const step = 0.015;
 
-        // PASO 1: AUMENTAMOS LA SEPARACIÓN MATEMÁTICA ENTRE LETRAS (0.018 en vez de 0.012)
-        // Esto evita que tirones del scroll pinten dos letras a la vez.
-        const step = 0.018;
+        // ENTRADA
+        const tintStart = 0.08 + (turn * step);
+        const tintEnd = tintStart + 0.001;
 
-        // FASE 1: TINTAR (Retrasado a 0.12 para que asome bien en la pantalla antes de empezar)
-        const tintStart = 0.12 + (rank * step);
-        const tintEnd = tintStart + 0.001; // Cero difuminado, salto a verde instantáneo
+        // SALIDA
+        const untintStart = 0.40 + (turn * step);
+        const untintEnd = untintStart + 0.001;
 
-        // FASE 2: DESTINTAR (Desde el 42% del scroll, antes de que salgan de pantalla)
-        const untintStart = 0.42 + (rank * step);
-        const untintEnd = untintStart + 0.001; // Cero difuminado, salto a gris instantáneo
-
-        // Opacidad mapeada estrictamente:
-        // 0 -> Inactivo | 1 -> Activo (Verde) | Vuelve a 0 para destintar al bajar
         const opacity = useTransform(
           scrollYProgress,
           [0, tintStart, tintEnd, untintStart, untintEnd, 1],
@@ -419,11 +409,11 @@ const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
 
         return (
           <span key={i} className="relative inline-block whitespace-pre">
-            {/* Letra Gris Inactiva */}
+            {/* Base Gris (Actúa como sombra) */}
             <span className="text-[#e5e5e5] dark:text-[#2a2a2a]">{char}</span>
-            {/* Letra Verde Activa */}
+            {/* Letra Verde con Desfase (Efecto Sombra Dura 3D) */}
             <motion.span
-              className="absolute top-0 left-0 text-[#00A889] pointer-events-none"
+              className="absolute text-[#00A889] pointer-events-none -top-[1vw] -left-[0.8vw] md:-top-[0.8vw] md:-left-[0.6vw]"
               style={{ opacity }}
             >
               {char}
@@ -436,15 +426,17 @@ const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
 };
 
 // ========================================================
-// TEXTO PARA MÓVILES (Ola Vertical)
+// TEXTO MÓVIL: SOMBRA 3D
 // ========================================================
 const MobileVerticalWaveText = ({ text }) => (
-  <span className="relative inline-flex whitespace-nowrap leading-[0.85] pb-2">
+  <span className="relative inline-flex whitespace-nowrap py-2 sm:py-4 leading-normal">
+    {/* Base Gris */}
     <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
       {text}
     </span>
+    {/* Letra Verde Animada con Desfase */}
     <span
-      className="absolute top-0 left-0 text-[#00A889] block pointer-events-none hover-fill-text"
+      className="absolute text-[#00A889] block pointer-events-none hover-fill-text -top-[1.5vw] -left-[1vw] sm:-top-[1vw] sm:-left-[0.8vw]"
     >
       {text}
     </span>
@@ -453,60 +445,66 @@ const MobileVerticalWaveText = ({ text }) => (
 
 
 // ========================================================
-// POLAROID ARRASTRABLE
+// CARTA: "SPATIAL SLATE" - 144fps
 // ========================================================
-const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) => {
+const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering, bringToFront }) => {
   const startDrop = index * 0.05;
   const endDrop = startDrop + 0.25;
 
   const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ["-120vh", "0vh"]);
-
-  const [zIndex, setZIndex] = useState(10);
+  const [zIndex, setZIndex] = useState(10 + index);
 
   return (
     <motion.div
       style={{ y: yDrop, zIndex }}
-      className="absolute flex items-center justify-center w-full h-full pointer-events-none"
+      className="absolute flex items-center justify-center w-full h-full pointer-events-none transform-gpu will-change-transform"
     >
       <div
         style={{ marginLeft: project.xOffset, marginTop: project.yOffset }}
         className="pointer-events-none"
       >
         <motion.div
+          onPointerDown={() => setZIndex(bringToFront())}
           drag
           dragTransition={{ power: 0.05, timeConstant: 150 }}
           initial={{ rotate: project.rot }}
           whileDrag={{ scale: 1.05, rotate: 0, cursor: "grabbing" }}
-
-          onDragStart={() => setZIndex(100)}
-          onDragEnd={() => setZIndex(10)}
-          onHoverStart={() => setZIndex(50)}
-          onHoverEnd={() => setZIndex(10)}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
 
-          className="group relative pointer-events-auto cursor-grab w-[60vw] sm:w-[36vw] lg:w-[22vw] bg-[#fdfdfd] dark:bg-[#111] p-3 pb-12 sm:p-4 sm:pb-16 shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-gray-200/50 dark:border-white/5 overflow-hidden"
+          className="group relative pointer-events-auto cursor-grab w-[65vw] sm:w-[40vw] lg:w-[28vw] aspect-[4/3]
+                     rounded-2xl p-2 sm:p-3
+                     bg-white/80 dark:bg-[#111]/80 backdrop-blur-md
+                     border border-white/60 dark:border-white/10
+                     shadow-[0_20px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.6)]
+                     overflow-hidden transform-gpu will-change-transform"
         >
-          {/* REFLEJO DE CRISTAL AL HOVER */}
-          <div className="hover-shine-effect"></div>
+          <div className="hover-shine-effect rounded-xl"></div>
 
-          <div className="relative w-full aspect-[4/5] sm:aspect-square overflow-hidden bg-[#050505] rounded-sm pointer-events-none">
+          <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#050505] shadow-inner ring-1 ring-black/5 dark:ring-white/10 transform-gpu">
+            <div className="film-grain absolute inset-0 z-10"></div>
+
             <img
               draggable="false"
               src={project.img}
               alt="Project Visual"
-              className="polaroid-img w-full h-full object-cover object-top grayscale opacity-80 transition-[transform,filter,opacity] duration-700 scale-105 group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
+              className="absolute inset-0 w-full h-full object-cover object-center grayscale opacity-80 transition-[transform,filter,opacity] duration-700 scale-110 group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100 transform-gpu"
             />
-            <div className="polaroid-overlay absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
-          </div>
 
-          <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 flex justify-between items-center pointer-events-none">
-            <span className="text-gray-400 dark:text-gray-500 font-mono text-[9px] sm:text-[10px] tracking-widest uppercase">
-              {project.category}
-            </span>
-            <span className="text-[#00A889] font-mono text-[10px] sm:text-xs font-bold px-2 py-0.5 border border-[#00A889]/30 rounded-sm">
-              {project.id}
-            </span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10 transform-gpu"></div>
+
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 transform-gpu">
+              <span className="bg-[#00A889] text-white px-2.5 py-1 rounded-md text-[9px] sm:text-xs font-mono font-bold shadow-lg border border-[#00A889]/50">
+                {project.id}
+              </span>
+            </div>
+
+            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20 flex gap-2 transform-gpu">
+              <span className="bg-white/20 dark:bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[9px] sm:text-xs font-mono font-medium tracking-widest border border-white/20 dark:border-white/10">
+                {project.category}
+              </span>
+            </div>
+
           </div>
         </motion.div>
       </div>
@@ -521,6 +519,12 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, setIsHovering }) =
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const sectionRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  const globalZIndexCounter = useRef(100);
+  const handleBringToFront = () => {
+    globalZIndexCounter.current += 1;
+    return globalZIndexCounter.current;
+  };
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
@@ -540,7 +544,8 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   const xSelectedMobile = useTransform(scrollYProgress, [0, 0.25], ["100vw", "0vw"]);
   const xWorksMobile = useTransform(scrollYProgress, [0, 0.25], ["-100vw", "0vw"]);
 
-  const yTextMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-35vh"]);
+  // REDUCIDO: De -35vh a -18vh para que en móviles no se corte por arriba
+  const yTextMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-40vh"]);
   const yTextDesktop = useTransform(scrollYProgress, [0, 1], ["0vh", "0vh"]);
 
   const xSelected = isMobile ? xSelectedMobile : xSelectedDesktop;
@@ -566,14 +571,16 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
+    <section ref={sectionRef} className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh] transform-gpu">
 
       <div className="h-[300vh] w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
 
-          <motion.div style={{ y: yText }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-            <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[-10vh] sm:mt-[-5vh] mobile-wave-1">
-              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+          <motion.div style={{ y: yText }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
+
+            {/* TAMAÑO MÁXIMO PC: 21vw para un impacto visual brutal */}
+            <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[10vh] sm:mt-[-5vh] mobile-wave-1">
+              <h2 className="font-anton text-[30vw] sm:text-[26vw] lg:text-[19vw] xl:text-[25vw] uppercase tracking-tighter pointer-events-auto">
                 {isMobile ?
                   <MobileVerticalWaveText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} /> :
                   <DesktopScrollText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} scrollYProgress={scrollYProgress} globalOffset={0} />
@@ -581,11 +588,12 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
               </h2>
             </motion.div>
 
-            <motion.div style={{ x: xWorks }} className="w-full flex justify-center mt-2 sm:mt-6 mobile-wave-2">
-              <h2 className="font-anton text-[32vw] lg:text-[28vw] leading-[0.75] uppercase tracking-tighter pointer-events-auto">
+            {/* MÁRGENES MEGA APRETADOS: -mt-[12vw] en móvil para que queden pegadas sin cortarse */}
+            <motion.div style={{ x: xWorks }} className="w-full flex justify-center -mt-[27vw] sm:-mt-[10vw] lg:-mt-[5vw] xl:-mt-[15vw] mobile-wave-2">
+              <h2 className="font-anton text-[30vw] sm:text-[26vw] lg:text-[19vw] xl:text-[25vw] uppercase tracking-tighter pointer-events-auto">
                 {isMobile ?
                   <MobileVerticalWaveText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} /> :
-                  <DesktopScrollText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} scrollYProgress={scrollYProgress} globalOffset={10} />
+                  <DesktopScrollText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} scrollYProgress={scrollYProgress} globalOffset={8} />
                 }
               </h2>
             </motion.div>
@@ -599,6 +607,7 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
                 index={index}
                 scrollYProgress={scrollYProgress}
                 setIsHovering={setIsHovering}
+                bringToFront={handleBringToFront}
               />
             ))}
           </div>
