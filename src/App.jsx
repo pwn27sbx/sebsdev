@@ -91,16 +91,6 @@ const globalStyles = `
     .polaroid-overlay {
       opacity: 0.9 !important;
     }
-
-    .mobile-wave-1 .hover-fill-text {
-      animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
-      clip-path: inset(150% -50% -50% -50%);
-    }
-    .mobile-wave-2 .hover-fill-text {
-      animation: wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
-      animation-delay: 2s !important;
-      clip-path: inset(150% -50% -50% -50%);
-    }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -109,6 +99,7 @@ const globalStyles = `
     }
   }
 
+  /* ANIMACIÓN OLA VERDE RECUPERADA PARA MÓVILES */
   @keyframes wave-fill {
     0%   { clip-path: inset(150% -50% -50% -50%); }
     40%  { clip-path: inset(-50% -50% -50% -50%); }
@@ -380,14 +371,14 @@ const InteractiveBanner = ({ setIsHovering, lang }) => {
 
 
 // ========================================================
-// TEXTO ESCRITORIO: SOMBRA 3D Y TAMAÑO AUMENTADO
+// TEXTO ESCRITORIO: SOMBRA 3D PERFECTA
 // ========================================================
 const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
   const chars = text.split('');
   const shuffleArray = [10, 2, 8, 4, 12, 1, 6, 9, 3, 11, 0, 7, 5];
 
   return (
-    <span className="flex relative leading-normal py-2 sm:py-4">
+    <span className="flex relative leading-none py-2 sm:py-4">
       {chars.map((char, i) => {
         const globalIdx = i + globalOffset;
         const turn = shuffleArray.indexOf(globalIdx) !== -1 ? shuffleArray.indexOf(globalIdx) : i;
@@ -409,9 +400,9 @@ const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
 
         return (
           <span key={i} className="relative inline-block whitespace-pre">
-            {/* Base Gris (Actúa como sombra) */}
+            {/* Base Gris (Sombra) */}
             <span className="text-[#e5e5e5] dark:text-[#2a2a2a]">{char}</span>
-            {/* Letra Verde con Desfase (Efecto Sombra Dura 3D) */}
+            {/* Letra Verde Animada con Desfase */}
             <motion.span
               className="absolute text-[#00A889] pointer-events-none -top-[1vw] -left-[0.8vw] md:-top-[0.8vw] md:-left-[0.6vw]"
               style={{ opacity }}
@@ -426,17 +417,22 @@ const DesktopScrollText = ({ text, scrollYProgress, globalOffset }) => {
 };
 
 // ========================================================
-// TEXTO MÓVIL: SOMBRA 3D
+// TEXTO MÓVIL: OLA VERDE RECUPERADA (CERO BUG)
 // ========================================================
-const MobileVerticalWaveText = ({ text }) => (
-  <span className="relative inline-flex whitespace-nowrap py-2 sm:py-4 leading-normal">
+const MobileVerticalWaveText = ({ text, delay }) => (
+  <span className="relative inline-flex whitespace-nowrap py-2 sm:py-4 leading-none">
     {/* Base Gris */}
     <span className="text-[#e5e5e5] dark:text-[#2a2a2a] block">
       {text}
     </span>
-    {/* Letra Verde Animada con Desfase */}
+    {/* Letra Verde con Animación en Bucle + Sombra 3D */}
     <span
-      className="absolute text-[#00A889] block pointer-events-none hover-fill-text -top-[1.5vw] -left-[1vw] sm:-top-[1vw] sm:-left-[0.8vw]"
+      className="absolute text-[#00A889] block pointer-events-none -top-[1.5vw] -left-[1vw] sm:-top-[1vw] sm:-left-[0.8vw]"
+      style={{
+        animation: `wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite`,
+        animationDelay: delay,
+        clipPath: 'inset(150% -50% -50% -50%)'
+      }}
     >
       {text}
     </span>
@@ -538,19 +534,26 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
     offset: ["start start", "end end"]
   });
 
+  // Movimiento horizontal normal de entrada/salida
   const xSelectedDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ["100vw", "0vw", "0vw", "-100vw"]);
   const xWorksDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ["-100vw", "0vw", "0vw", "100vw"]);
 
+  // En móviles, entra de forma independiente
   const xSelectedMobile = useTransform(scrollYProgress, [0, 0.25], ["100vw", "0vw"]);
   const xWorksMobile = useTransform(scrollYProgress, [0, 0.25], ["-100vw", "0vw"]);
 
-  // REDUCIDO: De -35vh a -18vh para que en móviles no se corte por arriba
-  const yTextMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-40vh"]);
-  const yTextDesktop = useTransform(scrollYProgress, [0, 1], ["0vh", "0vh"]);
+  // LÓGICA DE ALTURAS INDEPENDIENTES (MÓVIL)
+  // "WORKS" sube ligeramente más (-34vh) que "SELECTED" (-30vh)
+  // Al llegar al centro de la pantalla, WORKS se monta un poquito encima de SELECTED.
+  const ySelectedMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-32vh"]);
+  const yWorksMobile = useTransform(scrollYProgress, [0.55, 0.85], ["0vh", "-36vh"]);
+  const yDesktop = useTransform(scrollYProgress, [0, 1], ["0vh", "0vh"]);
 
   const xSelected = isMobile ? xSelectedMobile : xSelectedDesktop;
   const xWorks = isMobile ? xWorksMobile : xWorksDesktop;
-  const yText = isMobile ? yTextMobile : yTextDesktop;
+
+  const ySelectedFinal = isMobile ? ySelectedMobile : yDesktop;
+  const yWorksFinal = isMobile ? yWorksMobile : yDesktop;
 
   const projects = [
     { id: "01", category: "FRONTEND", img: "/img/1.webp", rot: -12, xOffset: "-45vw", yOffset: "-25vh" },
@@ -576,28 +579,40 @@ const ProjectsGallery = ({ setIsHovering, lang }) => {
       <div className="h-[300vh] w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
 
-          <motion.div style={{ y: yText }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
 
-            {/* TAMAÑO MÁXIMO PC: 21vw para un impacto visual brutal */}
-            <motion.div style={{ x: xSelected }} className="w-full flex justify-center mt-[10vh] sm:mt-[-5vh] mobile-wave-1">
-              <h2 className="font-anton text-[30vw] sm:text-[26vw] lg:text-[19vw] xl:text-[25vw] uppercase tracking-tighter pointer-events-auto">
+            {/* SELECTED
+                En PC, se auto-posiciona sin márgenes locos.
+                En Móvil, tamaño reducido a 22vw.
+            */}
+            <motion.div
+              style={{ x: xSelected, y: ySelectedFinal }}
+              className="w-full flex justify-center"
+            >
+              <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
                 {isMobile ?
-                  <MobileVerticalWaveText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} /> :
+                  <MobileVerticalWaveText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} delay="0s" /> :
                   <DesktopScrollText text={lang === 'es' ? 'TRABAJOS' : 'SELECTED'} scrollYProgress={scrollYProgress} globalOffset={0} />
                 }
               </h2>
             </motion.div>
 
-            {/* MÁRGENES MEGA APRETADOS: -mt-[12vw] en móvil para que queden pegadas sin cortarse */}
-            <motion.div style={{ x: xWorks }} className="w-full flex justify-center -mt-[27vw] sm:-mt-[10vw] lg:-mt-[5vw] xl:-mt-[15vw] mobile-wave-2">
-              <h2 className="font-anton text-[30vw] sm:text-[26vw] lg:text-[19vw] xl:text-[25vw] uppercase tracking-tighter pointer-events-auto">
+            {/* WORKS
+                En PC, solo un ligero margen negativo (-2vw) para acercarla a SELECTED.
+                En Móvil, se acerca a SELECTED al entrar (-5vw). El traslape final lo da la animación (yWorksMobile).
+            */}
+            <motion.div
+              style={{ x: xWorks, y: yWorksFinal }}
+              className="w-full flex justify-center -mt-[5vw] lg:-mt-[2vw]"
+            >
+              <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
                 {isMobile ?
-                  <MobileVerticalWaveText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} /> :
+                  <MobileVerticalWaveText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} delay="2s" /> :
                   <DesktopScrollText text={lang === 'es' ? 'DESTACADOS' : 'WORKS'} scrollYProgress={scrollYProgress} globalOffset={8} />
                 }
               </h2>
             </motion.div>
-          </motion.div>
+          </div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             {projects.map((project, index) => (
