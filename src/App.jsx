@@ -700,6 +700,8 @@ const Footer = ({ setIsHovering, lang }) => {
           <a href="https://x.com/Fs3b4S" className="hover:text-black dark:hover:text-white transition-colors">X(Twitter)</a>
           <a href="https://github.com/pwn27sbx/pwn27sbx/tree/main" className="hover:text-black dark:hover:text-white transition-colors">Github</a>
           <a href="https://www.linkedin.com/in/pwnsxb/?isSelfProfile=true" className="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+          <a href="https://www.instagram.com/frappedmango/" className="hover:text-black dark:hover:text-white transition-colors">Instagram</a>
+
         </div>
         <p>Design by Sebastian</p>
       </div>
