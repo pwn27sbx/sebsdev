@@ -442,7 +442,19 @@ const MobileVerticalWaveText = ({ text, delay }) => (
 const BentoCard = ({ project, setIsHovering }) => {
   const [isHovered, setHovered] = useState(false);
 
-  // Diccionario de direcciones para la imagen secundaria
+  // DETECCIÓN DE TAMAÑO: Lee las clases del grid para ajustar su contenido interno
+  const isLarge = project.spanClass.includes("md:col-span-2 md:row-span-2");
+  const isSmall = project.spanClass.includes("md:col-span-1 md:row-span-1");
+  const isMedium = !isLarge && !isSmall;
+
+  // CLASES DINÁMICAS BASADAS EN EL TAMAÑO
+  const paddingClass = isLarge ? "p-6 md:p-8" : isMedium ? "p-5 md:p-6" : "p-4";
+  const titleClass = isLarge ? "text-4xl md:text-5xl lg:text-7xl" : isMedium ? "text-3xl md:text-4xl lg:text-5xl" : "text-2xl md:text-3xl";
+  const btnClass = isLarge ? "w-12 h-12 md:w-14 md:h-14" : isMedium ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-10 md:h-10";
+  const svgClass = isLarge ? "w-5 h-5 md:w-6 md:h-6" : isMedium ? "w-4 h-4 md:w-5 md:h-5" : "w-4 h-4";
+  const categoryClass = isLarge ? "text-[10px] md:text-[12px]" : isMedium ? "text-[9px] md:text-[10px]" : "text-[8px] md:text-[9px]";
+  const techClass = isSmall ? "text-[8px] px-1.5 py-0.5" : "text-[10px] md:text-[11px] px-2.5 py-1";
+
   const slideVariants = {
     top: { y: "-100%", x: 0 },
     bottom: { y: "100%", x: 0 },
@@ -454,21 +466,18 @@ const BentoCard = ({ project, setIsHovering }) => {
   return (
     <motion.div
       layout
-      // Cero bordes de separación
-      className={`group relative overflow-hidden rounded-none border-none bg-[#050505] cursor-none ${project.spanClass} transform-gpu`}
+      // ESQUINAS MENOS REDONDEADAS (rounded-xl md:rounded-2xl)
+      className={`group relative overflow-hidden rounded-xl md:rounded-2xl border-[0.5px] border-white/20 dark:border-white/10 bg-[#050505] cursor-none ${project.spanClass} transform-gpu shadow-none hover:shadow-[0_20px_50px_rgba(0,168,137,0.15)] transition-all duration-500`}
       onMouseEnter={() => { setIsHovering(true); setHovered(true); }}
       onMouseLeave={() => { setIsHovering(false); setHovered(false); }}
     >
       <div className="absolute inset-0 z-0 bg-[#050505]">
-
-        {/* IMAGEN PRINCIPAL */}
         <img
           src={project.img}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 transition-all duration-700 ease-out"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-105"
         />
 
-        {/* IMAGEN SECUNDARIA (Animada direccionalmente) */}
         {project.hoverImg && (
           <motion.img
             src={project.hoverImg}
@@ -481,28 +490,29 @@ const BentoCard = ({ project, setIsHovering }) => {
           />
         )}
 
-        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500 pointer-events-none"></div>
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-500"></div>
       </div>
 
-      <div className="relative z-30 h-full p-5 sm:p-6 flex flex-col justify-between pointer-events-none">
-        <div className="flex justify-between items-start pointer-events-auto">
-          <span className="bg-[#111] text-white px-2.5 py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-widest border border-white/20 rounded-md group-hover:bg-[#00A889] group-hover:border-[#00A889] transition-colors duration-300">
+      <div className={`relative z-30 h-full flex flex-col justify-between pointer-events-none ${paddingClass}`}>
+
+        <div className="flex justify-between items-start pointer-events-auto w-full">
+          <span className={`text-white px-0 py-1 font-mono font-bold uppercase tracking-[0.2em] border-b border-transparent group-hover:border-[#00A889] group-hover:text-[#00A889] transition-colors duration-300 ${categoryClass}`}>
             {project.category}
           </span>
-          <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-[#00A889] group-hover:border-[#00A889] group-hover:scale-110 group-hover:-rotate-45 transition-all duration-500">
-            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className={`rounded-full bg-white text-black flex items-center justify-center group-hover:bg-[#00A889] group-hover:text-white group-hover:scale-110 group-hover:-rotate-45 transition-all duration-500 shrink-0 shadow-lg ${btnClass}`}>
+            <svg className={svgClass} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </div>
         </div>
 
-        <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out pointer-events-auto">
-          <h3 className="text-white font-anton text-2xl sm:text-3xl uppercase tracking-wider mb-1 leading-none drop-shadow-lg">
+        <div className="translate-y-3 group-hover:translate-y-0 transition-transform duration-500 ease-out pointer-events-auto">
+          <h3 className={`text-white font-anton uppercase tracking-tighter mb-0 leading-[0.9] group-hover:text-[#00A889] transition-colors duration-300 ${titleClass}`}>
             {project.title}
           </h3>
-          <div className="flex flex-wrap gap-1.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
+          <div className="flex flex-wrap gap-1.5 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
             {project.tech.map(t => (
-              <span key={t} className="text-[9px] font-mono border border-white/20 text-white/90 px-1.5 py-0.5 rounded backdrop-blur-sm bg-black/60">
+              <span key={t} className={`font-mono border border-white/40 text-white rounded-sm bg-black/80 ${techClass}`}>
                 {t}
               </span>
             ))}
@@ -515,73 +525,111 @@ const BentoCard = ({ project, setIsHovering }) => {
 
 const ProjectsGallery = ({ setIsHovering, lang }) => {
   const projectsData = [
-    // 🏆 TOP TIER: LOS MÁS RELEVANTES (Cartas Grandes 2x2)
     {
       id: "01", title: "Interactive Grid Engine", category: "SAAS / ARCHITECTURE",
       tech: ["React", "TypeScript", "Algorithms"], img: "/img/MiniExcel.webp", hoverImg: "/img/MiniExcel2.webp",
-      spanClass: "col-span-2 md:col-span-2 row-span-2", slideDirection: "top"
+      spanClass: "md:col-span-1 md:row-span-2", slideDirection: "top"
     },
     {
-      id: "02", title: "Visual Logic Editor", category: "SAAS",
-      tech: ["Next.js", "DAG"], img: "/img/LogicEditor.webp", hoverImg: "/img/LogicEditor2.webp",
-      spanClass: "col-span-2 md:col-span-2 row-span-2", slideDirection: "top"
-    },
-    {
-      id: "03", title: "Faceted Search UI", category: "E-COMMERCE",
-      tech: ["Data Structures", "Algorithms"], img: "/img/Filtered.webp", hoverImg: "/img/Filtered2.webp",
-      spanClass: "col-span-2 md:col-span-2 row-span-2", slideDirection: "left"
-    },
-
-    // 🥈 MID TIER: INTERACTIVOS Y DIRECTORIOS (Cartas Medianas)
-    {
-      id: "04", title: "Paint Studio", category: "CREATIVE / WEB APP",
-      tech: ["Canvas", "UI"], img: "/img/Paint2.webp", hoverImg: "/img/Paint.webp",
-      spanClass: "col-span-2 md:col-span-2 row-span-1", slideDirection: "right" // Mediana ancha (Horizontal)
-    },
-    {
-      id: "05", title: "Tetris Arcade", category: "GAMING / INTERACTIVE",
-      tech: ["Framer", "Logic"], img: "/img/Tetris2.webp", hoverImg: "/img/Tetris.webp",
-      spanClass: "col-span-1 md:col-span-1 row-span-2", slideDirection: "bottom" // Mediana alta (Vertical)
-    },
-    {
-      id: "06", title: "Nexus Directory", category: "DIRECTORY / TOOLKIT",
-      tech: ["React", "Centralized Data"], img: "/img/9.webp", hoverImg: "/img/10.webp",
-      spanClass: "col-span-1 md:col-span-1 row-span-2", slideDirection: "bottom" // Mediana alta (Vertical)
-    },
-
-    // 🥉 BOTTOM TIER: LANDINGS MENOS RELEVANTES (Cartas Chicas 1x1)
-    {
-      id: "07", title: "Transportes Premium", category: "LANDING",
+      id: "02", title: "Transportes Premium", category: "CORPORATE",
       tech: ["Astro", "SVG Motion"], img: "/img/5.webp", hoverImg: "/img/13.webp",
-      spanClass: "col-span-1 md:col-span-1 row-span-1", slideDirection: "left"
+      spanClass: "md:col-span-1 md:row-span-1", slideDirection: "left"
     },
     {
-      // Agregada para completar el rompecabezas matemático de la grilla
-      id: "08", title: "Creative Agency UI", category: "LANDING",
-      tech: ["Framer", "Design"], img: "/img/7.webp", hoverImg: "/img/7_2.webp",
-      spanClass: "col-span-1 md:col-span-1 row-span-1", slideDirection: "right"
+      id: "03", title: "Hirbell Group", category: "LANDING",
+      tech: ["Framer", "Design"], img: "/img/4.webp", hoverImg: "/img/12.webp",
+      spanClass: "md:col-span-1 md:row-span-1", slideDirection: "bottom"
+    },
+    {
+      id: "04", title: "Tetris Arcade", category: "GAMING / INTERACTIVE",
+      tech: ["Framer", "Logic"], img: "/img/Tetris2.webp", hoverImg: "/img/Tetris.webp",
+      spanClass: "md:col-span-1 md:row-span-2", slideDirection: "right"
+    },
+    {
+      id: "05", title: "Visual Logic Editor", category: "SAAS",
+      tech: ["Next.js", "DAG"], img: "/img/LogicEditor.webp", hoverImg: "/img/LogicEditor2.webp",
+      spanClass: "md:col-span-2 md:row-span-2", slideDirection: "top"
+    },
+    {
+      id: "06", title: "Faceted Search UI", category: "E-COMMERCE",
+      tech: ["Data Structures"], img: "/img/Filtered.webp", hoverImg: "/img/Filtered2.webp",
+      spanClass: "md:col-span-1 md:row-span-2", slideDirection: "left"
+    },
+    {
+      id: "07", title: "Nexus Directory", category: "DIRECTORY / TOOLKIT",
+      tech: ["React", "Data"], img: "/img/9.webp", hoverImg: "/img/10.webp",
+      spanClass: "md:col-span-1 md:row-span-1", slideDirection: "right"
+    },
+    {
+      id: "08", title: "Car Wash Setup", category: "LANDING",
+      tech: ["Tailwind", "UI"], img: "/img/7.webp", hoverImg: "/img/14.webp",
+      spanClass: "md:col-span-1 md:row-span-1", slideDirection: "left"
+    },
+    {
+      id: "09", title: "Paint Studio", category: "CREATIVE / WEB APP",
+      tech: ["Canvas", "UI"], img: "/img/Paint2.webp", hoverImg: "/img/Paint.webp",
+      spanClass: "md:col-span-2 md:row-span-1", slideDirection: "bottom"
     }
   ];
 
   return (
-    // CENTRADO ABSOLUTO: El contenedor toma toda la altura (h-full), y justify-center distribuye el espacio sobrante arriba y abajo por igual.
-    <div className="w-full h-full flex flex-col justify-center items-center px-4 sm:px-8 max-w-[1400px] mx-auto py-12 sm:py-16">
+    <div className="relative w-full h-full flex flex-col justify-center items-center py-10 sm:py-16 overflow-hidden">
 
-      {/* TÍTULO CON RESPITE NATURAL */}
-      <div className="mb-6 sm:mb-10 flex justify-start w-full shrink-0 z-30">
-        <h2 className="font-anton text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-none text-[#111] dark:text-white">
-          {lang === 'es' ? 'TRABAJOS' : 'SELECTED'} <span className="text-[#00A889]">{lang === 'es' ? 'DESTACADOS' : 'WORKS'}</span>
-        </h2>
+      <style>{`
+        @keyframes sweep-lr {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes sweep-rl {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+        .text-sweep-lr {
+          background: linear-gradient(to right, #d1d5db 42.5%, #00A889 42.5%, #00A889 57.5%, #d1d5db 57.5%);
+          background-size: 200% auto;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: sweep-lr 6s linear infinite;
+        }
+        .dark .text-sweep-lr {
+          background: linear-gradient(to right, #222 42.5%, #00A889 42.5%, #00A889 57.5%, #222 57.5%);
+          background-size: 200% auto;
+        }
+        .text-sweep-rl {
+          background: linear-gradient(to left, #d1d5db 42.5%, #00A889 42.5%, #00A889 57.5%, #d1d5db 57.5%);
+          background-size: 200% auto;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: sweep-rl 6s linear infinite;
+        }
+        .dark .text-sweep-rl {
+          background: linear-gradient(to left, #222 42.5%, #00A889 42.5%, #00A889 57.5%, #222 57.5%);
+          background-size: 200% auto;
+        }
+      `}</style>
+
+      <div className="absolute inset-0 z-0 flex flex-col items-center justify-center pointer-events-none w-full">
+        <div className="absolute inset-0 bg-[radial-gradient(#000000_2px,transparent_2px)] dark:bg-[radial-gradient(#ffffff_2px,transparent_2px)] [background-size:36px_36px] opacity-[0.05]"></div>
+
+        <div className="w-[150vw] flex flex-col gap-16 transform -rotate-3 scale-110">
+          <div className="flex font-anton text-[12vw] uppercase tracking-tighter whitespace-nowrap text-sweep-lr">
+            {lang === 'es' ? 'DESTACADOS — DESTACADOS — DESTACADOS — DESTACADOS —' : 'SELECTED WORKS — SELECTED WORKS — SELECTED WORKS —'}
+          </div>
+          <div className="flex font-anton text-[12vw] uppercase tracking-tighter whitespace-nowrap text-sweep-rl">
+            {lang === 'es' ? 'TRABAJOS — TRABAJOS — TRABAJOS — TRABAJOS —' : 'SELECTED WORKS — SELECTED WORKS — SELECTED WORKS —'}
+          </div>
+        </div>
       </div>
 
-      {/*
-        EL LÍMITE (max-h-[65vh]): Esta es la clave. Al decirle a la grilla que no sea más alta que el 65% de la pantalla,
-        garantizamos que haya un 35% de espacio libre (menos el título) que se distribuye como aire arriba y abajo.
-      */}
-      <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-[repeat(10,minmax(0,1fr))] md:grid-rows-5 gap-0 w-full flex-1 max-h-[65vh] min-h-0 rounded-3xl overflow-hidden border-[0.5px] border-gray-300/50 dark:border-white/10 relative z-20 bg-[#050505]">
-        {projectsData.map(project => (
-          <BentoCard key={project.id} project={project} setIsHovering={setIsHovering} />
-        ))}
+      <div className="w-full px-4 sm:px-8 max-w-[1400px] mx-auto relative z-20 flex-1 flex flex-col justify-center items-center min-h-0">
+        {/* GAP REDUCIDO: gap-2 md:gap-3 para apretar más el rompecabezas */}
+        <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[350px] md:grid-rows-4 gap-2 md:gap-3 w-full h-auto md:h-full md:max-h-[85vh]">
+          {projectsData.map(project => (
+            <BentoCard key={project.id} project={project} setIsHovering={setIsHovering} />
+          ))}
+        </div>
       </div>
 
     </div>
