@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useSpring, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { usePortfolio } from './context/PortfolioContext';
 
 const projects = [
   { id: "01", year: "2024", title: "NEXUS", category: "Frontend", img: "/img/Nexus.webp", link: "https://nexus-drab-one.vercel.app/" },
@@ -12,16 +13,15 @@ const projects = [
   { id: "07", year: "2022", title: "PAINT", category: "JavaScript / HTML", img: "/img/Paint.webp", link: "/paint/index.html" }
 ];
 
-const Archive = ({ lang }) => {
+const Archive = () => {
+  const { lang, setIsHovering } = usePortfolio();
   const [activeProject, setActiveProject] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // LÓGICA DE MOVIMIENTO INVERTIDA
   const { scrollY } = useScroll();
-  // Ahora empieza en 0 (izquierda) y se mueve a +1000px (hacia la derecha) al hacer scroll hacia abajo
   const titleX = useTransform(scrollY, [0, 2000], [0, 1000]);
 
   const mouseX = useMotionValue(0);
@@ -40,18 +40,21 @@ const Archive = ({ lang }) => {
       className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20"
       onMouseMove={handleMouseMove}
     >
-      <nav className="fixed top-0 w-full p-8 flex justify-between items-center z-[100] mix-blend-difference text-white pointer-events-none">
-        <Link to="/" className="pointer-events-auto group flex items-center gap-2 text-xs uppercase tracking-[0.2em]">
+      <nav className="fixed top-0 w-full p-8 flex justify-between items-center z-[100] mix-blend-difference text-white pointer-events-none" role="navigation" aria-label={lang === 'es' ? 'Navegación' : 'Navigation'}>
+        <Link
+          to="/"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className="pointer-events-auto group flex items-center gap-2 text-xs uppercase tracking-[0.2em] focus-visible:outline-2 focus-visible:outline-white"
+          aria-label={lang === 'es' ? 'Volver al inicio' : 'Back to home'}
+        >
           <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
           {lang === 'es' ? 'Volver' : 'Back'}
         </Link>
-        <div className="text-xs uppercase tracking-[0.2em]">Archive // 2021 — 2026</div>
+        <div className="text-xs uppercase tracking-[0.2em]" aria-hidden="true">Archive // 2021 — 2026</div>
       </nav>
 
-      {/* HEADER MODIFICADO: Alineado a la izquierda con un bloque de texto arriba para dar espacio al scroll */}
       <header className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start">
-
-        {/* Nuevo bloque de texto introductorio (estilo editorial) */}
         <div className="w-full max-w-md mb-12 sm:mb-20 ml-2">
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light leading-relaxed">
             {lang === 'es'
@@ -69,8 +72,8 @@ const Archive = ({ lang }) => {
         <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4" />
       </header>
 
-      <section className="px-4 sm:px-12 relative">
-        <div className="flex text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 mb-6 px-4">
+      <section className="px-4 sm:px-12 relative" aria-label={lang === 'es' ? 'Lista de proyectos' : 'Projects list'}>
+        <div className="flex text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 mb-6 px-4" role="row" aria-hidden="true">
           <div className="w-[10%]">#</div>
           <div className="w-[15%] hidden sm:block">{lang === 'es' ? 'AÑO' : 'YEAR'}</div>
           <div className="flex-1">{lang === 'es' ? 'PROYECTO' : 'PROJECT'}</div>
@@ -83,9 +86,12 @@ const Archive = ({ lang }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            onMouseEnter={() => setActiveProject(project)}
-            onMouseLeave={() => setActiveProject(null)}
-            className="group flex items-center py-8 sm:py-12 border-b border-gray-300 dark:border-white/10 hover:border-[#00A889] transition-colors duration-300 px-4 relative z-10"
+            onMouseEnter={() => { setActiveProject(project); setIsHovering(true); }}
+            onMouseLeave={() => { setActiveProject(null); setIsHovering(false); }}
+            onFocus={() => setActiveProject(project)}
+            onBlur={() => setActiveProject(null)}
+            className="group flex items-center py-8 sm:py-12 border-b border-gray-300 dark:border-white/10 hover:border-[#00A889] transition-colors duration-300 px-4 relative z-10 focus-visible:outline-2 focus-visible:outline-[#00A889]"
+            aria-label={`${project.title} - ${project.category} (${project.year})`}
           >
             <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400">{project.id}</div>
             <div className="w-[15%] font-mono text-xs sm:text-sm text-gray-400 hidden sm:block">{project.year}</div>
@@ -102,7 +108,7 @@ const Archive = ({ lang }) => {
       </section>
 
       <motion.div
-        className="fixed top-0 left-0 w-[400px] aspect-video pointer-events-none z-50 overflow-hidden rounded-xl shadow-2xl border-4 border-white dark:border-[#111]"
+        className="fixed top-0 left-0 w-[300px] sm:w-[400px] aspect-video pointer-events-none z-50 overflow-hidden rounded-xl shadow-2xl border-4 border-white dark:border-[#111]"
         style={{
           x: moveX,
           y: moveY,
@@ -111,6 +117,7 @@ const Archive = ({ lang }) => {
           rotate: activeProject ? 5 : 0
         }}
         transition={{ opacity: { duration: 0.2 }, scale: { duration: 0.3 } }}
+        aria-hidden="true"
       >
         {activeProject?.video ? (
           <video
@@ -122,7 +129,8 @@ const Archive = ({ lang }) => {
           <img
             src={activeProject?.img}
             className="w-full h-full object-cover"
-            alt="Preview"
+            alt={activeProject ? activeProject.title : "Preview"}
+            loading="lazy"
           />
         )}
       </motion.div>
