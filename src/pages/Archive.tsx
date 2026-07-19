@@ -43,7 +43,13 @@ const Archive = () => {
         <div className="text-xs uppercase tracking-[0.2em]">Archive // 2021 — 2026</div>
       </nav>
 
-      <header className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start">
+      <motion.header
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start"
+      >
         <div className="w-full max-w-md mb-12 sm:mb-20 ml-2">
           <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed">{t('archiveDesc', lang)}</p>
         </div>
@@ -51,7 +57,7 @@ const Archive = () => {
           {t('projects', lang)}
         </motion.h1>
         <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4" />
-      </header>
+      </motion.header>
 
       <section id="archive-content" className="px-4 sm:px-12 relative">
         <div className="flex text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 mb-6 px-4">
@@ -61,8 +67,12 @@ const Archive = () => {
           <div className="w-[25%] text-right">{t('archiveCategory', lang)}</div>
         </div>
 
-        {ARCHIVE_PROJECTS.map((project) => (
-          <a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer"
+        {ARCHIVE_PROJECTS.map((project, index) => (
+          <motion.a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
             onMouseEnter={() => setActiveProject(project)}
             onMouseLeave={() => setActiveProject(null)}
             className="group flex items-center py-8 sm:py-12 border-b border-gray-300 dark:border-white/10 hover:border-[#00A889] transition-colors duration-300 px-4 relative z-10"
@@ -75,7 +85,7 @@ const Archive = () => {
             <div className="w-[25%] text-right text-xs sm:text-sm uppercase tracking-widest text-gray-500 group-hover:text-[#111] dark:group-hover:text-white transition-colors">
               {project.category}
             </div>
-          </a>
+          </motion.a>
         ))}
       </section>
 

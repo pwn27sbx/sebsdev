@@ -17,22 +17,22 @@ const About = () => {
         </Link>
       </nav>
 
-      <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+      <motion.h1 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6 }}
         className="font-anton text-[15vw] sm:text-[10vw] leading-none uppercase tracking-tighter mb-12">
         {t('aboutTitle', lang)}
       </motion.h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 max-w-5xl">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6, delay: 0.15 }}>
           <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg leading-relaxed font-light">{t('aboutDesc1', lang)}</p>
           <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg leading-relaxed font-light mt-6">{t('aboutDesc2', lang)}</p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6, delay: 0.3 }}>
           <h3 className="text-xs uppercase tracking-widest text-[#00A889] font-bold mb-6">{t('aboutTechs', lang)}</h3>
           <div className="flex flex-wrap gap-3">
             {techs.map((tech, i) => (
-              <motion.span key={tech} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 + i * 0.05 }}
+              <motion.span key={tech} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 + i * 0.05 }}
                 className="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-xs sm:text-sm tracking-wider text-gray-600 dark:text-gray-400 hover:border-[#00A889] hover:text-[#00A889] transition-colors duration-300"
               >
                 {tech}

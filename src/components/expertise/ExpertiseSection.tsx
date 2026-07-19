@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
 
 const ExpertiseSection = () => {
   const { setIsHovering, lang } = usePortfolio();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { scrollYProgress } = useScroll();
 
   const expertises = useMemo(() => [
     { id: '01', title: t('expertise1Title', lang), marquee: t('expertise1Marquee', lang), direction: 'left' },
@@ -12,11 +14,34 @@ const ExpertiseSection = () => {
     { id: '03', title: t('expertise3Title', lang), marquee: t('expertise3Marquee', lang), direction: 'left' },
   ], [lang]);
 
+  const bgParallax1 = useTransform(scrollYProgress, [0, 1], ['-5%', '15%']);
+  const bgParallax2 = useTransform(scrollYProgress, [0, 1], ['5%', '-10%']);
+  const bgParallax3 = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+
   return (
     <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
+      {/* Parallax background accents */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+        <motion.div
+          style={{ y: bgParallax1 }}
+          className="absolute -top-[15%] -right-[10%] w-[45%] h-[45%] rounded-full bg-gradient-to-br from-[#00A889]/8 via-[#00A889]/3 to-transparent blur-[120px] dark:from-[#00A889]/10 dark:via-[#00A889]/4"
+        />
+        <motion.div
+          style={{ y: bgParallax2 }}
+          className="absolute -bottom-[10%] -left-[5%] w-[35%] h-[35%] rounded-full bg-gradient-to-tr from-[#00A889]/5 via-transparent to-transparent blur-[100px] dark:from-[#00A889]/6"
+        />
+        <motion.div
+          style={{ y: bgParallax3 }}
+          className="absolute top-[30%] left-[50%] -translate-x-1/2 w-[30%] h-[30%] rounded-full bg-gradient-to-r from-transparent via-gray-200/30 to-transparent blur-[80px] dark:via-white/5"
+        />
+      </div>
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
-          <div key={'row-' + index}
+          <motion.div key={'row-' + index}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col md:flex-row md:items-center justify-between group cursor-none w-full border-b border-gray-300 dark:border-gray-800 pb-4 md:pb-8 transition-colors duration-500 hover:border-[#00A889]"
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
@@ -40,7 +65,7 @@ const ExpertiseSection = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

@@ -24,12 +24,12 @@ const Contact = () => {
         </Link>
       </nav>
 
-      <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+      <motion.h1 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6 }}
         className="font-anton text-[15vw] sm:text-[10vw] leading-none uppercase tracking-tighter mb-12">
         {t('contactTitle', lang)}
       </motion.h1>
 
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6, delay: 0.2 }}
         className="max-w-lg"
       >
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">

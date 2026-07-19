@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
@@ -6,7 +7,13 @@ import { t } from '../../data/i18n';
 const ViewAllBlock = () => {
   const { setIsHovering, lang } = usePortfolio();
   return (
-    <div className="relative w-full flex justify-center px-4">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full flex justify-center px-4"
+    >
       <div className="w-full sm:w-[70%] lg:w-[45%] max-w-3xl flex flex-col pointer-events-auto">
         <Link to="/proyectos" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
           className="group relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[50vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
@@ -23,7 +30,7 @@ const ViewAllBlock = () => {
           </div>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default ViewAllBlock;
