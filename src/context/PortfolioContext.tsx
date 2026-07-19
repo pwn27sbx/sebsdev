@@ -38,11 +38,22 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    const root = document.documentElement;
+
+    // View Transition API: transición nativa (Chrome 111+, Firefox 125+)
+    if ((document as any).startViewTransition) {
+      (document as any).startViewTransition(() => {
+        root.classList.toggle('dark', darkMode);
+      });
+      return;
     }
+
+    // Fallback: CSS transition para Firefox viejo y otros navegadores
+    root.classList.add('theme-switching');
+    void getComputedStyle(root).backgroundColor;
+    root.classList.toggle('dark', darkMode);
+    const timer = setTimeout(() => root.classList.remove('theme-switching'), 500);
+    return () => clearTimeout(timer);
   }, [darkMode]);
 
   useEffect(() => {

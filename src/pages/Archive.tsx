@@ -69,10 +69,10 @@ const Archive = () => {
 
         {ARCHIVE_PROJECTS.map((project, index) => (
           <motion.a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer"
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
             onMouseEnter={() => setActiveProject(project)}
             onMouseLeave={() => setActiveProject(null)}
             className="group flex items-center py-8 sm:py-12 border-b border-gray-300 dark:border-white/10 hover:border-[#00A889] transition-colors duration-300 px-4 relative z-10"
