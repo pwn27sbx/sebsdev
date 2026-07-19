@@ -15,12 +15,6 @@
   perspective: 1000;
 }
 
-/* ===== Content-visibility para pintado perezoso de secciones ===== */
-.content-visibility-auto {
-  content-visibility: auto;
-  contain: paint layout style;
-}
-
 /* ===== Scroll suave nativo ===== */
 html {
   scroll-behavior: smooth;

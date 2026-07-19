@@ -10,7 +10,7 @@ import Footer from '../components/layout/Footer';
 
 const Home = () => {
   return (
-    <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-clip">
+    <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
       <CustomCursor />
       <Header />
       <main className="w-full relative z-10">
@@ -33,7 +33,7 @@ const Home = () => {
         </div>
         <div className="relative z-40 -mt-[100vh] w-full transition-colors duration-300 pointer-events-none">
           <div className="w-full h-[15vh] bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
-          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4 content-visibility-auto">
+          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4">
             <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12">
               <ViewAllBlock />
             </div>

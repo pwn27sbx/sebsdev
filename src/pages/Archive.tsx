@@ -53,7 +53,7 @@ const Archive = () => {
         <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4" />
       </header>
 
-      <section id="archive-content" className="px-4 sm:px-12 relative content-visibility-auto">
+      <section id="archive-content" className="px-4 sm:px-12 relative">
         <div className="flex text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 mb-6 px-4">
           <div className="w-[10%]">#</div>
           <div className="w-[15%] hidden sm:block">{t('archiveYear', lang)}</div>
