@@ -39,7 +39,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
               />}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
               <button onClick={onClose}
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/70 transition-all duration-300"
+                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/70 transition-[background-color] duration-300"
                 aria-label="Close"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -58,14 +58,14 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 <a href={project.link} target="_blank" rel="noopener noreferrer"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 bg-[#00A889] text-white rounded-full font-anton text-xs uppercase tracking-widest hover:bg-[#00c5a1] transition-all duration-300 hover:-translate-y-0.5 cursor-none"
+                  className="px-6 py-3 bg-[#00A889] text-white rounded-full font-anton text-xs uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,background-color] duration-300 hover:-translate-y-0.5 cursor-none"
                 >
                   {lang === 'es' ? 'Ver Proyecto' : 'View Project'}
                 </a>
                 <button onClick={onClose}
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full font-anton text-xs uppercase tracking-widest hover:border-gray-500 transition-all duration-300 cursor-none"
+                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full font-anton text-xs uppercase tracking-widest hover:border-gray-500 transition-[border-color] duration-300 cursor-none"
                 >
                   Cerrar
                 </button>

@@ -53,7 +53,7 @@ const Archive = () => {
         <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4" />
       </header>
 
-      <section id="archive-content" className="px-4 sm:px-12 relative">
+      <section id="archive-content" className="px-4 sm:px-12 relative content-visibility-auto">
         <div className="flex text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 mb-6 px-4">
           <div className="w-[10%]">#</div>
           <div className="w-[15%] hidden sm:block">{t('archiveYear', lang)}</div>
@@ -87,9 +87,9 @@ const Archive = () => {
             transition={{ opacity: { duration: 0.2 }, scale: { duration: 0.3 } }}
           >
             {p?.video ? (
-              <video src={p.video} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              <video src={p.video} autoPlay loop muted playsInline className="w-full h-full object-cover gpu" />
             ) : (
-              p && <img src={p.img} className="w-full h-full object-cover" alt={p.title + ' preview'} loading="lazy" />
+              p && <img src={p.img} className="w-full h-full object-cover gpu" alt={p.title + ' preview'} loading="lazy" />
             )}
           </motion.div>
         );
@@ -99,7 +99,7 @@ const Archive = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: showBackToTop ? 1 : 0, scale: showBackToTop ? 1 : 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed bottom-8 right-8 z-[60] w-12 h-12 rounded-full bg-[#00A889] text-white shadow-lg shadow-[#00A889]/30 flex items-center justify-center hover:shadow-xl hover:shadow-[#00A889]/40 hover:-translate-y-1 transition-all duration-300 cursor-none"
+        className="fixed bottom-8 right-8 z-[60] w-12 h-12 rounded-full bg-[#00A889] text-white shadow-lg shadow-[#00A889]/30 flex items-center justify-center hover:shadow-xl hover:shadow-[#00A889]/40 hover:-translate-y-1 transition-[transform,box-shadow] duration-300 cursor-none"
         aria-label={t('backToTop', lang)}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

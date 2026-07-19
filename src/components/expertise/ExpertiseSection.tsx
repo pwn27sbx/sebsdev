@@ -25,7 +25,7 @@ const ExpertiseSection = () => {
               <span className={'font-mono text-sm md:text-base transition-colors duration-500 shrink-0 ' + (hoveredIndex === index ? 'text-[#00A889]' : 'text-gray-400 dark:text-gray-600')}>{exp.id}</span>
               <div className="flex lg:hidden flex-col w-full gap-2 mt-4 items-start text-left">
                 <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee] whitespace-pre-wrap text-left">{exp.title}</h2>
-                <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee" style={{ width: 'max-content' }}>
+                <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee gpu" style={{ width: 'max-content' }}>
                   <span className="shrink-0 pr-4">{exp.marquee.repeat(2)}</span>
                 </div>
               </div>
@@ -34,7 +34,7 @@ const ExpertiseSection = () => {
                   {exp.title.replace('\n', ' ')}
                 </h2>
                 <div className={'absolute left-0 w-full transition-all duration-500 transform origin-top ' + (hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0')}>
-                  <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none text-[#00A889] ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>
+                  <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none text-[#00A889] gpu ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>
                     <span className="shrink-0 pr-4">{exp.marquee.repeat(3)}</span>
                   </div>
                 </div>

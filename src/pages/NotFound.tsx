@@ -11,7 +11,7 @@ const NotFound = () => {
       <h2 className="font-anton text-4xl sm:text-6xl uppercase tracking-tighter text-[#111] dark:text-white -mt-8 sm:-mt-12">{t('notFoundTitle', lang)}</h2>
       <p className="text-gray-500 dark:text-gray-400 mt-6 max-w-md text-sm sm:text-base">{t('notFoundDesc', lang)}</p>
       <Link to="/" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-        className="mt-10 px-8 py-4 bg-[#00A889] text-white rounded-full font-anton text-sm uppercase tracking-widest hover:bg-[#00c5a1] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#00A889]/30 cursor-none"
+        className="mt-10 px-8 py-4 bg-[#00A889] text-white rounded-full font-anton text-sm uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#00A889]/30 cursor-none"
       >
         {t('goHome', lang)}
       </Link>

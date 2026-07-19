@@ -58,7 +58,7 @@ const Contact = () => {
             />
           </div>
           <button type="submit" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-            className="self-start px-10 py-4 bg-[#00A889] text-white rounded-full font-anton text-sm uppercase tracking-widest hover:bg-[#00c5a1] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#00A889]/30 cursor-none"
+            className="self-start px-10 py-4 bg-[#00A889] text-white rounded-full font-anton text-sm uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#00A889]/30 cursor-none"
           >
             {t('contactSend', lang)}
           </button>

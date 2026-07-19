@@ -1,19 +1,43 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ===== Rendimiento: GPU aceleración ===== */
+.gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+/* ===== Content-visibility para pintado perezoso de secciones ===== */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain: paint layout style;
+}
+
+/* ===== Scroll suave nativo ===== */
 html {
   scroll-behavior: smooth;
 }
 
+/* ===== Ocultar scrollbar pero mantener scroll funcional ===== */
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
 
+/* ===== Font Anton ===== */
 .font-anton {
   font-family: 'Anton', sans-serif;
 }
 
+/* ===== Marquee Animations (GPU-accelerated) ===== */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -34,51 +58,106 @@ html {
   100% { transform: translateX(0%); }
 }
 
-.animate-marquee { animation: marquee 25s linear infinite; }
-.animate-marquee-reverse { animation: marquee-reverse 25s linear infinite; }
-.animate-marquee-slow { animation: marquee-slow 120s linear infinite; }
-.animate-marquee-reverse-slow { animation: marquee-reverse-slow 120s linear infinite; }
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-reverse {
+  animation: marquee-reverse 25s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-slow {
+  animation: marquee-slow 120s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-reverse-slow {
+  animation: marquee-reverse-slow 120s linear infinite;
+  will-change: transform;
+}
 
+/* ===== Polaroid film grain overlay ===== */
 .film-grain::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   background: rgba(0,0,0,0.03);
   pointer-events: none;
   z-index: 10;
 }
 
+/* ===== Hover shine effect (GPU-accelerated) ===== */
 .hover-shine-effect {
   position: absolute;
-  top: 0; left: -150%; width: 60%; height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
   transform: skewX(-20deg) translateZ(0);
-  transition: none;
   pointer-events: none;
   z-index: 50;
-  will-change: left;
 }
+
 .group:hover .hover-shine-effect {
   animation: glass-shine 0.8s ease-in-out forwards;
 }
+
 @keyframes glass-shine {
-  0% { left: -150%; }
-  100% { left: 200%; }
+  0% { transform: skewX(-20deg) translateX(0%); }
+  100% { transform: skewX(-20deg) translateX(350%); }
 }
 
+/* ===== Touch devices: desactivar efectos hover que consumen GPU ===== */
 @media (hover: none) and (pointer: coarse) {
   .custom-cursor { display: none !important; }
   .polaroid-img { filter: grayscale(0) !important; opacity: 1 !important; transform: scale(1) translateZ(0) !important; }
   .polaroid-overlay { opacity: 0.9 !important; }
+  .hover-shine-effect { display: none !important; }
 }
 
+/* ===== Desktop hover: pausar marquee on hover ===== */
 @media (hover: hover) and (pointer: fine) {
   .hover-pause:hover { animation-play-state: paused !important; }
 }
 
+/* ===== Wave fill animation ===== */
 @keyframes wave-fill {
   0%   { clip-path: inset(150% -50% -50% -50%); }
   40%  { clip-path: inset(-50% -50% -50% -50%); }
   60%  { clip-path: inset(-50% -50% -50% -50%); }
   100% { clip-path: inset(-50% -50% 150% -50%); }
+}
+
+/* ===== Prefers Reduced Motion: respetar preferencias del usuario ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hover-shine-effect { display: none !important; }
+}
+
+/* ===== Containers para GPU compositing ===== */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ===== Image render optimization ===== */
+img {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Reduced paint regions ===== */
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-transform {
+  will-change: transform;
 }

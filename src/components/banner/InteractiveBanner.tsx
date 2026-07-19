@@ -32,15 +32,15 @@ const InteractiveBanner = () => {
       onMouseLeave={() => { setIsHovering(false); setFocusedBand('front'); }}
     >
       <div className={'absolute w-[130%] bg-[#111] dark:bg-white text-white dark:text-[#111] py-4 sm:py-8 md:py-10 transform rotate-[6deg] transition-all duration-700 ease-out z-[40] pointer-events-auto ' + (focusedBand === 'back' ? 'blur-0 opacity-100' : 'blur-[5px] opacity-90')} onMouseEnter={() => setFocusedBand('back')}>
-        <motion.div style={{ x: xBack, width: 'max-content' }} className="flex">
-          <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: 'max-content' }}>
+        <motion.div style={{ x: xBack, width: 'max-content' }} className="flex gpu">
+          <div className="flex animate-marquee-reverse-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap gpu" style={{ width: 'max-content' }}>
             {[...Array(15)].map((_, i) => <TBack key={'b' + i} />)}
           </div>
         </motion.div>
       </div>
       <div className={'absolute w-[130%] bg-[#00A889] text-white py-4 sm:py-8 md:py-10 transform -rotate-[6deg] transition-all duration-700 ease-out z-[50] pointer-events-auto shadow-none ' + (focusedBand === 'back' ? 'blur-[5px]' : 'blur-0 opacity-100')} onMouseEnter={() => setFocusedBand('front')}>
-        <motion.div style={{ x: xFront, width: 'max-content' }} className="flex">
-          <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap" style={{ width: 'max-content' }}>
+        <motion.div style={{ x: xFront, width: 'max-content' }} className="flex gpu">
+          <div className="flex animate-marquee-slow font-anton text-4xl sm:text-6xl uppercase tracking-widest whitespace-nowrap gpu" style={{ width: 'max-content' }}>
             {[...Array(15)].map((_, i) => <TFront key={'f' + i} />)}
           </div>
         </motion.div>

@@ -9,9 +9,9 @@ const ViewAllBlock = () => {
     <div className="relative w-full flex justify-center px-4">
       <div className="w-full sm:w-[70%] lg:w-[45%] max-w-3xl flex flex-col pointer-events-auto">
         <Link to="/proyectos" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-          className="group relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[50vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transform transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
+          className="group relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[50vh] rounded-md overflow-hidden flex flex-col items-center justify-center cursor-none transition-all duration-700 ease-[0.16,1,0.3,1] bg-[#00A889] hover:-translate-y-4 hover:scale-[1.05] hover:-rotate-2 hover:shadow-[0_0_80px_-20px_rgba(0,168,137,0.8)]"
         >
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#00A889] via-[#00c5a1] to-[#00A889] opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[0.16,1,0.3,1] z-0"></div>
           <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-6 text-center px-4">
             <h3 className="font-anton text-4xl sm:text-5xl md:text-7xl text-white uppercase tracking-widest transition-all duration-700 ease-[0.16,1,0.3,1] leading-[0.85]">
               {t('viewAll', lang)} <br />

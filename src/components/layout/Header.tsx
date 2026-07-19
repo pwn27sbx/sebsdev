@@ -5,13 +5,10 @@ const Header = () => {
   const { setIsHovering, darkMode, setDarkMode, lang, setLang } = usePortfolio();
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full px-4 sm:px-8 py-3 flex justify-between items-center z-50">
-      {/* Glass-morphism background: adapta a cualquier fondo */}
-      <div className="absolute inset-0 bg-white/70 dark:bg-black/60 backdrop-blur-xl border-b border-gray-200/30 dark:border-gray-800/30" />
-
+    <header className="fixed top-0 left-0 right-0 w-full px-4 sm:px-8 py-3 flex justify-between items-center z-50 pointer-events-none">
       {/* Language Switcher */}
       <div
-        className="relative z-10 pointer-events-auto"
+        className="pointer-events-auto"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -26,11 +23,11 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Dark Mode Toggle — icono minimalista con hover sutil */}
-      <div className="relative z-10 pointer-events-auto">
+      {/* Dark Mode Toggle */}
+      <div className="pointer-events-auto">
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="flex items-center justify-center w-9 h-9 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white transition-all duration-300 group"
+          className="flex items-center justify-center w-9 h-9 rounded-full text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 group"
           aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {darkMode ? (

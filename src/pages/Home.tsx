@@ -14,7 +14,7 @@ const Home = () => {
       <CustomCursor />
       <Header />
       <main className="w-full relative z-10">
-        <div className="relative z-10 w-full h-[100dvh] bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors">
+        <div className="relative z-10 w-full h-[100dvh] bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors gpu">
           <Hero />
         </div>
         <div className="relative z-10 h-[200vh]">
@@ -33,7 +33,7 @@ const Home = () => {
         </div>
         <div className="relative z-40 -mt-[100vh] w-full transition-colors duration-300 pointer-events-none">
           <div className="w-full h-[15vh] bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
-          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4">
+          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4 content-visibility-auto">
             <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12">
               <ViewAllBlock />
             </div>
