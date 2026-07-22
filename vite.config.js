@@ -76,7 +76,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
-        navigateFallback: '/mi-portafolio/',
+        navigateFallback: 'index.html',
         runtimeCaching: [
           {
             urlPattern: /\.(?:webp|png|jpg|jpeg|svg|gif)$/,
