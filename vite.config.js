@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/mi-portafolio/',
+  base: '/',
   build: {
     rollupOptions: {
       output: {
@@ -33,8 +33,8 @@ export default defineConfig({
         background_color: '#0a0a0a',
         display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone'],
-        scope: '/mi-portafolio/',
-        start_url: '/mi-portafolio/',
+        scope: '/',
+        start_url: '/',
         orientation: 'any',
         lang: 'es',
         categories: ['portfolio', 'development', 'design'],
@@ -61,14 +61,14 @@ export default defineConfig({
             name: 'Proyectos',
             short_name: 'Proyectos',
             description: 'Ver todos los proyectos',
-            url: '/mi-portafolio/proyectos',
+            url: '/proyectos',
             icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
           },
           {
             name: 'Contacto',
             short_name: 'Contacto',
             description: 'Contactarme',
-            url: '/mi-portafolio/contacto',
+            url: '/contacto',
             icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
           }
         ],

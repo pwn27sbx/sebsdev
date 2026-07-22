@@ -48,7 +48,7 @@ const FallbackLoader = () => (
 export default function App() {
   return (
     <HelmetProvider>
-      <Router basename="/mi-portafolio">
+      <Router basename="/">
         <ErrorBoundary>
           <PortfolioProvider>
             <Suspense fallback={<FallbackLoader />}>
