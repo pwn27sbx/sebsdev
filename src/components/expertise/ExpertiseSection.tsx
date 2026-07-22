@@ -42,7 +42,7 @@ const ExpertiseSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col md:flex-row md:items-center justify-between group cursor-none w-full border-b border-gray-300 dark:border-gray-800 pb-4 md:pb-8 transition-colors duration-500 hover:border-[#00A889]"
+            className="flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 pb-4 md:pb-8 transition-colors duration-500 hover:border-[#00A889]"
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
           >

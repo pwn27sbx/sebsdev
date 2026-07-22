@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import CustomCursor from '../components/layout/CustomCursor';
 import Header from '../components/layout/Header';
 import Hero from '../components/hero/Hero';
@@ -11,6 +12,11 @@ import Footer from '../components/layout/Footer';
 const Home = () => {
   return (
     <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
+      <Helmet>
+        <title>Sebastian | Front-End Developer & UI/UX Designer</title>
+        <meta name="description" content="Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX." />
+        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
+      </Helmet>
       <CustomCursor />
       <Header />
       <main className="w-full relative z-10">

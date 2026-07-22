@@ -58,14 +58,14 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 <a href={project.link} target="_blank" rel="noopener noreferrer"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 bg-[#00A889] text-white rounded-full font-anton text-xs uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,background-color] duration-300 hover:-translate-y-0.5 cursor-none"
+                  className="px-6 py-3 bg-[#00A889] text-white rounded-full font-anton text-xs uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,background-color] duration-300 hover:-translate-y-0.5 md:cursor-none"
                 >
                   {lang === 'es' ? 'Ver Proyecto' : 'View Project'}
                 </a>
                 <button onClick={onClose}
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full font-anton text-xs uppercase tracking-widest hover:border-gray-500 transition-[border-color] duration-300 cursor-none"
+                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full font-anton text-xs uppercase tracking-widest hover:border-gray-500 transition-[border-color] duration-300 md:cursor-none"
                 >
                   Cerrar
                 </button>

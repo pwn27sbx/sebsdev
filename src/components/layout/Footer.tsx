@@ -21,14 +21,14 @@ const Footer = () => {
         <p className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-sm font-light leading-relaxed">{t('footerDesc', lang)}</p>
       </div>
       <div className="w-full border-y border-[#ddd] dark:border-[#333] py-2 sm:py-4 overflow-hidden relative flex items-center h-full">
-        <a href={'mailto:' + EMAIL} className="flex cursor-none w-full items-center h-full group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <a href={'mailto:' + EMAIL} className="flex md:cursor-none w-full items-center h-full group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           <div className="flex animate-marquee font-anton text-5xl sm:text-[7vw] uppercase transition-colors duration-300 items-center h-full text-[#00A889] sm:text-[#ccc] sm:dark:text-[#444] group-hover:text-[#00A889] hover-pause" style={{ width: 'max-content' }}>
             <TextBlock /><TextBlock /><TextBlock /><TextBlock /><TextBlock /><TextBlock /><TextBlock /><TextBlock />
           </div>
         </a>
       </div>
       <div className="mt-8 mb-8 z-10 text-center">
-        <a href={'mailto:' + EMAIL} className="text-xl sm:text-3xl text-gray-800 dark:text-gray-300 hover:text-[#111] dark:hover:text-white transition-colors duration-300 relative inline-block group cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <a href={'mailto:' + EMAIL} className="text-xl sm:text-3xl text-gray-800 dark:text-gray-300 hover:text-[#111] dark:hover:text-white transition-colors duration-300 relative inline-block group md:cursor-none" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           {EMAIL}
           <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
         </a>

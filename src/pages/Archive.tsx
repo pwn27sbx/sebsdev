@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion, useSpring, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -30,6 +31,11 @@ const Archive = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20" onMouseMove={handleMouseMove}>
+      <Helmet>
+        <title>Archivo de Proyectos | Sebastian</title>
+        <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
+        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/proyectos" />
+      </Helmet>
       {/* Skip to content link */}
       <a href="#archive-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-[#00A889] focus:text-white focus:rounded-md focus:text-sm focus:uppercase focus:tracking-widest">
         {lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}
@@ -109,7 +115,7 @@ const Archive = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: showBackToTop ? 1 : 0, scale: showBackToTop ? 1 : 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed bottom-8 right-8 z-[60] w-12 h-12 rounded-full bg-[#00A889] text-white shadow-lg shadow-[#00A889]/30 flex items-center justify-center hover:shadow-xl hover:shadow-[#00A889]/40 hover:-translate-y-1 transition-[transform,box-shadow] duration-300 cursor-none"
+        className="fixed bottom-8 right-8 z-[60] w-12 h-12 rounded-full bg-[#00A889] text-white shadow-lg shadow-[#00A889]/30 flex items-center justify-center hover:shadow-xl hover:shadow-[#00A889]/40 hover:-translate-y-1 transition-[transform,box-shadow] duration-300 md:cursor-none"
         aria-label={t('backToTop', lang)}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

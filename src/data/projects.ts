@@ -20,7 +20,7 @@ export interface ArchiveProject {
   video?: string;
 }
 
-export const GALLERY_PROJECTS: GalleryProject[] = [
+const rawGalleryProjects: GalleryProject[] = [
   { id: '01', category: 'FRONTEND', img: '/img/1.webp', rot: -12, xOffset: '-45vw', yOffset: '-25vh', title: 'Nexus Brand', year: '2024', link: 'https://nexus-drab-one.vercel.app/' },
   { id: '02', category: 'UI/UX', img: '/img/12.webp', rot: 10, xOffset: '45vw', yOffset: '25vh', title: 'UI Dashboard', year: '2024', link: 'https://fuxionoportunidad.vercel.app/' },
   { id: '03', category: 'CORPORATE', img: '/img/3.webp', rot: -5, xOffset: '0vw', yOffset: '38vh', title: 'Corporate Site', year: '2024', link: 'https://grupohirbell.vercel.app/' },
@@ -38,7 +38,13 @@ export const GALLERY_PROJECTS: GalleryProject[] = [
   { id: '15', category: 'CORPORATE', img: '/img/6.webp', rot: -5, xOffset: '45vw', yOffset: '42vh', title: 'Brand Identity', year: '2024', link: 'https://grupohirbell.vercel.app/' },
 ];
 
-export const ARCHIVE_PROJECTS: ArchiveProject[] = [
+export const GALLERY_PROJECTS: GalleryProject[] = rawGalleryProjects.map(p => ({
+  ...p,
+  img: import.meta.env.BASE_URL + p.img.replace(/^\//, ''),
+  link: p.link.startsWith('/') ? import.meta.env.BASE_URL + p.link.replace(/^\//, '') : p.link,
+}));
+
+const rawArchiveProjects: ArchiveProject[] = [
   { id: '01', year: '2023', title: 'MINI-EXCEL', category: 'Productivity Tool / Web Application', img: '/img/MiniExcel.webp', link: 'https://mini-excel-three.vercel.app/' },
   { id: '02', year: '2023', title: 'VISUAL LOGIC EDITOR', category: 'SaaS Interface / Visual Programming', img: '/img/LogicEditor.webp', link: 'https://visual-logic-editor.vercel.app/' },
   { id: '03', year: '2023', title: 'FACETED FILTERS UI', category: 'E-commerce Search Engine', img: '/img/Filtered.webp', link: 'https://faceted-filters-ui.vercel.app/' },
@@ -50,3 +56,10 @@ export const ARCHIVE_PROJECTS: ArchiveProject[] = [
   { id: '09', year: '2023', title: 'TRANSPORTES PREMIUM', category: 'Landing Page', img: '/img/13.webp', link: 'https://trasnportesjuan.vercel.app/' },
   { id: '10', year: '2024', title: 'GRUPO HIRBELL', category: 'Landing Page', img: '/img/8.webp', link: 'https://grupohirbell.vercel.app/' },
 ];
+
+export const ARCHIVE_PROJECTS: ArchiveProject[] = rawArchiveProjects.map(p => ({
+  ...p,
+  img: import.meta.env.BASE_URL + p.img.replace(/^\//, ''),
+  link: p.link.startsWith('/') ? import.meta.env.BASE_URL + p.link.replace(/^\//, '') : p.link,
+  video: p.video ? import.meta.env.BASE_URL + p.video.replace(/^\//, '') : undefined,
+}));

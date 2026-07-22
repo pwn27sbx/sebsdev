@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import { HelmetProvider } from 'react-helmet-async';
 import './styles/globalStyles.css';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -40,14 +41,16 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <Router>
-      <PortfolioProvider>
-        <ErrorBoundary>
-          <Suspense fallback={null}>
-            <AnimatedRoutes />
-          </Suspense>
-        </ErrorBoundary>
-      </PortfolioProvider>
-    </Router>
+    <HelmetProvider>
+      <Router basename="/mi-portafolio">
+        <PortfolioProvider>
+          <ErrorBoundary>
+            <Suspense fallback={<div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a]" />}>
+              <AnimatedRoutes />
+            </Suspense>
+          </ErrorBoundary>
+        </PortfolioProvider>
+      </Router>
+    </HelmetProvider>
   );
 }
