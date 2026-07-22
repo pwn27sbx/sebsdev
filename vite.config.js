@@ -80,7 +80,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /\.(?:webp|png|jpg|jpeg|svg|gif)$/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'images-cache',
               expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },

@@ -26,6 +26,8 @@ const Header = () => {
       {/* Dark Mode Toggle */}
       <div className="pointer-events-auto">
         <button
+          role="switch"
+          aria-checked={darkMode}
           onClick={() => setDarkMode(!darkMode)}
           className="flex items-center justify-center w-9 h-9 rounded-full text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300 group"
           aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}

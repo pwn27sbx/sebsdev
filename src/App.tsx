@@ -3,6 +3,13 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
+
+
+
+
+
+
+
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/globalStyles.css';
 
@@ -22,16 +29,16 @@ function AnimatedRoutes() {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
-      <div className="min-h-screen bg-gradient-to-br from-[#00A889] via-[#008f6b] to-[#0a0a0a]">
+      <div className="min-h-screen bg-gradient-to-br from-brand-primary via-brand-primary-dark to-bg-dark">
         <motion.div key={location.pathname} variants={pageVariants} initial={false} animate="animate" exit="exit"
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
         <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/proyectos" element={<Archive />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contacto" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Suspense fallback={<FallbackLoader />}><Home /></Suspense>} />
+          <Route path="/proyectos" element={<Suspense fallback={<FallbackLoader />}><Archive /></Suspense>} />
+          <Route path="/about" element={<Suspense fallback={<FallbackLoader />}><About /></Suspense>} />
+          <Route path="/contacto" element={<Suspense fallback={<FallbackLoader />}><Contact /></Suspense>} />
+          <Route path="*" element={<Suspense fallback={<FallbackLoader />}><NotFound /></Suspense>} />
         </Routes>
         </motion.div>
       </div>
@@ -40,8 +47,8 @@ function AnimatedRoutes() {
 }
 
 const FallbackLoader = () => (
-  <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] flex items-center justify-center transition-colors duration-500">
-    <div className="w-10 h-10 border-4 border-gray-300 dark:border-gray-800 border-t-[#00A889] dark:border-t-[#00A889] rounded-full animate-spin"></div>
+  <div className="min-h-screen bg-bg-light dark:bg-bg-dark flex items-center justify-center transition-colors duration-500">
+    <div className="w-10 h-10 border-4 border-gray-300 dark:border-gray-800 border-t-brand-primary dark:border-t-brand-primary rounded-full animate-spin"></div>
   </div>
 );
 
@@ -51,9 +58,7 @@ export default function App() {
       <Router basename="/">
         <ErrorBoundary>
           <PortfolioProvider>
-            <Suspense fallback={<FallbackLoader />}>
-              <AnimatedRoutes />
-            </Suspense>
+            <AnimatedRoutes />
           </PortfolioProvider>
         </ErrorBoundary>
       </Router>

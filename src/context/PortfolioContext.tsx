@@ -15,25 +15,35 @@ const PortfolioContext = createContext<PortfolioContextType | null>(null);
 
 export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   const [isHovering, setIsHovering] = useState(false);
-  const [lang, setLang] = useState<Lang>(() => {
-    if (typeof navigator !== 'undefined') {
-      const userLang: string = navigator.language || (navigator as any).userLanguage || 'en';
+  const [lang, setLangState] = useState<Lang>(() => {
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('portfolio_lang');
+      if (savedLang === 'es' || savedLang === 'en') return savedLang as Lang;
+      const userLang = navigator.language || (navigator as any).userLanguage || 'en';
       return userLang.toLowerCase().includes('es') ? 'es' as Lang : 'en' as Lang;
     }
     return 'en' as Lang;
   });
 
-  // Dark mode: empieza siguiendo al sistema, pero un toggle manual gana prioridad
+  const setLang = useCallback((value: Lang) => {
+    localStorage.setItem('portfolio_lang', value);
+    setLangState(value);
+  }, []);
+
+  // Dark mode: empieza leyendo de localStorage, luego del sistema
   const [darkMode, setDarkModeState] = useState(() => {
     if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('portfolio_theme');
+      if (savedTheme !== null) return savedTheme === 'dark';
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return false;
   });
-  const userToggled = useRef(false);
+  const userToggled = useRef(typeof window !== 'undefined' && localStorage.getItem('portfolio_theme') !== null);
 
   const setDarkMode = useCallback((value: boolean) => {
     userToggled.current = true;
+    localStorage.setItem('portfolio_theme', value ? 'dark' : 'light');
     setDarkModeState(value);
   }, []);
 

@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-brand-primary: #00A889;
+  --color-brand-primary-dark: #008f6b;
+  --color-bg-light: #f5f5f5;
+  --color-bg-dark: #0a0a0a;
+}
+
 /* ===== Rendimiento: GPU aceleración ===== */
 .gpu {
   transform: translateZ(0);
