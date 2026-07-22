@@ -3,28 +3,77 @@
   <head>
     <meta charset="UTF-8" />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+    <script type="text/javascript">
+      var redirect = sessionStorage.getItem('redirectPath');
+      if (redirect && redirect !== window.location.pathname) {
+        sessionStorage.removeItem('redirectPath');
+        window.history.replaceState(null, null, redirect);
+      }
+    </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=3" />
 
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&display=block" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=block" />
+    <!-- Apple Touch Icons (iOS home screen & share sheet) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="./apple-touch-icon-120x120.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Sebastian" />
+
+    <!-- Self-hosted Anton Font (font-display:swap ensures text is visible immediately) -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sebastian | Front-End Developer</title>
+    <title>Sebastian | Front-End Developer &amp; UI/UX Designer — Portafolio</title>
 
-    <meta name="description" content="Portafolio de Sebastian, Frontend Developer. Especializado en crear experiencias digitales interactivas, fusionando diseño UI/UX de alta calidad con tecnología moderna." />
+    <meta name="description" content="Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX. Explora proyectos interactivos que fusionan diseño de alta calidad con tecnología moderna." />
+    <meta name="keywords" content="frontend developer, react, typescript, UI/UX, web animations, portafolio, arequipa, peru, framer motion, tailwind css" />
+    <meta name="author" content="Sebastian" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio" />
 
-    <meta property="og:title" content="Sebastian | Front-End Developer" />
-    <meta property="og:description" content="Explora mis proyectos y descubre cómo fusiono diseño de alta calidad con tecnología moderna para crear experiencias digitales únicas." />
+    <meta property="og:title" content="Sebastian | Front-End Developer &amp; UI/UX Designer" />
+    <meta property="og:description" content="Explora mi portafolio de proyectos interactivos. Especializado en React, TypeScript, animaciones web y diseño UI/UX." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://tu-dominio.com" />
+    <meta property="og:url" content="https://pwn27sbx.github.io/mi-portafolio" />
+    <meta property="og:image" content="https://pwn27sbx.github.io/mi-portafolio/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Sebastian — Portfolio" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sebastian | Front-End Developer &amp; UI/UX Designer" />
+    <meta name="twitter:description" content="Portafolio con proyectos interactivos de React, TypeScript y animaciones web. Diseño UI/UX de alta calidad." />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Sebastian",
+      "jobTitle": "Front-End Developer",
+      "url": "https://pwn27sbx.github.io/mi-portafolio",
+      "sameAs": [
+        "https://github.com/pwn27sbx",
+        "https://www.linkedin.com/in/pwnsxb/",
+        "https://x.com/Fs3b4S",
+        "https://www.instagram.com/frappedmango/"
+      ],
+      "knowsAbout": ["Frontend Development", "UI/UX Design", "React", "TypeScript", "JavaScript", "Web Animation", "Framer Motion", "Tailwind CSS"],
+      "description": "Frontend Developer de Arequipa, Perú. Especializado en crear experiencias digitales interactivas con React y animaciones web.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Arequipa",
+        "addressCountry": "PE"
+      }
+    }
+    </script>
 
     </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

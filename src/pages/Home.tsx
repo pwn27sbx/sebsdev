@@ -1,0 +1,53 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import CustomCursor from '../components/layout/CustomCursor';
+import Header from '../components/layout/Header';
+import Hero from '../components/hero/Hero';
+import ExpertiseSection from '../components/expertise/ExpertiseSection';
+import InteractiveBanner from '../components/banner/InteractiveBanner';
+import ProjectsGallery from '../components/gallery/ProjectsGallery';
+import ViewAllBlock from '../components/gallery/ViewAllBlock';
+import Footer from '../components/layout/Footer';
+
+const Home = () => {
+  return (
+    <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
+      <Helmet>
+        <title>Sebastian | Front-End Developer & UI/UX Designer</title>
+        <meta name="description" content="Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX." />
+        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
+      </Helmet>
+      <CustomCursor />
+      <Header />
+      <main className="w-full relative z-10">
+        <div className="relative z-10 w-full h-[100dvh] bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors gpu">
+          <Hero />
+        </div>
+        <div className="relative z-10 h-[200vh]">
+          <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+            <ExpertiseSection />
+          </div>
+        </div>
+        <div className="relative z-20 -mt-[100vh] flex flex-col w-full transition-colors duration-300">
+          <div className="w-full h-32 sm:h-48 bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a] pointer-events-none"></div>
+          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full flex flex-col relative z-30">
+            <div className="-mt-32 sm:-mt-48 relative z-30">
+              <InteractiveBanner />
+            </div>
+            <ProjectsGallery />
+          </div>
+        </div>
+        <div className="relative z-40 -mt-[100vh] w-full transition-colors duration-300 pointer-events-none">
+          <div className="w-full h-[15vh] bg-gradient-to-b from-transparent to-[#f5f5f5] dark:to-[#0a0a0a]"></div>
+          <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4">
+            <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12">
+              <ViewAllBlock />
+            </div>
+            <Footer />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+export default Home;
