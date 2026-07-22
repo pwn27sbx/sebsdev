@@ -49,13 +49,13 @@ export default function App() {
   return (
     <HelmetProvider>
       <Router basename="/mi-portafolio">
-        <PortfolioProvider>
-          <ErrorBoundary>
+        <ErrorBoundary>
+          <PortfolioProvider>
             <Suspense fallback={<FallbackLoader />}>
               <AnimatedRoutes />
             </Suspense>
-          </ErrorBoundary>
-        </PortfolioProvider>
+          </PortfolioProvider>
+        </ErrorBoundary>
       </Router>
     </HelmetProvider>
   );

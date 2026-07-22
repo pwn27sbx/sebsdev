@@ -42,9 +42,13 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
 
     // View Transition API: transición nativa (Chrome 111+, Firefox 125+)
     if ((document as any).startViewTransition) {
-      (document as any).startViewTransition(() => {
+      try {
+        (document as any).startViewTransition(() => {
+          root.classList.toggle('dark', darkMode);
+        });
+      } catch (e) {
         root.classList.toggle('dark', darkMode);
-      });
+      }
       return;
     }
 
