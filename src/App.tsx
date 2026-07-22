@@ -39,13 +39,19 @@ function AnimatedRoutes() {
   );
 }
 
+const FallbackLoader = () => (
+  <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] flex items-center justify-center transition-colors duration-500">
+    <div className="w-10 h-10 border-4 border-gray-300 dark:border-gray-800 border-t-[#00A889] dark:border-t-[#00A889] rounded-full animate-spin"></div>
+  </div>
+);
+
 export default function App() {
   return (
     <HelmetProvider>
       <Router basename="/mi-portafolio">
         <PortfolioProvider>
           <ErrorBoundary>
-            <Suspense fallback={<div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a]" />}>
+            <Suspense fallback={<FallbackLoader />}>
               <AnimatedRoutes />
             </Suspense>
           </ErrorBoundary>

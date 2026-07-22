@@ -1,5 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { usePortfolio } from '../context/PortfolioContext';
+import { t } from '../data/i18n';
 import CustomCursor from '../components/layout/CustomCursor';
 import Header from '../components/layout/Header';
 import Hero from '../components/hero/Hero';
@@ -10,11 +12,13 @@ import ViewAllBlock from '../components/gallery/ViewAllBlock';
 import Footer from '../components/layout/Footer';
 
 const Home = () => {
+  const { lang } = usePortfolio();
+
   return (
     <div className="bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
       <Helmet>
-        <title>Sebastian | Front-End Developer & UI/UX Designer</title>
-        <meta name="description" content="Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX." />
+        <title>{t('seoTitle', lang)}</title>
+        <meta name="description" content={t('seoDesc', lang)} />
         <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
       </Helmet>
       <CustomCursor />
