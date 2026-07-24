@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
+import DecryptedText from '../common/DecryptedText';
 
 const ExpertiseSection = () => {
   const { setIsHovering, lang } = usePortfolio();
@@ -9,9 +10,9 @@ const ExpertiseSection = () => {
   const { scrollYProgress } = useScroll();
 
   const expertises = useMemo(() => [
-    { id: '01', title: t('expertise1Title', lang), marquee: t('expertise1Marquee', lang), direction: 'left' },
-    { id: '02', title: t('expertise2Title', lang), marquee: t('expertise2Marquee', lang), direction: 'right' },
-    { id: '03', title: t('expertise3Title', lang), marquee: t('expertise3Marquee', lang), direction: 'left' },
+    { id: '01', title: t('expertise1Title', lang), marquee: t('expertise1Marquee', lang), direction: 'left', reveal: 'start' as const },
+    { id: '02', title: t('expertise2Title', lang), marquee: t('expertise2Marquee', lang), direction: 'right', reveal: 'center' as const },
+    { id: '03', title: t('expertise3Title', lang), marquee: t('expertise3Marquee', lang), direction: 'left', reveal: 'end' as const },
   ], [lang]);
 
   const bgParallax1 = useTransform(scrollYProgress, [0, 1], ['-5%', '15%']);
@@ -49,14 +50,16 @@ const ExpertiseSection = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full text-left">
               <span className={'font-mono text-sm md:text-base transition-colors duration-500 shrink-0 ' + (hoveredIndex === index ? 'text-[#00A889]' : 'text-gray-400 dark:text-gray-600')}>{exp.id}</span>
               <div className="flex lg:hidden flex-col w-full gap-2 mt-4 items-start text-left">
-                <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee] whitespace-pre-wrap text-left">{exp.title}</h2>
+                <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-[#111] dark:text-[#eee] whitespace-pre-wrap text-left">
+                  <DecryptedText text={exp.title} animateOn="view" revealDirection={exp.reveal} sequential useOriginalCharsOnly={false} speed={85} maxIterations={15} />
+                </h2>
                 <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee gpu" style={{ width: 'max-content' }}>
                   <span className="shrink-0 pr-4">{exp.marquee.repeat(2)}</span>
                 </div>
               </div>
               <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full justify-start">
                 <h2 className={'absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ' + (hoveredIndex === index ? '-translate-y-[120%] opacity-0' : hoveredIndex !== null ? 'text-gray-400/30 dark:text-gray-600/30 translate-y-0 opacity-100' : 'text-[#111] dark:text-[#eee] translate-y-0 opacity-100')}>
-                  {exp.title.replace('\n', ' ')}
+                  <DecryptedText text={exp.title.replace('\n', ' ')} animateOn="view" revealDirection={exp.reveal} sequential useOriginalCharsOnly={false} speed={85} maxIterations={15} />
                 </h2>
                 <div className={'absolute left-0 w-full transition-all duration-500 transform origin-top ' + (hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0')}>
                   <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none text-[#00A889] gpu ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>

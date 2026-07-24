@@ -19,7 +19,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
       const savedLang = localStorage.getItem('portfolio_lang');
       if (savedLang === 'es' || savedLang === 'en') return savedLang as Lang;
-      const userLang = navigator.language || (navigator as any).userLanguage || 'en';
+      const userLang = navigator.language || navigator.userLanguage || 'en';
       return userLang.toLowerCase().includes('es') ? 'es' as Lang : 'en' as Lang;
     }
     return 'en' as Lang;
@@ -51,9 +51,9 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     const root = document.documentElement;
 
     // View Transition API: transición nativa (Chrome 111+, Firefox 125+)
-    if ((document as any).startViewTransition) {
+    if (document.startViewTransition) {
       try {
-        (document as any).startViewTransition(() => {
+        document.startViewTransition(() => {
           root.classList.toggle('dark', darkMode);
         });
       } catch (e) {
