@@ -57,9 +57,16 @@ export default function App() {
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
     };
+    const handleDragStart = (e: DragEvent) => {
+      if (e.target && (e.target as HTMLElement).tagName === 'IMG') {
+        e.preventDefault();
+      }
+    };
     document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('dragstart', handleDragStart);
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('dragstart', handleDragStart);
     };
   }, []);
 

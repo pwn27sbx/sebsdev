@@ -44,12 +44,14 @@ const Archive = () => {
         {lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}
       </a>
 
-      <nav className="fixed top-0 w-full p-8 flex justify-between items-center z-[100] mix-blend-difference text-white pointer-events-none">
-        <Link to="/" className="pointer-events-auto group flex items-center gap-2 text-xs uppercase tracking-[0.2em]">
+      <nav className="fixed top-0 w-full p-4 sm:p-8 flex justify-between items-center z-[100] pointer-events-none">
+        <Link to="/" className="pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full text-gray-800 dark:text-gray-200 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:text-[#00A889] dark:hover:text-[#00A889]">
           <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
           {t('back', lang)}
         </Link>
-        <div className="text-xs uppercase tracking-[0.2em]">Archive // 2021 — 2026</div>
+        <div className="pointer-events-auto text-[10px] sm:text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full text-gray-800 dark:text-gray-200 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50">
+          Archive // 2021 — 2026
+        </div>
       </nav>
 
       <motion.header
@@ -57,7 +59,7 @@ const Archive = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start"
+        className="px-6 sm:px-12 pt-10 mb-8 sm:mb-20 overflow-visible flex flex-col items-start"
       >
         <div className="w-full max-w-md min-h-[4rem] sm:min-h-[5rem] mb-2 sm:mb-4 ml-2 flex items-end relative z-10">
           <ScrambledText 
@@ -71,7 +73,7 @@ const Archive = () => {
             {t('archiveDesc', lang)}
           </ScrambledText>
         </div>
-        <motion.div style={{ x: titleX }} className="w-full relative -mt-[2vw] sm:-mt-[1vw] -mb-[3vw] sm:-mb-[2vw] text-[#111] dark:text-white">
+        <motion.div style={{ x: titleX }} className="w-full relative mt-4 mb-4 sm:mb-6 text-[#111] dark:text-white">
           <TextPressure
             text={t('projects', lang)}
             flex={false}
@@ -84,10 +86,10 @@ const Archive = () => {
             strokeColor="#00A889"
             strokeWidth={5}
             minFontSize={36}
-            className="text-left"
+            className="text-left scale-y-[1.5] sm:scale-y-[1.3] origin-bottom"
           />
         </motion.div>
-        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-0" />
+        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4 sm:mt-6 relative z-10" />
       </motion.header>
 
       <section id="archive-content" className="px-4 sm:px-12 relative">

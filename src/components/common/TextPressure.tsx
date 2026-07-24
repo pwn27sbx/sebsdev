@@ -104,7 +104,10 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
     const { width: containerW, height: containerH } = containerRef.current.getBoundingClientRect();
 
-    let newFontSize = containerW / (chars.length / 2);
+    // On mobile, the minimum width is larger (40 vs 5), so letters are wider. 
+    // We adjust the divisor to prevent the text from overflowing the container.
+    const divisor = isMobileRef.current ? 1.2 : 2;
+    let newFontSize = containerW / (chars.length / divisor);
     newFontSize = Math.max(newFontSize, minFontSize);
 
     setFontSize(newFontSize);
@@ -130,9 +133,27 @@ const TextPressure: React.FC<TextPressureProps> = ({
     return () => window.removeEventListener('resize', debouncedSetSize);
   }, [setSize]);
 
+  const isMobileRef = useRef(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      isMobileRef.current = window.innerWidth <= 768;
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     let rafId: number;
     const animate = () => {
+      if (isMobileRef.current && titleRef.current) {
+        const titleRect = titleRef.current.getBoundingClientRect();
+        const t = Date.now() / 800; // Adjust speed of wave
+        cursorRef.current.x = titleRect.left + (Math.sin(t) * 0.5 + 0.5) * titleRect.width;
+        cursorRef.current.y = titleRect.top + titleRect.height / 2;
+      }
+
       mouseRef.current.x += (cursorRef.current.x - mouseRef.current.x) / 15;
       mouseRef.current.y += (cursorRef.current.y - mouseRef.current.y) / 15;
 
@@ -151,7 +172,8 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
           const d = dist(mouseRef.current, charCenter);
 
-          const wdth = width ? Math.floor(getAttr(d, maxDist, 5, 200)) : 100;
+          const minWdth = isMobileRef.current ? 40 : 5;
+          const wdth = width ? Math.floor(getAttr(d, maxDist, minWdth, 200)) : 100;
           const wght = weight ? Math.floor(getAttr(d, maxDist, 100, 900)) : 400;
           const italVal = italic ? getAttr(d, maxDist, 0, 1).toFixed(2) : '0';
           const alphaVal = alpha ? getAttr(d, maxDist, 0, 1).toFixed(2) : '1';
@@ -203,7 +225,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
         ref={titleRef}
         className={`text-pressure-title ${className} ${
           flex ? 'flex justify-between' : ''
-        } ${stroke ? 'stroke' : ''} uppercase`}
+        } ${stroke ? 'stroke' : ''} uppercase whitespace-nowrap`}
         style={{
           fontFamily,
           fontSize: fontSize,

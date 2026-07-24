@@ -16,7 +16,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white transition-colors duration-500 px-6 sm:px-12 md:px-24 pt-32 pb-20">
+    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white transition-colors duration-500 px-6 sm:px-12 md:px-24 pt-32 pb-20 select-text">
       <Helmet>
         <title>Contacto | Sebastian</title>
         <meta name="description" content="Ponte en contacto con Sebastian para colaborar en tu próximo proyecto web." />
