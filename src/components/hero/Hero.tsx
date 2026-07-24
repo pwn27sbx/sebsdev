@@ -35,14 +35,14 @@ const Hero = () => {
           aria-hidden="true"
         />
         <motion.div style={{ y: textParallax }} className="w-full">
-          <div className="flex items-center justify-center w-full flex-nowrap">            <div className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>FRONT</GlitchText></div>
-          <motion.div style={{ width: lineWidth, '--after-duration': '2.7s', '--before-duration': '1.8s' } as any} className="glitch-box h-[2vw] sm:h-[1.5vw] bg-[#111] dark:bg-white mx-2 sm:mx-4 transition-colors duration-300 hover:bg-[#00A889] shrink-0 gpu" />
-          <div className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>END</GlitchText></div>
+          <div className="flex items-center justify-center w-full flex-nowrap">            <div className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>FRONT</GlitchText></div>
+          <motion.div style={{ width: lineWidth, '--after-duration': '2.7s', '--before-duration': '1.8s' } as any} className="glitch-box h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu" />
+          <div className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>END</GlitchText></div>
         </div>
         </motion.div>
         <motion.div style={{ y: descParallax }} className="w-full">
           <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-12 sm:mt-10 px-4 sm:px-10 gap-12 sm:gap-0">
-          <div className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>DEVELOPER</GlitchText></div>
+          <div className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3]" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>DEVELOPER</GlitchText></div>
           <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem]">
             <ScrambledText
               className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-light max-w-xs sm:max-w-none !font-sans m-0"
