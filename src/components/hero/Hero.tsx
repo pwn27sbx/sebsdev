@@ -36,7 +36,7 @@ const Hero = () => {
         />
         <motion.div style={{ y: textParallax }} className="w-full">
           <div className="flex items-center justify-center w-full flex-nowrap">            <div className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>FRONT</GlitchText></div>
-          <motion.div style={{ width: lineWidth }} className="h-[1vw] sm:h-[1.5vw] bg-[#111] dark:bg-white mx-2 sm:mx-4 transition-colors duration-300 hover:bg-[#00A889] shrink-0 gpu" />
+          <motion.div style={{ width: lineWidth, '--after-duration': '2.7s', '--before-duration': '1.8s' } as any} className="glitch-box h-[1vw] sm:h-[1.5vw] bg-[#111] dark:bg-white mx-2 sm:mx-4 transition-colors duration-300 hover:bg-[#00A889] shrink-0 gpu" />
           <div className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white gpu" onMouseEnter={hEnter} onMouseLeave={hLeave}><GlitchText speed={0.9} enableShadows enableOnHover={false}>END</GlitchText></div>
         </div>
         </motion.div>
