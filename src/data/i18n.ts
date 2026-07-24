@@ -11,7 +11,7 @@ const es = {
   darkModeLabel: 'Activar modo claro',
   lightModeLabel: 'Activar modo oscuro',
   // Expertise
-  expertise1Title: 'DESARROLLO\nFRONTEND',
+  expertise1Title: 'DESARROLLO\nFRONT-END',
   expertise2Title: 'DISEÑO UI/UX',
   expertise3Title: 'MOTION &\nINTERACCIÓN',
   expertise1Marquee: 'REACT \u2014 NEXT.JS \u2014 ASTRO \u2014 TYPESCRIPT \u2014 TAILWIND CSS \u2014 JAVASCRIPT \u2014 ',
@@ -74,7 +74,7 @@ const en = {
   darkModeLabel: 'Switch to light mode',
   lightModeLabel: 'Switch to dark mode',
   // Expertise
-  expertise1Title: 'FRONTEND\nDEVELOPMENT',
+  expertise1Title: 'FRONT-END\nDEVELOPMENT',
   expertise2Title: 'UI/UX DESIGN',
   expertise3Title: 'MOTION &\nINTERACTION',
   expertise1Marquee: 'REACT \u2014 NEXT.JS \u2014 ASTRO \u2014 TYPESCRIPT \u2014 TAILWIND CSS \u2014 JAVASCRIPT \u2014 ',
