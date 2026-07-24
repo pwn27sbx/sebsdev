@@ -10,7 +10,7 @@ const renderGlitchyTitle = (text: string, reveal: any) => {
   return parts.map((part, i) => {
     if (part === '-' || part === '/' || part === '&') {
       return (
-        <GlitchText key={i} className="mx-3 md:mx-5 inline-block -translate-y-[0.05em]" speed={0.9} enableShadows enableOnHover={false}>
+        <GlitchText key={i} className="mx-3 md:mx-5 inline-block -translate-y-[0.1em]" speed={0.9} enableShadows enableOnHover={false}>
           {part}
         </GlitchText>
       );
