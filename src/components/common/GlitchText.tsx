@@ -6,6 +6,7 @@ interface GlitchTextProps {
   enableShadows?: boolean;
   enableOnHover?: boolean;
   className?: string;
+  variant?: 1 | 2 | 3;
 }
 
 interface CustomCSSProperties extends CSSProperties {
@@ -20,7 +21,8 @@ const GlitchText: FC<GlitchTextProps> = ({
   speed = 0.5,
   enableShadows = true,
   enableOnHover = false,
-  className = ''
+  className = '',
+  variant = 1
 }) => {
   const inlineStyles: CustomCSSProperties = {
     '--after-duration': `${speed * 3}s`,
@@ -29,7 +31,7 @@ const GlitchText: FC<GlitchTextProps> = ({
     '--before-shadow': enableShadows ? '5px 0 #FF2A6D' : 'none'
   };
 
-  const baseClasses = 'relative inline-block select-none glitch-anim';
+  const baseClasses = `relative inline-block select-none glitch-anim-${variant}`;
 
   const pseudoClasses = !enableOnHover
     ? 'after:content-[attr(data-text)] after:absolute after:top-0 after:left-[4px] sm:after:left-[10px] after:text-inherit after:bg-transparent after:overflow-hidden after:[clip-path:inset(0_0_0_0)] after:[text-shadow:var(--after-shadow)] ' +
