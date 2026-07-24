@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
@@ -53,6 +53,16 @@ const FallbackLoader = () => (
 );
 
 export default function App() {
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener('contextmenu', handleContextMenu);
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, []);
+
   return (
     <HelmetProvider>
       <Router basename="/">

@@ -8,6 +8,12 @@
   --color-bg-dark: #0a0a0a;
 }
 
+/* ===== Prevent Text Selection ===== */
+body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 /* ===== Rendimiento: GPU aceleración ===== */
 .gpu {
   transform: translateZ(0);
