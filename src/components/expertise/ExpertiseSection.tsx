@@ -6,8 +6,11 @@ import DecryptedText from '../common/DecryptedText';
 import GlitchText from '../common/GlitchText';
 
 const renderGlitchyTitle = (text: string, reveal: any) => {
-  const parts = text.split(/([-&/])/g);
+  const parts = text.split(/([-&/\n])/g);
   return parts.map((part, i) => {
+    if (part === '\n') {
+      return <br key={i} />;
+    }
     if (part === '-' || part === '/' || part === '&') {
       return (
         <GlitchText key={i} className="mx-3 md:mx-5 inline-block -translate-y-[0.1em]" speed={0.9} enableShadows enableOnHover={false}>
