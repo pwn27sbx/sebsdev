@@ -36,7 +36,7 @@ const Hero = () => {
         <motion.div style={{ y: descParallax }} className="w-full">
           <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-8 sm:mt-10 px-4 sm:px-10 gap-8 sm:gap-0">
           <div className="text-[14vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white" onMouseEnter={hEnter} onMouseLeave={hLeave}><HoverText text="DEVELOPER" /></div>
-          <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left">
+          <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem]">
             <ScrambledText
               className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-light max-w-xs sm:max-w-none !font-sans m-0"
               style={{ margin: 0, fontFamily: 'inherit' }}

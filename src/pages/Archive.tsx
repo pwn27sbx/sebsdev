@@ -7,6 +7,7 @@ import { useScrollToTop } from '../hooks/useScrollToTop';
 import { t } from '../data/i18n';
 import type { ArchiveProject } from '../data/projects';
 import { ARCHIVE_PROJECTS } from '../data/projects';
+import ScrambledText from '../components/common/ScrambledText';
 
 const Archive = () => {
   const { lang } = usePortfolio();
@@ -56,8 +57,17 @@ const Archive = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start"
       >
-        <div className="w-full max-w-md mb-12 sm:mb-20 ml-2">
-          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed">{t('archiveDesc', lang)}</p>
+        <div className="w-full max-w-md min-h-[4rem] sm:min-h-[5rem] mb-12 sm:mb-20 ml-2 flex items-end">
+          <ScrambledText 
+            className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed m-0"
+            style={{ margin: 0 }}
+            radius={100}
+            duration={2}
+            speed={0.5}
+            scrambleChars="«¤-¤»"
+          >
+            {t('archiveDesc', lang)}
+          </ScrambledText>
         </div>
         <motion.h1 style={{ x: titleX }} className="font-anton text-[18vw] sm:text-[15vw] leading-none uppercase tracking-tighter whitespace-nowrap">
           {t('projects', lang)}
