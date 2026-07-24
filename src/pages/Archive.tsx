@@ -8,6 +8,7 @@ import { t } from '../data/i18n';
 import type { ArchiveProject } from '../data/projects';
 import { ARCHIVE_PROJECTS } from '../data/projects';
 import ScrambledText from '../components/common/ScrambledText';
+import TextPressure from '../components/common/TextPressure';
 
 const Archive = () => {
   const { lang } = usePortfolio();
@@ -57,7 +58,7 @@ const Archive = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="px-6 sm:px-12 pt-10 mb-20 overflow-visible flex flex-col items-start"
       >
-        <div className="w-full max-w-md min-h-[4rem] sm:min-h-[5rem] mb-12 sm:mb-20 ml-2 flex items-end">
+        <div className="w-full max-w-md min-h-[4rem] sm:min-h-[5rem] mb-2 sm:mb-4 ml-2 flex items-end relative z-10">
           <ScrambledText 
             className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed m-0"
             style={{ margin: 0 }}
@@ -69,10 +70,23 @@ const Archive = () => {
             {t('archiveDesc', lang)}
           </ScrambledText>
         </div>
-        <motion.h1 style={{ x: titleX }} className="font-anton text-[18vw] sm:text-[15vw] leading-none uppercase tracking-tighter whitespace-nowrap">
-          {t('projects', lang)}
-        </motion.h1>
-        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4" />
+        <motion.div style={{ x: titleX }} className="w-full relative -mt-[2vw] sm:-mt-[1vw] -mb-[3vw] sm:-mb-[2vw] text-[#111] dark:text-white">
+          <TextPressure
+            text={t('projects', lang)}
+            flex={false}
+            alpha={false}
+            stroke={true}
+            width
+            weight
+            italic
+            textColor="currentColor"
+            strokeColor="#00A889"
+            strokeWidth={5}
+            minFontSize={36}
+            className="text-left"
+          />
+        </motion.div>
+        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-0" />
       </motion.header>
 
       <section id="archive-content" className="px-4 sm:px-12 relative">
