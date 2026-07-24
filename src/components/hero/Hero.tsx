@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
 import HoverText from './HoverText';
+import ScrambledText from '../common/ScrambledText';
 import HeroCanvas from './HeroCanvas';
 
 const Hero = () => {
@@ -36,10 +37,17 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-8 sm:mt-10 px-4 sm:px-10 gap-8 sm:gap-0">
           <div className="text-[14vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-[#111] dark:text-white" onMouseEnter={hEnter} onMouseLeave={hLeave}><HoverText text="DEVELOPER" /></div>
           <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left">
-            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-light max-w-xs sm:max-w-none">
+            <ScrambledText
+              className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-light max-w-xs sm:max-w-none !font-sans m-0"
+              style={{ margin: 0, fontFamily: 'inherit' }}
+              radius={100}
+              duration={2}
+              speed={0.5}
+              scrambleChars="«¤-¤»"
+            >
               <span className="text-sm uppercase tracking-widest text-[#00A889] font-bold block mb-2 sm:mb-3">{t('heroAbout', lang)}</span>
               {t('heroDesc', lang)}
-            </p>
+            </ScrambledText>
           </div>
         </div>
         </motion.div>
