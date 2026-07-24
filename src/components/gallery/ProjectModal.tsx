@@ -10,7 +10,7 @@ interface ProjectModalProps {
 
 const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   const { setIsHovering, lang } = usePortfolio();
-  
+
   return (
     <AnimatePresence>
       {project && (

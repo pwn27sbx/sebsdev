@@ -9,6 +9,7 @@ import type { ArchiveProject } from '../data/projects';
 import { ARCHIVE_PROJECTS } from '../data/projects';
 import ScrambledText from '../components/common/ScrambledText';
 import TextPressure from '../components/common/TextPressure';
+import TextType from '../components/common/TextType';
 
 const Archive = () => {
   const { lang } = usePortfolio();
@@ -101,8 +102,8 @@ const Archive = () => {
           <motion.a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer"
             initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             onMouseEnter={() => setActiveProject(project)}
             onMouseLeave={() => setActiveProject(null)}
             className="group flex items-center py-8 sm:py-12 border-b border-gray-300 dark:border-white/10 hover:border-[#00A889] transition-colors duration-300 px-4 relative z-10"
@@ -110,7 +111,19 @@ const Archive = () => {
             <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400">{project.id}</div>
             <div className="w-[15%] font-mono text-xs sm:text-sm text-gray-400 hidden sm:block">{project.year}</div>
             <div className="flex-1">
-              <h2 className="font-anton text-4xl sm:text-7xl uppercase group-hover:text-[#00A889] transition-colors duration-300">{project.title}</h2>
+              <TextType
+                as="h2"
+                text={project.title}
+                className="font-anton text-4xl sm:text-7xl uppercase group-hover:text-[#00A889] transition-colors duration-300"
+                showCursor={true}
+                cursorCharacter="_"
+                cursorBlinkDuration={0.5}
+                typingSpeed={75}
+                loop={false}
+                startOnVisible={true}
+                initialDelay={50}
+                rootMargin="-50px"
+              />
             </div>
             <div className="w-[25%] text-right text-xs sm:text-sm uppercase tracking-widest text-gray-500 group-hover:text-[#111] dark:group-hover:text-white transition-colors">
               {project.category}
