@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
@@ -8,16 +8,22 @@ import HeroCanvas from './HeroCanvas';
 
 const Hero = () => {
   const { setIsHovering, lang } = usePortfolio();
-  const { scrollYProgress } = useScroll();
-  const lineWidth = useTransform(scrollYProgress, [0, 0.4], ['8vw', '150vw']);
-  const textParallax = useTransform(scrollYProgress, [0, 0.15], ['0%', '-6%']);
-  const descParallax = useTransform(scrollYProgress, [0, 0.15], ['0%', '-3%']);
+  const containerRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const lineWidth = useTransform(scrollYProgress, [0, 1], ['8vw', '150vw']);
+  const textParallax = useTransform(scrollYProgress, [0, 1], ['0%', '-20%']);
+  const descParallax = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
 
   const hEnter = () => setIsHovering(true);
   const hLeave = () => setIsHovering(false);
 
   return (
-    <section className="relative w-full h-[100dvh] flex flex-col justify-center px-4 overflow-hidden bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500">
+    <section ref={containerRef} className="relative w-full h-[100dvh] flex flex-col justify-center px-4 overflow-hidden bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500">
       {/* Interactive particle canvas background */}
       <HeroCanvas />
       <div className="flex flex-col items-center justify-center w-full max-w-[100vw] mx-auto z-10">

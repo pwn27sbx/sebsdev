@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
@@ -13,6 +13,27 @@ import Footer from '../components/layout/Footer';
 
 const Home = () => {
   const { lang } = usePortfolio();
+  const cloneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!cloneRef.current) return;
+      
+      const { top } = cloneRef.current.getBoundingClientRect();
+      
+      // If the top of the cloned Hero reaches the top of the viewport
+      if (top <= 0) {
+        // Jump seamlessly to the real Hero at the top, preserving scroll momentum
+        // Math.abs(top) gives us exactly how many pixels we scrolled PAST the clone's top
+        window.scrollTo({ top: Math.abs(top), behavior: 'instant' as ScrollBehavior });
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Trigger once on mount just in case
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
@@ -50,6 +71,14 @@ const Home = () => {
             <Footer />
           </div>
         </div>
+        
+        {/* Infinite Loop Clone */}
+        <div ref={cloneRef} className="relative z-50 w-full h-[100dvh] bg-bg-light dark:bg-bg-dark transition-colors gpu" aria-hidden="true">
+          <Hero />
+        </div>
+        
+        {/* Spacer to guarantee scrollability past the clone's top edge */}
+        <div className="w-full h-[50vh] pointer-events-none" aria-hidden="true" />
       </main>
     </div>
   );
