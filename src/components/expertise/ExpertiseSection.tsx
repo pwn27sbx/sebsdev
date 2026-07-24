@@ -31,6 +31,35 @@ const renderGlitchyTitle = (text: string, reveal: any) => {
   });
 };
 
+const renderMarqueeText = (text: string) => {
+  // Split by em-dash (—), hyphen (-), or ampersand (&)
+  const parts = text.split(/([—\-&])/g);
+  let colorToggle = true; 
+  return parts.map((part, i) => {
+    if (part === '—' || part === '-' || part === '&') {
+      return (
+        <GlitchText key={i} className="mx-2 md:mx-4 inline-block -translate-y-[0.13em] text-transparent [-webkit-text-stroke:1px_#111] md:[-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:md:[-webkit-text-stroke:2px_#a3a3a3]" speed={0.9} enableShadows enableOnHover={false}>
+          {part}
+        </GlitchText>
+      );
+    }
+    if (part.trim() === '') {
+      return <span key={i}>{part}</span>;
+    }
+    
+    const colorClass = colorToggle 
+      ? '[-webkit-text-stroke:1px_#00A889] md:[-webkit-text-stroke:2px_#00A889]' 
+      : '[-webkit-text-stroke:1px_#FF2A6D] md:[-webkit-text-stroke:2px_#FF2A6D]';
+    colorToggle = !colorToggle;
+    
+    return (
+      <span key={i} className={`text-transparent ${colorClass}`}>
+        {part}
+      </span>
+    );
+  });
+};
+
 const ExpertiseSection = () => {
   const { setIsHovering, lang } = usePortfolio();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -80,8 +109,8 @@ const ExpertiseSection = () => {
                 <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] text-transparent [-webkit-text-stroke:1px_#111] md:[-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:md:[-webkit-text-stroke:2px_#a3a3a3] whitespace-pre-wrap text-left">
                   {renderGlitchyTitle(exp.title, exp.reveal)}
                 </h2>
-                <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none text-[#00A889] animate-marquee gpu" style={{ width: 'max-content' }}>
-                  <span className="shrink-0 pr-4">{exp.marquee.repeat(2)}</span>
+                <div className="flex whitespace-nowrap font-anton text-3xl md:text-4xl uppercase tracking-tighter leading-none animate-marquee gpu" style={{ width: 'max-content' }}>
+                  <span className="shrink-0 flex">{renderMarqueeText(exp.marquee.repeat(4))}</span>
                 </div>
               </div>
               <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full justify-start">
@@ -89,8 +118,8 @@ const ExpertiseSection = () => {
                   {renderGlitchyTitle(exp.title.replace('\n', ' '), exp.reveal)}
                 </h2>
                 <div className={'absolute left-0 w-full transition-all duration-500 transform origin-top ' + (hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0')}>
-                  <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none text-[#00A889] gpu ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>
-                    <span className="shrink-0 pr-4">{exp.marquee.repeat(3)}</span>
+                  <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none gpu ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>
+                    <span className="shrink-0 flex">{renderMarqueeText(exp.marquee.repeat(4))}</span>
                   </div>
                 </div>
               </div>
