@@ -72,7 +72,7 @@ const InteractiveBanner = () => {
   return (
     <div 
       ref={containerRef}
-      className="w-full py-8 md:py-10 bg-[#f5f5f5] dark:bg-[#0a0a0a] flex flex-col justify-center overflow-hidden relative z-30 group/banner transition-colors duration-500"
+      className="w-full py-8 md:py-10 bg-transparent flex flex-col justify-center overflow-hidden relative z-30 group/banner transition-colors duration-500"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >

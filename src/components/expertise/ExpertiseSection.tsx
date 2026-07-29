@@ -79,7 +79,7 @@ const ExpertiseSection = () => {
   const bgParallax3 = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
 
   return (
-    <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f5f5f5] dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
+    <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-transparent overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
       {/* Parallax background accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <motion.div

@@ -33,7 +33,7 @@ const Archive = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20" onMouseMove={handleMouseMove}>
+    <div className="min-h-screen bg-transparent text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20" onMouseMove={handleMouseMove}>
       <Helmet>
         <title>Archivo de Proyectos | Sebastian</title>
         <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />

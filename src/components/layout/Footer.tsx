@@ -82,7 +82,7 @@ const Footer = () => {
   }, [hoveredStates]);
 
   return (
-    <footer className="relative flex flex-col justify-end pt-8 w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors overflow-hidden">
+    <footer className="relative flex flex-col justify-end pt-8 w-full bg-transparent transition-colors overflow-hidden">
       <div className="max-w-md text-center px-4 mb-4 mx-auto z-10">
         <p className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-sm font-mono tracking-wider leading-relaxed">{t('footerDesc', lang)}</p>
       </div>

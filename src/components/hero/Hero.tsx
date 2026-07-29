@@ -5,7 +5,6 @@ import { t } from "../../data/i18n";
 import HoverText from "./HoverText";
 import GlitchText from "../common/GlitchText";
 import ScrambledText from "../common/ScrambledText";
-import HeroCanvas from "./HeroCanvas";
 
 const Hero = () => {
   const { setIsHovering, lang } = usePortfolio();
@@ -26,11 +25,14 @@ const Hero = () => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100dvh] flex flex-col justify-center px-4 overflow-hidden bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500"
+      className="relative w-full h-[100dvh] flex flex-col justify-center px-4 overflow-hidden bg-transparent transition-colors duration-500"
     >
-      {/* Interactive particle canvas background */}
-      <HeroCanvas />
-      <div className="flex flex-col items-center justify-center w-full max-w-[100vw] mx-auto z-10">
+      <motion.div 
+        initial={{ scale: 0.1, opacity: 0, filter: "blur(20px)" }}
+        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }} // Syncs with the ~110 frames of 3D camera lerp
+        className="flex flex-col items-center justify-center w-full max-w-[100vw] mx-auto z-10"
+      >
         {/* Parallax gradient accent */}
         <motion.div
           style={{ y: useTransform(scrollYProgress, [0, 0.2], ["0%", "15%"]) }}
@@ -108,7 +110,7 @@ const Hero = () => {
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
       <motion.div
         className="absolute bottom-8 right-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-400 mix-blend-difference"
         animate={{ y: [0, 10, 0] }}

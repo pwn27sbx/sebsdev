@@ -39,7 +39,7 @@ const ProjectsGallery = () => {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-200px' }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-full bg-[#f5f5f5] dark:bg-[#0a0a0a] transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
+      className="relative w-full bg-transparent transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
       <div className="h-[300vh] w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">

@@ -25,11 +25,13 @@ const pageVariants = {
   exit: { opacity: 0, clipPath: 'circle(0% at 50% 50%)', scale: 0.92 },
 };
 
+import Scene from './components/canvas/Scene';
+
 function AnimatedRoutes() {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
-      <div className="min-h-screen bg-gradient-to-br from-brand-primary via-brand-primary-dark to-bg-dark">
+      <div className="min-h-screen relative z-10">
         <motion.div key={location.pathname} variants={pageVariants} initial={false} animate="animate" exit="exit"
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -52,6 +54,8 @@ const FallbackLoader = () => (
   </div>
 );
 
+import { ReactLenis } from 'lenis/react';
+
 export default function App() {
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
@@ -72,13 +76,16 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <Router basename="/">
-        <ErrorBoundary>
-          <PortfolioProvider>
-            <AnimatedRoutes />
-          </PortfolioProvider>
-        </ErrorBoundary>
-      </Router>
+      <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
+        <Router basename="/">
+          <ErrorBoundary>
+            <PortfolioProvider>
+              <Scene />
+              <AnimatedRoutes />
+            </PortfolioProvider>
+          </ErrorBoundary>
+        </Router>
+      </ReactLenis>
     </HelmetProvider>
   );
 }
