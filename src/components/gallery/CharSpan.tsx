@@ -11,14 +11,38 @@ interface CharSpanProps {
 const CharSpan = ({ char, scrollYProgress, turn, step }: CharSpanProps) => {
   const tintStart = 0.08 + (turn * step);
   const tintEnd = tintStart + 0.001;
-  const untintStart = 0.40 + (turn * step);
+  const untintStart = 0.50 + (turn * step);
   const untintEnd = untintStart + 0.001;
   const opacity = useTransform(scrollYProgress, [0, tintStart, tintEnd, untintStart, untintEnd, 1], [0, 0, 1, 1, 0, 0]);
 
   return (
     <span className="relative inline-block whitespace-pre">
-      <span className="text-[#e5e5e5] dark:text-[#2a2a2a]">{char}</span>
-      <motion.span className="absolute text-[#00A889] pointer-events-none -top-[1vw] -left-[0.8vw] md:-top-[0.8vw] md:-left-[0.6vw]" style={{ opacity }}>{char}</motion.span>
+      {/* Cyan offset base (Always visible, always glitching) */}
+      <span 
+        className="absolute text-transparent [-webkit-text-stroke:8px_#00A889] md:[-webkit-text-stroke:10px_#00A889] pointer-events-none -top-[0.8vw] -left-[0.6vw] z-0" 
+        style={{ animation: 'glitch-1 2.5s infinite step-end' }}
+      >
+        {char}
+      </span>
+      
+      {/* Magenta offset base (Always visible, always glitching) */}
+      <span 
+        className="absolute text-transparent [-webkit-text-stroke:8px_#FF2A6D] md:[-webkit-text-stroke:10px_#FF2A6D] pointer-events-none top-[0.8vw] left-[0.6vw] z-0" 
+        style={{ animation: 'glitch-2 2s infinite step-end' }}
+      >
+        {char}
+      </span>
+
+      {/* Invisible spacer for width/height */}
+      <span className="text-transparent opacity-0 pointer-events-none">{char}</span>
+      
+      {/* Lit-up state: Solid text fills in the center */}
+      <motion.span 
+        className="absolute text-[#111] dark:text-white pointer-events-none left-0 top-0 z-20" 
+        style={{ opacity }}
+      >
+        {char}
+      </motion.span>
     </span>
   );
 };
