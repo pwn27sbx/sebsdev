@@ -61,7 +61,7 @@ const Archive = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="px-6 sm:px-12 pt-10 mb-8 sm:mb-20 overflow-visible flex flex-col items-start"
       >
-        <div className="w-full max-w-md min-h-[4rem] sm:min-h-[5rem] mb-2 sm:mb-4 ml-2 flex items-end relative z-10">
+        <div className="w-full max-w-md ml-2 flex items-end relative z-10">
           <ScrambledText 
             className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed m-0"
             style={{ margin: 0 }}
@@ -73,7 +73,7 @@ const Archive = () => {
             {t('archiveDesc', lang)}
           </ScrambledText>
         </div>
-        <motion.div style={{ x: titleX }} className="w-full relative mt-4 mb-4 sm:mb-6 text-[#111] dark:text-white">
+        <motion.div style={{ x: titleX }} className="w-full relative mt-0 sm:mt-2 mb-16 sm:mb-24 text-[#111] dark:text-white">
           <TextPressure
             text={t('projects', lang)}
             flex={false}
@@ -89,7 +89,7 @@ const Archive = () => {
             className="text-left scale-y-[1.5] sm:scale-y-[1.3] origin-bottom"
           />
         </motion.div>
-        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 mt-4 sm:mt-6 relative z-10" />
+        <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 relative z-10" />
       </motion.header>
 
       <section id="archive-content" className="px-4 sm:px-12 relative">

@@ -20,8 +20,8 @@ const GiantWord = ({ text }: { text: string }) => {
           animateOn="hover" 
           speed={40} 
           maxIterations={12}
-          className="text-[#111] dark:text-white drop-shadow-[3px_0_#00A889,-3px_0_#FF2A6D]"
-          encryptedClassName="text-[#00A889] drop-shadow-[0_0_8px_#00A889]"
+          className="text-[#111] dark:text-white [text-shadow:3px_0_#00A889,-3px_0_#FF2A6D]"
+          encryptedClassName="text-[#00A889] [text-shadow:0_0_8px_#00A889]"
         />
       </span>
     </div>

@@ -53,9 +53,15 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     // View Transition API: transición nativa (Chrome 111+, Firefox 125+)
     if (document.startViewTransition) {
       try {
-        document.startViewTransition(() => {
+        const transition = document.startViewTransition(() => {
           root.classList.toggle('dark', darkMode);
         });
+        
+        // Catch unhandled promise rejections that occur in React 18 Strict Mode
+        // when transitions overlap or are cancelled instantly.
+        if (transition.finished) transition.finished.catch(() => {});
+        if (transition.ready) transition.ready.catch(() => {});
+        if (transition.updateCallbackDone) transition.updateCallbackDone.catch(() => {});
       } catch (e) {
         root.classList.toggle('dark', darkMode);
       }
