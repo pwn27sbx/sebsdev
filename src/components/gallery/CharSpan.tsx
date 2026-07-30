@@ -38,7 +38,7 @@ const CharSpan = ({ char, scrollYProgress, turn, step }: CharSpanProps) => {
       
       {/* Lit-up state: Solid text fills in the center */}
       <motion.span 
-        className="absolute text-[#111] dark:text-white pointer-events-none left-0 top-0 z-20" 
+        className="absolute text-[#f5f5f5]/70 dark:text-[#0a0a0a]/70 [-webkit-text-stroke:5px_#000] dark:[-webkit-text-stroke:5px_#fff] pointer-events-none left-0 top-0 z-20" 
         style={{ opacity }}
       >
         {char}

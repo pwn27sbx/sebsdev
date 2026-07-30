@@ -43,7 +43,7 @@ const Hero = () => {
           <div className="flex items-center justify-center w-full flex-nowrap">
             {" "}
             <div
-              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -62,7 +62,7 @@ const Hero = () => {
               className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu"
             />
             <div
-              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -80,7 +80,7 @@ const Hero = () => {
         <motion.div style={{ y: descParallax }} className="w-full">
           <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-12 sm:mt-10 px-4 sm:px-10 gap-12 sm:gap-0">
             <div
-              className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#a3a3a3]"
+              className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3]"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >

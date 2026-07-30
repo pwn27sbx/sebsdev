@@ -19,7 +19,7 @@ const MobileVerticalWaveText = ({ text, delay }: MobileWaveProps) => {
       <span className="text-transparent opacity-0 block">{text}</span>
       
       {/* Solid text layer (Wipes in over the glitching outlines) */}
-      <span className="absolute left-0 top-0 text-[#111] dark:text-white block pointer-events-none z-20" style={animStyle}>
+      <span className="absolute left-0 top-0 text-[#f5f5f5]/70 dark:text-[#0a0a0a]/70 [-webkit-text-stroke:3px_#000] dark:[-webkit-text-stroke:3px_#fff] block pointer-events-none z-20" style={animStyle}>
         {text}
       </span>
     </span>
