@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import type { GalleryProject } from '../../data/projects';
@@ -13,7 +14,14 @@ const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
   const { setIsHovering, lang } = usePortfolio();
   const isMagenta = (index ?? 0) % 2 === 0;
 
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {project && (
         <motion.div
@@ -83,7 +91,8 @@ const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 export default ProjectModal;
