@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import Header from './components/layout/Header';
+import CyberGridBackground from './components/common/CyberGridBackground';
 
 
 
@@ -80,6 +82,8 @@ export default function App() {
           <ErrorBoundary>
             <PortfolioProvider>
               <CustomCursor />
+              <Header />
+              <CyberGridBackground />
               <Scene />
               <AnimatedRoutes />
             </PortfolioProvider>

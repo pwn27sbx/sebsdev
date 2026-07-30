@@ -9,8 +9,11 @@ import DraggablePolaroid from './DraggablePolaroid';
 import DesktopScrollText from './DesktopScrollText';
 import MobileVerticalWaveText from './MobileVerticalWaveText';
 import ProjectModal from './ProjectModal';
+interface ProjectsGalleryProps {
+  children?: React.ReactNode;
+}
 
-const ProjectsGallery = () => {
+const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
   const { lang } = usePortfolio();
   const sectionRef = useRef(null);
   const isMobile = useIsMobile();
@@ -19,14 +22,16 @@ const ProjectsGallery = () => {
   const handleBringToFront = () => { globalZIndexCounter.current += 1; return globalZIndexCounter.current; };
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
+  const cardsProgress = useTransform(scrollYProgress, [0, 0.75], [0, 1]);
+  const slideX = useTransform(scrollYProgress, [0, 0.75, 1], ["0vw", "0vw", "-100vw"]);
 
-  const xSelectedDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ['100vw', '0vw', '0vw', '-100vw']);
-  const xWorksDesktop = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.75], ['-100vw', '0vw', '0vw', '100vw']);
-  const xSelectedMobile = useTransform(scrollYProgress, [0, 0.25], ['100vw', '0vw']);
-  const xWorksMobile = useTransform(scrollYProgress, [0, 0.25], ['-100vw', '0vw']);
-  const ySelectedMobile = useTransform(scrollYProgress, [0.55, 0.85], ['0vh', '-32vh']);
-  const yWorksMobile = useTransform(scrollYProgress, [0.55, 0.85], ['0vh', '-36vh']);
-  const yDesktop = useTransform(scrollYProgress, [0, 1], ['0vh', '0vh']);
+  const xSelectedDesktop = useTransform(cardsProgress, [0, 0.25, 0.55, 0.75], ['100vw', '0vw', '0vw', '-100vw']);
+  const xWorksDesktop = useTransform(cardsProgress, [0, 0.25, 0.55, 0.75], ['-100vw', '0vw', '0vw', '100vw']);
+  const xSelectedMobile = useTransform(cardsProgress, [0, 0.25], ['100vw', '0vw']);
+  const xWorksMobile = useTransform(cardsProgress, [0, 0.25], ['-100vw', '0vw']);
+  const ySelectedMobile = useTransform(cardsProgress, [0.55, 0.85], ['0vh', '-32vh']);
+  const yWorksMobile = useTransform(cardsProgress, [0.55, 0.85], ['0vh', '-36vh']);
+  const yDesktop = useTransform(cardsProgress, [0, 1], ['0vh', '0vh']);
 
   const xSelected = isMobile ? xSelectedMobile : xSelectedDesktop;
   const xWorks = isMobile ? xWorksMobile : xWorksDesktop;
@@ -40,25 +45,35 @@ const ProjectsGallery = () => {
       viewport={{ once: true, margin: '-200px' }}
       transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1] }}
       className="relative w-full bg-transparent transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
-      <div className="h-[300vh] w-full relative">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
-            <motion.div style={{ x: xSelected, y: ySelectedFinal }} className="w-full flex justify-center">
-              <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
-                {isMobile ? <MobileVerticalWaveText text={t('selected', lang)} delay="0s" /> : <DesktopScrollText text={t('selected', lang)} scrollYProgress={scrollYProgress} globalOffset={0} />}
-              </h2>
-            </motion.div>
-            <motion.div style={{ x: xWorks, y: yWorksFinal }} className="w-full flex justify-center -mt-[5vw] lg:-mt-[2vw]">
-              <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
-                {isMobile ? <MobileVerticalWaveText text={t('works', lang)} delay="2s" /> : <DesktopScrollText text={t('works', lang)} scrollYProgress={scrollYProgress} globalOffset={8} />}
-              </h2>
-            </motion.div>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            {GALLERY_PROJECTS.map((project, index) => (
-              <DraggablePolaroid key={project.id + '-' + index} project={project} index={index} scrollYProgress={scrollYProgress} bringToFront={handleBringToFront} onProjectClick={setSelectedProject} />
-            ))}
-          </div>
+      <div className="h-[400vh] w-full relative">
+        <div className="sticky top-0 h-[100dvh] w-full flex flex-row overflow-visible">
+          
+          {/* Panel 1: The Gallery */}
+          <motion.div style={{ x: slideX }} className="w-[100vw] h-full relative overflow-hidden flex-shrink-0 z-0 will-change-transform transform-gpu">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
+              <motion.div style={{ x: xSelected, y: ySelectedFinal }} className="w-full flex justify-center will-change-transform transform-gpu">
+                <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
+                  {isMobile ? <MobileVerticalWaveText text={t('selected', lang)} delay="0s" /> : <DesktopScrollText text={t('selected', lang)} scrollYProgress={cardsProgress} globalOffset={0} />}
+                </h2>
+              </motion.div>
+              <motion.div style={{ x: xWorks, y: yWorksFinal }} className="w-full flex justify-center -mt-[5vw] lg:-mt-[2vw] will-change-transform transform-gpu">
+                <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
+                  {isMobile ? <MobileVerticalWaveText text={t('works', lang)} delay="2s" /> : <DesktopScrollText text={t('works', lang)} scrollYProgress={cardsProgress} globalOffset={8} />}
+                </h2>
+              </motion.div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+              {GALLERY_PROJECTS.map((project, index) => (
+                <DraggablePolaroid key={project.id + '-' + index} project={project} index={index} scrollYProgress={cardsProgress} bringToFront={handleBringToFront} onProjectClick={setSelectedProject} />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Panel 2: The Final Section (ViewAllBlock + Footer) */}
+          <motion.div style={{ x: slideX }} className="w-[100vw] h-full flex flex-col justify-between bg-[#ffffff] dark:bg-[#0a0a0a] flex-shrink-0 relative z-10 border-l border-gray-200 dark:border-gray-800 shadow-[-20px_0_50px_rgba(0,0,0,0.05)] dark:shadow-[-20px_0_50px_rgba(0,0,0,0.5)] will-change-transform transform-gpu">
+            {children}
+          </motion.div>
+
         </div>
       </div>
       <ProjectModal 
