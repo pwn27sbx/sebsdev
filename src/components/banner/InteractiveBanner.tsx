@@ -28,17 +28,17 @@ const GiantWord = ({ text }: { text: string }) => {
   );
 };
 
-const HollowDashedLine = ({ className = "" }) => {
-  // We use the exact em-dash '—' character spaced out with a single space for maximum closeness.
-  const dashString = Array(80).fill("—").join(" ");
+const HollowDashedLine = ({ className = "", style }: { className?: string, style?: any }) => {
+  // Revert back to pure dashes as requested
+  const dashString = Array(150).fill("—").join(" ");
 
   return (
     <div className={`w-full h-[30px] md:h-[40px] overflow-hidden flex items-center pointer-events-none z-20 ${className}`}>
-      <div className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] text-[55px] md:text-[75px] w-full flex items-center mt-[-12px] md:mt-[-18px]">
+      <motion.div style={style} className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] text-[55px] md:text-[75px] w-max flex items-center mt-[-12px] md:mt-[-18px]">
         <GlitchText speed={0.9} enableShadows enableOnHover={false} variant={1}>
           {dashString}
         </GlitchText>
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -49,9 +49,9 @@ const InteractiveBanner = () => {
   // Use global scroll since this is now inside a sticky horizontal container
   const { scrollYProgress } = useScroll();
   
-  // Row 1 moves left, Row 2 moves right
-  const xMoveLeft = useTransform(scrollYProgress, [0, 1], [0, -800]);
-  const xMoveRight = useTransform(scrollYProgress, [0, 1], [-800, 0]);
+  // Row 1 moves left, Row 2 moves right - increased range for more sensitivity
+  const xMoveLeft = useTransform(scrollYProgress, [0, 1], [0, -1800]);
+  const xMoveRight = useTransform(scrollYProgress, [0, 1], [-1800, 0]);
 
   const row1Words = [
     t("bannerExperiences", lang),
@@ -71,8 +71,8 @@ const InteractiveBanner = () => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <HollowDashedLine className="absolute top-0 left-0" />
-      <HollowDashedLine className="absolute bottom-0 left-0" />
+      <HollowDashedLine className="absolute top-0 left-0" style={{ x: xMoveRight }} />
+      <HollowDashedLine className="absolute bottom-0 left-0" style={{ x: xMoveLeft }} />
       
       {/* Row 1: Scrolling Left */}
       <motion.div
