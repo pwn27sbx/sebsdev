@@ -50,7 +50,7 @@ const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
           
           {/* Panel 1: The Gallery */}
           <motion.div style={{ x: slideX }} className="w-[100vw] h-full relative overflow-hidden flex-shrink-0 z-0 will-change-transform transform-gpu">
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 transform-gpu mt-[8vh] md:mt-0">
               <motion.div style={{ x: xSelected, y: ySelectedFinal }} className="w-full flex justify-center will-change-transform transform-gpu">
                 <h2 className="font-anton text-[22vw] md:text-[22vw] lg:text-[21vw] xl:text-[23vw] uppercase tracking-tighter pointer-events-auto whitespace-nowrap">
                   {isMobile ? <MobileVerticalWaveText text={t('selected', lang)} delay="0s" /> : <DesktopScrollText text={t('selected', lang)} scrollYProgress={cardsProgress} globalOffset={0} />}
@@ -62,7 +62,7 @@ const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
                 </h2>
               </motion.div>
             </div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 mt-[8vh] md:mt-0">
               {GALLERY_PROJECTS.map((project, index) => (
                 <DraggablePolaroid key={project.id + '-' + index} project={project} index={index} scrollYProgress={cardsProgress} bringToFront={handleBringToFront} onProjectClick={setSelectedProject} />
               ))}

@@ -55,7 +55,7 @@ const Home = () => {
               <div className="relative z-30 flex flex-col w-full transition-colors duration-300 bg-transparent">
                 <div className="bg-transparent w-full flex flex-col relative pt-12 sm:pt-24 z-10">
                   <ProjectsGallery>
-                    <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12 mb-16">
+                    <div className="flex-1 flex flex-col items-center justify-center w-full mt-20 mb-4 sm:mt-12 sm:mb-16">
                       <ViewAllBlock />
                     </div>
                     <Footer />

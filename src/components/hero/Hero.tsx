@@ -43,7 +43,7 @@ const Hero = () => {
           <div className="flex items-center justify-center w-full flex-nowrap">
             {" "}
             <div
-              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -62,7 +62,7 @@ const Hero = () => {
               className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu"
             />
             <div
-              className="font-anton text-[18vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -83,7 +83,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 150, filter: 'blur(20px)', scale: 0.9 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
-              className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3]"
+              className="font-anton text-[12vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3]"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
