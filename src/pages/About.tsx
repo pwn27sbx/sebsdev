@@ -23,8 +23,11 @@ const About = () => {
         </Link>
       </nav>
 
-      <motion.h1 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.6 }}
-        className="font-anton text-[15vw] sm:text-[10vw] leading-none uppercase tracking-tighter mb-12">
+      <motion.h1 
+        initial={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', y: 40 }} 
+        animate={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', y: 0 }} 
+        transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.4 }}
+        className="font-anton text-[15vw] sm:text-[10vw] leading-none uppercase tracking-tighter mb-12 text-[#00A889]">
         {t('aboutTitle', lang)}
       </motion.h1>
 

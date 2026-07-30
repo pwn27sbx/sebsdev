@@ -93,10 +93,10 @@ const ExpertiseSection = () => {
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
           <motion.div key={'row-' + index}
-            initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', y: 40, opacity: 0 }}
+            whileInView={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', y: 0, opacity: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: index * 0.15, ease: [0.85, 0, 0.15, 1] }}
             className="flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 py-6 md:py-8 px-4 md:px-8 -mx-4 md:-mx-8 transition-all duration-500 hover:border-[#00A889] bg-white/5 dark:bg-black/5 backdrop-blur-[2px] hover:bg-gradient-to-r hover:from-[#00A889]/15 hover:to-transparent hover:backdrop-blur-xl hover:shadow-[inset_4px_0_0_0_#00A889] rounded-r-2xl"
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}

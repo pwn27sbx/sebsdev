@@ -79,7 +79,10 @@ const Hero = () => {
         </motion.div>
         <motion.div style={{ y: descParallax }} className="w-full">
           <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-12 sm:mt-10 px-4 sm:px-10 gap-12 sm:gap-0">
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 150, filter: 'blur(20px)', scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
               className="font-anton text-[17vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#a3a3a3]"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
@@ -92,7 +95,7 @@ const Hero = () => {
               >
                 DEVELOPER
               </GlitchText>
-            </div>
+            </motion.div>
             <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem] relative mt-8 sm:mt-0">
               <div className="relative w-full max-w-[280px] sm:max-w-none text-left p-4 bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-sm">
                 {/* Minimalist HUD Crosshairs */}

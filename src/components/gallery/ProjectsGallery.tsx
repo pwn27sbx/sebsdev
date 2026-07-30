@@ -35,10 +35,10 @@ const ProjectsGallery = () => {
 
   return (
     <motion.section ref={sectionRef}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', filter: 'blur(10px)' }}
+      whileInView={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-200px' }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1] }}
       className="relative w-full bg-transparent transition-colors duration-500 z-20 pt-8 -mt-[2vh] sm:-mt-[5vh]">
       <div className="h-[300vh] w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-0 overflow-hidden">

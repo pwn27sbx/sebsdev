@@ -20,29 +20,26 @@ const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const pageVariants = {
-  initial: { opacity: 0, clipPath: 'circle(0% at 50% 50%)', scale: 0.92 },
-  animate: { opacity: 1, clipPath: 'circle(100% at 50% 50%)', scale: 1 },
-  exit: { opacity: 0, clipPath: 'circle(0% at 50% 50%)', scale: 0.92 },
+  initial: { opacity: 0, filter: 'blur(10px)', y: 40, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)' },
+  animate: { opacity: 1, filter: 'blur(0px)', y: 0, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
+  exit: { opacity: 0, filter: 'blur(10px)', y: -40, clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' },
 };
 
 import Scene from './components/canvas/Scene';
+import Transition from './components/layout/Transition';
 
 function AnimatedRoutes() {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
-      <div className="min-h-screen relative z-10">
-        <motion.div key={location.pathname} variants={pageVariants} initial={false} animate="animate" exit="exit"
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
+      <div className="min-h-screen relative z-10" key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<Suspense fallback={<FallbackLoader />}><Home /></Suspense>} />
-          <Route path="/proyectos" element={<Suspense fallback={<FallbackLoader />}><Archive /></Suspense>} />
-          <Route path="/about" element={<Suspense fallback={<FallbackLoader />}><About /></Suspense>} />
-          <Route path="/contacto" element={<Suspense fallback={<FallbackLoader />}><Contact /></Suspense>} />
-          <Route path="*" element={<Suspense fallback={<FallbackLoader />}><NotFound /></Suspense>} />
+          <Route path="/" element={<Suspense fallback={<FallbackLoader />}><Transition><Home /></Transition></Suspense>} />
+          <Route path="/proyectos" element={<Suspense fallback={<FallbackLoader />}><Transition><Archive /></Transition></Suspense>} />
+          <Route path="/about" element={<Suspense fallback={<FallbackLoader />}><Transition><About /></Transition></Suspense>} />
+          <Route path="/contact" element={<Suspense fallback={<FallbackLoader />}><Transition><Contact /></Transition></Suspense>} />
+          <Route path="*" element={<Suspense fallback={<FallbackLoader />}><Transition><NotFound /></Transition></Suspense>} />
         </Routes>
-        </motion.div>
       </div>
     </AnimatePresence>
   );
