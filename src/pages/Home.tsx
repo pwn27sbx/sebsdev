@@ -55,21 +55,22 @@ const Home = () => {
             <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
             <Hero />
           </div>
-        <div ref={horizontalRef} className="relative z-10 w-full h-[200vh]">
-          <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-            <motion.div style={{ x: horizontalX }} className="flex w-[200vw] h-full">
-              <div className="w-screen h-full flex flex-col justify-center relative">
+          <div ref={horizontalRef} className="relative z-10 w-full h-[250vh]">
+            <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-center bg-transparent pointer-events-none">
+              <div className="w-full flex-shrink-0 pointer-events-auto">
                 <ExpertiseSection />
               </div>
-              <div className="w-screen h-full flex flex-col items-center justify-center relative bg-transparent border-t-[3px] border-[#00A889] z-40">
-                <InteractiveBanner />
-              </div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-          <div className="relative z-20 flex flex-col w-full transition-colors duration-300 bg-transparent">
-            <div className="bg-transparent w-full flex flex-col relative z-30 pt-24 sm:pt-32 pb-24">
-              <ProjectsGallery />
+
+          <div className="relative z-20 flex flex-col w-full -mt-[100vh] bg-[#f5f5f5] dark:bg-[#0a0a0a] bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] bg-[length:24px_24px]">
+            <div className="w-full flex flex-col items-center justify-center relative bg-transparent z-40 pb-10">
+              <InteractiveBanner />
+            </div>
+            <div className="relative z-30 flex flex-col w-full transition-colors duration-300 bg-transparent">
+              <div className="bg-transparent w-full flex flex-col relative pt-12 sm:pt-24 pb-24">
+                <ProjectsGallery />
+              </div>
             </div>
           </div>
         </motion.div>
