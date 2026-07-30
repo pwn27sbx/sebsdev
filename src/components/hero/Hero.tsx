@@ -93,20 +93,29 @@ const Hero = () => {
                 DEVELOPER
               </GlitchText>
             </div>
-            <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem]">
-              <ScrambledText
-                className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-light max-w-xs sm:max-w-none !font-sans m-0"
-                style={{ margin: 0, fontFamily: "inherit" }}
-                radius={100}
-                duration={2}
-                speed={0.5}
-                scrambleChars="«¤-¤»"
-              >
-                <span className="text-sm uppercase tracking-widest text-[#00A889] font-bold block mb-2 sm:mb-3">
-                  {t("heroAbout", lang)}
+            <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem] relative mt-8 sm:mt-0">
+              <div className="relative w-full max-w-[280px] sm:max-w-none text-left p-4 bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-sm">
+                {/* Minimalist HUD Crosshairs */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#00A889]/80"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF2A6D]/80"></div>
+                
+                {/* HUD Label */}
+                <span className="inline-block text-[#00A889] text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.2em] font-bold mb-3 drop-shadow-md">
+                  [01_ {t("heroAbout", lang)}]
                 </span>
-                {t("heroDesc", lang)}
-              </ScrambledText>
+                
+                {/* HUD Text */}
+                <ScrambledText
+                  className="text-black dark:text-white text-xs sm:text-sm leading-relaxed font-mono font-medium max-w-xs sm:max-w-none m-0"
+                  style={{ margin: 0 }}
+                  radius={100}
+                  duration={1.5}
+                  speed={0.6}
+                  scrambleChars=".:-/_+"
+                >
+                  {t("heroDesc", lang)}
+                </ScrambledText>
+              </div>
             </div>
           </div>
         </motion.div>

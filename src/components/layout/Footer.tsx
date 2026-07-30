@@ -114,16 +114,28 @@ const Footer = () => {
         </a>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-4 sm:px-8 text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest border-t border-[#ddd] dark:border-[#222] font-mono">
-        <p className="mb-3 sm:mb-0">Arequipa, Peru</p>
-        <div className="flex gap-4 sm:gap-6 mb-3 sm:mb-0">
-          {SOCIAL_LINKS.map((link) => (
-            <a key={link.label} href={link.url} className="hover:text-[#00A889] transition-colors">{link.label}</a>
-          ))}
-          <Link to="/about" className="hover:text-[#00A889] transition-colors">About</Link>
-          <Link to="/contacto" className="hover:text-[#00A889] transition-colors">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
+      <div className="flex flex-col md:flex-row justify-between items-center py-6 px-4 sm:px-8 text-[10px] sm:text-xs text-white uppercase tracking-widest border-t-8 border-[#FF2A6D] font-mono font-black bg-[#050505] relative z-20 w-full mt-auto">
+        
+        {/* Left Side */}
+        <div className="flex flex-col gap-1 items-center md:items-start mb-8 md:mb-0">
+          <p className="px-3 py-1.5 bg-[#00A889] text-black shadow-[4px_4px_0_#FF2A6D] rotate-[-2deg] hover:rotate-0 transition-transform">SYS-AREQUIPA//PERU</p>
+          <span className="text-gray-500 text-[8px] mt-2">LAT: -16.4090, LON: -71.5375</span>
         </div>
-        <p>Design by Sebastian</p>
+        
+        {/* Center Links */}
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-8 md:mb-0">
+          {SOCIAL_LINKS.map((link) => (
+            <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="px-3 py-2 border-2 border-white hover:border-[#00A889] hover:bg-[#00A889] hover:text-black hover:shadow-[4px_4px_0_#FF2A6D] hover:-translate-y-1 hover:-translate-x-1 transition-all">{link.label}</a>
+          ))}
+          <Link to="/about" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">About</Link>
+          <Link to="/contacto" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
+        </div>
+        
+        {/* Right Side */}
+        <div className="flex flex-col items-center md:items-end">
+          <p className="px-3 py-1.5 bg-[#FF2A6D] text-black shadow-[4px_4px_0_#00A889] rotate-[2deg] hover:rotate-0 transition-transform">DEV-SEBASTIAN</p>
+          <span className="text-gray-500 text-[8px] mt-2">© {new Date().getFullYear()} // ALL RIGHTS RESERVED</span>
+        </div>
       </div>
     </footer>
   );

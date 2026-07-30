@@ -61,7 +61,11 @@ const ProjectsGallery = () => {
           </div>
         </div>
       </div>
-      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      <ProjectModal 
+        project={selectedProject} 
+        index={selectedProject ? GALLERY_PROJECTS.indexOf(selectedProject) : 0}
+        onClose={() => setSelectedProject(null)} 
+      />
     </motion.section>
   );
 };

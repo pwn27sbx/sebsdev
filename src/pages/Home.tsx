@@ -15,22 +15,6 @@ import { useLenis } from 'lenis/react';
 
 const Home = () => {
   const { lang } = usePortfolio();
-  const cloneRef = useRef<HTMLDivElement>(null);
-
-  // Use Lenis loop for infinite scroll detection
-  useLenis((lenis) => {
-    if (!cloneRef.current) return;
-    
-    const { top } = cloneRef.current.getBoundingClientRect();
-    
-    // If the top of the cloned Hero reaches the top of the viewport
-    if (top <= 0) {
-      // Jump seamlessly to the real Hero at the top
-      // Math.abs(top) gives us exactly how many pixels we scrolled PAST the clone's top
-      const targetScroll = Math.abs(top);
-      lenis.scrollTo(targetScroll, { immediate: true });
-    }
-  });
 
   return (
     <div className="bg-transparent text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
@@ -59,21 +43,13 @@ const Home = () => {
         </div>
         <div className="relative z-40 w-full transition-colors duration-300 pointer-events-none">
           <div className="w-full h-[15vh] bg-transparent"></div>
-          <div className="bg-transparent w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto pb-4">
-            <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12">
+          <div className="bg-transparent w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto">
+            <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12 mb-16">
               <ViewAllBlock />
             </div>
             <Footer />
           </div>
         </div>
-        
-        {/* Infinite Loop Clone */}
-        <div ref={cloneRef} className="relative z-50 w-full h-[100dvh] bg-transparent transition-colors gpu" aria-hidden="true">
-          <Hero />
-        </div>
-        
-        {/* Spacer to guarantee scrollability past the clone's top edge */}
-        <div className="w-full h-[50vh] pointer-events-none" aria-hidden="true" />
       </main>
     </div>
   );

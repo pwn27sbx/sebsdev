@@ -5,11 +5,13 @@ import type { GalleryProject } from '../../data/projects';
 
 interface ProjectModalProps {
   project: GalleryProject | null;
+  index?: number;
   onClose: () => void;
 }
 
-const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
+const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
   const { setIsHovering, lang } = usePortfolio();
+  const isMagenta = (index ?? 0) % 2 === 0;
 
   return (
     <AnimatePresence>
@@ -29,43 +31,50 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="relative max-w-3xl w-full bg-white dark:bg-[#111] rounded-2xl overflow-hidden shadow-2xl border border-white/20 dark:border-white/10"
+            className={`relative max-w-3xl w-full bg-[#f5f5f5] dark:bg-[#050505] rounded-none border-4 border-[#000] dark:border-[#222] transform-gpu overflow-hidden ${isMagenta ? 'shadow-[16px_16px_0_#FF2A6D]' : 'shadow-[16px_16px_0_#00A889]'}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="aspect-video relative overflow-hidden bg-[#050505]">
-              <div className="film-grain absolute inset-0 z-10"></div>
+            <div className="aspect-video relative overflow-hidden bg-[#050505] border-b-4 border-black dark:border-[#222]">
+              <div className="film-grain absolute inset-0 z-10 pointer-events-none"></div>
               {project && <img src={project.img} alt={project.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover grayscale contrast-[1.2] opacity-80"
               />}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
+              <div className="absolute inset-0 bg-black/20 pointer-events-none z-10" />
+              
+              {/* Industrial Caution Tape */}
+              <div className={`absolute bottom-0 left-0 w-full h-3 sm:h-4 z-20 pointer-events-none opacity-90 ${isMagenta ? 'bg-[repeating-linear-gradient(45deg,#FF2A6D,#FF2A6D_10px,#000_10px,#000_20px)]' : 'bg-[repeating-linear-gradient(45deg,#00A889,#00A889_10px,#000_10px,#000_20px)]'}`}></div>
+
               <button onClick={onClose}
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/70 transition-[background-color] duration-300"
+                className={`absolute top-0 right-0 z-30 w-12 h-12 text-black border-b-4 border-l-4 border-black hover:bg-white flex items-center justify-center transition-colors duration-150 ${isMagenta ? 'bg-[#FF2A6D] hover:text-[#FF2A6D]' : 'bg-[#00A889] hover:text-[#00A889]'}`}
                 aria-label="Close"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-6 h-6 font-bold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                   <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
               </button>
-              <div className="absolute bottom-4 left-4 z-20">
-                <span className="bg-[#00A889] text-white px-3 py-1 rounded-md text-xs font-mono font-bold shadow-lg">{project.id}</span>
+              
+              <div className="absolute bottom-6 left-4 sm:left-6 z-20 pointer-events-none">
+                <span className={`bg-black px-2 py-0.5 text-[10px] sm:text-xs font-mono font-black tracking-widest border ${isMagenta ? 'text-[#FF2A6D] border-[#FF2A6D] shadow-[2px_2px_0_#FF2A6D]' : 'text-[#00A889] border-[#00A889] shadow-[2px_2px_0_#00A889]'}`}>SYS-{project.id}</span>
               </div>
             </div>
-            <div className="p-6 sm:p-8">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#00A889] font-bold">{project.category}</span>
-              <h3 className="font-anton text-3xl sm:text-4xl uppercase tracking-tighter text-[#111] dark:text-white mt-2">{project.title}</h3>
-              {project.year && <p className="text-xs font-mono text-gray-400 mt-2">{project.year}</p>}
-              <div className="flex gap-3 mt-6">
+            <div className="p-6 sm:p-8 relative">
+              <span className={`text-black px-2 py-1 text-[10px] sm:text-xs font-mono font-black tracking-widest uppercase border border-black shadow-[4px_4px_0_#000] inline-block mb-4 ${isMagenta ? 'bg-[#00A889]' : 'bg-[#FF2A6D]'}`}>{project.category}</span>
+              
+              <h3 className="font-anton text-4xl sm:text-5xl uppercase tracking-tighter text-[#111] dark:text-white leading-none">{project.title}</h3>
+              {project.year && <p className={`text-xs font-mono text-gray-500 dark:text-gray-400 mt-3 font-bold tracking-widest border-l-4 pl-2 ${isMagenta ? 'border-[#FF2A6D]' : 'border-[#00A889]'}`}>{project.year}</p>}
+              
+              <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
                 <a href={project.link} target="_blank" rel="noopener noreferrer"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 bg-[#00A889] text-white rounded-full font-anton text-xs uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,background-color] duration-300 hover:-translate-y-0.5 md:cursor-none"
+                  className={`px-8 py-3 text-black border-2 border-black font-anton text-sm uppercase tracking-widest shadow-[6px_6px_0_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none transition-all duration-75 md:cursor-none ${isMagenta ? 'bg-[#00A889]' : 'bg-[#FF2A6D]'}`}
                 >
                   {lang === 'es' ? 'Ver Proyecto' : 'View Project'}
                 </a>
                 <button onClick={onClose}
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
-                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full font-anton text-xs uppercase tracking-widest hover:border-gray-500 transition-[border-color] duration-300 md:cursor-none"
+                  className="px-8 py-3 bg-white dark:bg-[#111] text-black dark:text-white border-2 border-black dark:border-white font-anton text-sm uppercase tracking-widest shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#fff] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none transition-all duration-75 md:cursor-none"
                 >
                   Cerrar
                 </button>

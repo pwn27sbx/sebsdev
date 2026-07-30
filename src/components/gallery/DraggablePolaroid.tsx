@@ -18,6 +18,7 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, bringToFront, onPr
   const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ['-120vh', '0vh']);
   const [zIndex, setZIndex] = useState(10 + index);
   const hasDragged = useRef(false);
+  const isMagenta = index % 2 === 0;
 
   return (
     <motion.div style={{ y: yDrop, zIndex }} className="absolute flex items-center justify-center w-full h-full pointer-events-none transform-gpu will-change-transform">
@@ -31,18 +32,25 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, bringToFront, onPr
           whileDrag={{ scale: 1.05, rotate: 0, cursor: 'grabbing' }}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className="group relative pointer-events-auto cursor-grab w-[65vw] sm:w-[40vw] lg:w-[28vw] aspect-[4/3] rounded-2xl p-2 sm:p-3 bg-white/80 dark:bg-[#111]/80 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden transform-gpu will-change-transform transition-colors duration-500"
-        >            <div className="hover-shine-effect rounded-xl"></div>
-          <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#050505] shadow-inner ring-1 ring-black/5 dark:ring-white/10 gpu-layer">
+          className={`group relative pointer-events-auto cursor-grab w-[65vw] sm:w-[40vw] lg:w-[28vw] aspect-[4/3] rounded-none p-1 sm:p-1.5 bg-[#f5f5f5] dark:bg-[#111] border-4 border-[#000] dark:border-[#222] shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#000] hover:-translate-y-1 hover:-translate-x-1 overflow-hidden transform-gpu will-change-transform transition-all duration-75 ${isMagenta ? 'hover:shadow-[12px_12px_0_#FF2A6D]' : 'hover:shadow-[12px_12px_0_#00A889]'}`}
+        >            
+          <div className="relative w-full h-full overflow-hidden bg-[#050505] rounded-none">
             <div className="film-grain absolute inset-0 z-10"></div>
+            
             <img draggable="false" src={project.img} alt={project.title || (project.category + ' project thumbnail ' + project.id)} loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover object-center grayscale opacity-80 transition-[transform,filter,opacity] duration-700 scale-110 group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100 will-change-transform" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10"></div>
-            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
-              <span className="bg-[#00A889] text-white px-2.5 py-1 rounded-md text-[9px] sm:text-xs font-mono font-bold shadow-lg border border-[#00A889]/50">{project.id}</span>
+              className="absolute inset-0 w-full h-full object-cover object-center grayscale contrast-[1.2] opacity-80 group-hover:grayscale-0 group-hover:opacity-100 will-change-transform transition-all duration-75" />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-75 z-10 pointer-events-none"></div>
+            
+            {/* Industrial Caution Tape */}
+            <div className={`absolute bottom-0 left-0 w-full h-2 sm:h-3 z-20 pointer-events-none opacity-80 group-hover:opacity-100 ${isMagenta ? 'bg-[repeating-linear-gradient(45deg,#FF2A6D,#FF2A6D_10px,#000_10px,#000_20px)]' : 'bg-[repeating-linear-gradient(45deg,#00A889,#00A889_10px,#000_10px,#000_20px)]'}`}></div>
+
+            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 pointer-events-none">
+              <span className={`bg-black px-2 py-0.5 text-[10px] sm:text-xs font-mono font-black tracking-widest border ${isMagenta ? 'text-[#FF2A6D] border-[#FF2A6D] shadow-[2px_2px_0_#FF2A6D]' : 'text-[#00A889] border-[#00A889] shadow-[2px_2px_0_#00A889]'}`}>SYS-{project.id}</span>
             </div>
-            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20 flex gap-2">
-              <span className="bg-white/20 dark:bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[9px] sm:text-xs font-mono font-medium tracking-widest border border-white/20 dark:border-white/10">{project.category}</span>
+            <div className="absolute bottom-4 left-2 sm:bottom-5 sm:left-3 z-20 flex gap-2 pointer-events-none">
+              <span className={`text-black px-2 py-1 text-[10px] sm:text-xs font-mono font-black tracking-widest uppercase border border-black shadow-[4px_4px_0_#000] ${isMagenta ? 'bg-[#00A889]' : 'bg-[#FF2A6D]'}`}>
+                {project.category}
+              </span>
             </div>
           </div>
         </motion.div>
