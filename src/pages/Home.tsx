@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
-import CustomCursor from '../components/layout/CustomCursor';
 import Header from '../components/layout/Header';
 import Hero from '../components/hero/Hero';
 import ExpertiseSection from '../components/expertise/ExpertiseSection';
@@ -23,13 +22,12 @@ const Home = () => {
         <meta name="description" content={t('seoDesc', lang)} />
         <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
       </Helmet>
-      <CustomCursor />
       <Header />
       <main className="w-full relative z-10">
         <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
           <Hero />
         </div>
-        <div className="relative z-10 w-full flex flex-col justify-center overflow-hidden">
+        <div className="relative z-10 w-full flex flex-col justify-center">
           <ExpertiseSection />
         </div>
         <div className="relative z-20 flex flex-col w-full transition-colors duration-300">

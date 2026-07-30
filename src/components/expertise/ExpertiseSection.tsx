@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
@@ -61,6 +61,17 @@ const renderMarqueeText = (text: string) => {
 const ExpertiseSection = () => {
   const { setIsHovering, lang } = usePortfolio();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
+  const sectionRef = useRef(null);
+  const { scrollYProgress: sectionScrollY } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"]
+  });
+
+  const sectionY = useTransform(sectionScrollY, [0, 1], ["35vh", "0vh"]);
+  const sectionRotate = useTransform(sectionScrollY, [0, 1], [-8, 0]);
+  const sectionScale = useTransform(sectionScrollY, [0, 1], [0.75, 1]);
+
   const { scrollYProgress } = useScroll();
 
   const expertises = useMemo(() => [
@@ -74,7 +85,18 @@ const ExpertiseSection = () => {
   const bgParallax3 = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
 
   return (
-    <section className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-transparent overflow-hidden transition-colors duration-700 border-t border-gray-200 dark:border-gray-800">
+    <motion.section 
+      ref={sectionRef}
+      style={{ 
+        y: sectionY, 
+        rotate: sectionRotate, 
+        scale: sectionScale,
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d'
+      }}
+      className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#eaeaea] dark:bg-[#070707] shadow-[0_-30px_80px_rgba(0,0,0,0.1)] dark:shadow-[0_-30px_80px_rgba(0,0,0,0.8)] overflow-visible transition-colors duration-700 border-t-[3px] border-[#00A889] z-30 transform-gpu"
+    >
       {/* Parallax background accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <motion.div
@@ -92,12 +114,8 @@ const ExpertiseSection = () => {
       </div>
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
-          <motion.div key={'row-' + index}
-            initial={{ clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', y: 40, opacity: 0 }}
-            whileInView={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, delay: index * 0.15, ease: [0.85, 0, 0.15, 1] }}
-            className="flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 py-6 md:py-8 px-4 md:px-8 -mx-4 md:-mx-8 transition-all duration-500 hover:border-[#00A889] bg-white/5 dark:bg-black/5 backdrop-blur-[2px] hover:bg-gradient-to-r hover:from-[#00A889]/15 hover:to-transparent hover:backdrop-blur-xl hover:shadow-[inset_4px_0_0_0_#00A889] rounded-r-2xl"
+          <div key={'row-' + index}
+            className="flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 py-6 md:py-8 px-4 md:px-8 -mx-4 md:-mx-8 transition-all duration-500 hover:border-[#00A889] bg-transparent hover:bg-gradient-to-r hover:from-[#00A889]/15 hover:to-transparent hover:shadow-[inset_4px_0_0_0_#00A889]"
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
           >
@@ -122,10 +140,10 @@ const ExpertiseSection = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 export default ExpertiseSection;

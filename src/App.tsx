@@ -53,6 +53,8 @@ const FallbackLoader = () => (
 
 import { ReactLenis } from 'lenis/react';
 
+import CustomCursor from './components/layout/CustomCursor';
+
 export default function App() {
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
@@ -77,6 +79,7 @@ export default function App() {
         <Router basename="/">
           <ErrorBoundary>
             <PortfolioProvider>
+              <CustomCursor />
               <Scene />
               <AnimatedRoutes />
             </PortfolioProvider>
