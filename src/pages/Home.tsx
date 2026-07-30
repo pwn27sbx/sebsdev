@@ -10,7 +10,6 @@ import InteractiveBanner from '../components/banner/InteractiveBanner';
 import ProjectsGallery from '../components/gallery/ProjectsGallery';
 import ViewAllBlock from '../components/gallery/ViewAllBlock';
 import Footer from '../components/layout/Footer';
-import CyberGridBackground from '../components/common/CyberGridBackground';
 
 import { useLenis } from 'lenis/react';
 
@@ -35,8 +34,8 @@ const Home = () => {
 
       <main className="w-full relative">
         <div className="w-full relative z-20">
-          <motion.div 
-            className="relative w-full origin-bottom bg-transparent transition-colors duration-500"
+          <motion.div
+            className="relative w-full origin-bottom bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed transition-colors duration-500"
           >
             <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
               <Hero />
@@ -49,10 +48,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="relative z-20 flex flex-col w-full -mt-[100vh] bg-[linear-gradient(to_bottom,transparent_0%,#f0f0f0_120px)] dark:bg-[linear-gradient(to_bottom,transparent_0%,#030303_120px)]">
-              <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                <CyberGridBackground transparent />
-              </div>
+            <div className="relative z-20 flex flex-col w-full -mt-[100vh] bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed">
               <div className="w-full flex flex-col items-center justify-center relative bg-transparent z-40 pb-10">
                 <InteractiveBanner />
               </div>
