@@ -10,7 +10,7 @@ const techs = ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', '
 const About = () => {
   const { lang, setIsHovering } = usePortfolio();
   return (
-    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#111] dark:text-white transition-colors duration-500 px-6 sm:px-12 md:px-24 pt-32 pb-20">
+    <div className="min-h-screen bg-transparent text-[#111] dark:text-white transition-colors duration-500 px-6 sm:px-12 md:px-24 pt-32 pb-20">
       <Helmet>
         <title>Sobre Mi | Sebastian</title>
         <meta name="description" content="Conoce más sobre Sebastian, Frontend Developer y diseñador de UI/UX." />
