@@ -70,7 +70,7 @@ const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
           </motion.div>
 
           {/* Panel 2: The Final Section (ViewAllBlock + Footer) */}
-          <motion.div style={{ x: slideX }} className="w-[100vw] h-full flex flex-col justify-between bg-[#ffffff] dark:bg-[#0a0a0a] flex-shrink-0 relative z-10 border-l border-gray-200 dark:border-gray-800 shadow-[-20px_0_50px_rgba(0,0,0,0.05)] dark:shadow-[-20px_0_50px_rgba(0,0,0,0.5)] will-change-transform transform-gpu">
+          <motion.div style={{ x: slideX }} className="w-[100vw] h-full flex flex-col justify-between bg-transparent flex-shrink-0 relative z-10 border-l border-gray-200 dark:border-gray-800 shadow-[-20px_0_50px_rgba(0,0,0,0.05)] dark:shadow-[-20px_0_50px_rgba(0,0,0,0.5)] will-change-transform transform-gpu">
             {children}
           </motion.div>
 

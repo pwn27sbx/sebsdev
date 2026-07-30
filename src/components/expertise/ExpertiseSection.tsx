@@ -95,7 +95,7 @@ const ExpertiseSection = () => {
         backfaceVisibility: 'hidden',
         transformStyle: 'preserve-3d'
       }}
-      className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-transparent shadow-[0_-20px_60px_rgba(0,0,0,0.05)] dark:shadow-[0_-20px_60px_rgba(0,0,0,0.8)] overflow-visible transition-colors duration-700 z-30 transform-gpu"
+      className="w-full relative flex flex-col justify-center min-h-[100dvh] pt-12 pb-24 bg-[#f0f0f0] dark:bg-[#0c0c0c] border-4 md:border-8 border-black dark:border-gray-800 shadow-[15px_15px_0_#FF2A6D] md:shadow-[30px_30px_0_#00A889] dark:shadow-[15px_15px_0_#FF2A6D] dark:md:shadow-[30px_30px_0_#00A889] overflow-visible transition-colors duration-700 z-30 transform-gpu"
     >
       {/* Parallax background accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
