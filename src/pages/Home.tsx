@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
@@ -15,6 +16,25 @@ import { useLenis } from 'lenis/react';
 const Home = () => {
   const { lang } = usePortfolio();
 
+  const horizontalRef = useRef(null);
+  const { scrollYProgress: horizontalProgress } = useScroll({
+    target: horizontalRef,
+    offset: ["start start", "end end"]
+  });
+  
+  const horizontalX = useTransform(horizontalProgress, [0, 1], ["0vw", "-100vw"]);
+
+  const footerContainerRef = useRef(null);
+  const { scrollYProgress: footerProgress } = useScroll({
+    target: footerContainerRef,
+    offset: ["start end", "end end"]
+  });
+  
+  const curtainScale = useTransform(footerProgress, [0, 0.15], [1, 0.95]);
+  const curtainY = useTransform(footerProgress, [0, 0.15], ["0px", "-5vh"]);
+  
+  const footerY = useTransform(footerProgress, [0, 1], ["-30vh", "0vh"]);
+
   return (
     <div className="bg-transparent text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
       <Helmet>
@@ -23,30 +43,46 @@ const Home = () => {
         <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
       </Helmet>
       <Header />
-      <main className="w-full relative z-10">
-        <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
-          <Hero />
-        </div>
-        <div className="relative z-10 w-full flex flex-col justify-center">
-          <ExpertiseSection />
-        </div>
-        <div className="relative z-20 flex flex-col w-full transition-colors duration-300">
-          <div className="w-full h-32 sm:h-48 bg-transparent pointer-events-none"></div>
-          <div className="bg-transparent w-full flex flex-col relative z-30">
-            <div className="-mt-32 sm:-mt-48 relative z-30">
-              <InteractiveBanner />
-            </div>
-            <ProjectsGallery />
+      <main className="w-full relative">
+        <div className="w-full relative z-20">
+          <motion.div 
+            style={{ 
+              scale: curtainScale,
+              y: curtainY,
+            }} 
+            className="relative w-full origin-bottom bg-[#f5f5f5] dark:bg-[#0a0a0a] bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] bg-[length:24px_24px] border-b-[4px] border-[#00A889] dark:border-[#FF2A6D] shadow-[0_10px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_50px_rgba(0,0,0,0.5)] transition-colors duration-500"
+          >
+            <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
+            <Hero />
+          </div>
+        <div ref={horizontalRef} className="relative z-10 w-full h-[200vh]">
+          <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+            <motion.div style={{ x: horizontalX }} className="flex w-[200vw] h-full">
+              <div className="w-screen h-full flex flex-col justify-center relative">
+                <ExpertiseSection />
+              </div>
+              <div className="w-screen h-full flex flex-col items-center justify-center relative bg-transparent border-t-[3px] border-[#00A889] z-40">
+                <InteractiveBanner />
+              </div>
+            </motion.div>
           </div>
         </div>
-        <div className="relative z-40 w-full transition-colors duration-300 pointer-events-none">
-          <div className="w-full h-[15vh] bg-transparent"></div>
-          <div className="bg-transparent w-full min-h-[100vh] flex flex-col justify-between relative z-50 pointer-events-auto">
+          <div className="relative z-20 flex flex-col w-full transition-colors duration-300 bg-transparent">
+            <div className="bg-transparent w-full flex flex-col relative z-30 pt-24 sm:pt-32 pb-24">
+              <ProjectsGallery />
+            </div>
+          </div>
+        </motion.div>
+        </div>
+        
+        {/* Parallax Footer Base Layer */}
+        <div ref={footerContainerRef} className="w-full relative z-0 overflow-hidden bg-transparent">
+          <motion.div style={{ y: footerY }} className="w-full flex flex-col justify-between pointer-events-auto">
             <div className="flex-1 flex flex-col items-center justify-center w-full mt-8 sm:mt-12 mb-16">
               <ViewAllBlock />
             </div>
             <Footer />
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>

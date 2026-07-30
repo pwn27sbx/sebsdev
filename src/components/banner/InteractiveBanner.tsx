@@ -46,12 +46,8 @@ const HollowDashedLine = ({ className = "" }) => {
 const InteractiveBanner = () => {
   const { lang, setIsHovering } = usePortfolio();
   
-  // Create a ref for the container to track scroll relative to this element
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  // Use global scroll since this is now inside a sticky horizontal container
+  const { scrollYProgress } = useScroll();
   
   // Row 1 moves left, Row 2 moves right
   const xMoveLeft = useTransform(scrollYProgress, [0, 1], [0, -800]);
@@ -71,7 +67,6 @@ const InteractiveBanner = () => {
 
   return (
     <div 
-      ref={containerRef}
       className="w-full py-8 md:py-10 bg-transparent flex flex-col justify-center overflow-hidden relative z-30 group/banner transition-colors duration-500"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
