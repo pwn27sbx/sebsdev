@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { t } from '../../data/i18n';
 
@@ -16,7 +16,7 @@ const Header = () => {
     { path: '/contact', label: lang === 'es' ? 'CONTACTO' : 'CONTACT' }
   ];
 
-  const menuVariants = {
+  const menuVariants: Variants = {
     hidden: { opacity: 0, y: -20, scale: 0.95, filter: 'blur(10px)' },
     visible: { 
       opacity: 1, 
@@ -28,29 +28,15 @@ const Header = () => {
     exit: { opacity: 0, y: -10, scale: 0.95, filter: 'blur(10px)', transition: { duration: 0.2 } }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, x: 20 },
     visible: { opacity: 1, x: 0 }
   };
 
   return (
     <header className="fixed top-0 left-0 right-0 w-full px-4 sm:px-8 py-3 flex justify-between items-start z-50 pointer-events-none">
-      {/* Language Switcher */}
-      <div
-        className="pointer-events-auto mt-2"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        <button
-          onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-          className="flex items-center gap-1.5 text-xs tracking-[0.2em] uppercase font-light text-gray-600 dark:text-gray-300 hover:text-[#00A889] dark:hover:text-[#00A889] transition-colors duration-300"
-          aria-label={lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}
-        >
-          <span className={lang === 'es' ? 'text-gray-900 dark:text-white font-normal' : 'text-gray-400 dark:text-gray-500'}>ES</span>
-          <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
-          <span className={lang === 'en' ? 'text-gray-900 dark:text-white font-normal' : 'text-gray-400 dark:text-gray-500'}>EN</span>
-        </button>
-      </div>
+      {/* Empty Left Side for spacing if needed */}
+      <div></div>
 
       {/* Right Controls */}
       <div className="flex flex-col items-end gap-2 pointer-events-auto relative">
@@ -150,6 +136,24 @@ const Header = () => {
                     </motion.div>
                   );
                 })}
+
+                <div className="w-full h-[1px] bg-gray-200 dark:bg-gray-800 my-2"></div>
+
+                <motion.div variants={itemVariants} className="px-3 py-2 flex justify-between items-center">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">
+                    {lang === 'es' ? 'IDIOMA' : 'LANGUAGE'}
+                  </span>
+                  <button
+                    onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
+                    className="flex items-center gap-1.5 text-[10px] tracking-[0.2em] font-bold text-gray-800 dark:text-gray-200 hover:text-[#00A889] dark:hover:text-[#00A889] transition-colors duration-300 bg-white/50 dark:bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700"
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                  >
+                    <span className={lang === 'es' ? 'text-[#00A889]' : 'opacity-50'}>ES</span>
+                    <span className="w-1 h-1 rounded-full bg-current" />
+                    <span className={lang === 'en' ? 'text-[#00A889]' : 'opacity-50'}>EN</span>
+                  </button>
+                </motion.div>
               </div>
             </motion.div>
           )}

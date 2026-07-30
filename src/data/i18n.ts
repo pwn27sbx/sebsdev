@@ -4,7 +4,7 @@ const es = {
   seoDesc: 'Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX.',
   // Hero
   heroAbout: 'Acerca de',
-  heroDesc: 'Soy un desarrollador enfocado en crear experiencias digitales interactivas, fusionando diseño de alta calidad con tecnología moderna para marcas y proyectos creativos.',
+  heroDesc: 'UI/UX Design & Software Engineering.',
   heroScroll: 'Hacer Scroll',
   // Header
   langSwitch: 'Cambiar a Español',
@@ -67,7 +67,7 @@ const en = {
   seoDesc: 'Sebastian\'s Portfolio, Frontend Developer from Arequipa, Peru. Expert in React, TypeScript, web animations and UI/UX.',
   // Hero
   heroAbout: 'About',
-  heroDesc: 'I am a developer focused on creating interactive digital experiences, merging high-quality design with modern technology for creative brands and projects.',
+  heroDesc: 'UI/UX Design & Software Engineering.',
   heroScroll: 'Scroll down',
   // Header
   langSwitch: 'Switch to English',

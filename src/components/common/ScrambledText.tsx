@@ -12,7 +12,7 @@ export interface ScrambledTextProps {
   scrambleChars?: string;
   className?: string;
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  text: string;
 }
 
 const ScrambledText: React.FC<ScrambledTextProps> = ({
@@ -22,14 +22,18 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
   scrambleChars = '.:',
   className = '',
   style = {},
-  children
+  text
 }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!rootRef.current) return;
 
-    const split = SplitText.create(rootRef.current.querySelector('p'), {
+    // Manually set text to avoid React reconciliation conflicts with GSAP
+    const p = rootRef.current.querySelector('p');
+    if (p) p.innerText = text;
+
+    const split = SplitText.create(p, {
       type: 'words,chars',
       charsClass: 'inline-block will-change-transform',
       wordsClass: 'inline-block'
@@ -37,7 +41,7 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
 
     split.chars.forEach(el => {
       const c = el as HTMLElement;
-      gsap.set(c, { attr: { 'data-content': c.innerHTML } });
+      gsap.set(c, { attr: { 'data-content': c.innerText } });
     });
 
     const handleMove = (e: PointerEvent) => {
@@ -55,7 +59,8 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
             scrambleText: {
               text: c.dataset.content || '',
               chars: scrambleChars,
-              speed
+              speed,
+              tweenLength: false
             },
             ease: 'none'
           });
@@ -63,14 +68,13 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
       });
     };
 
-    const el = rootRef.current;
-    el.addEventListener('pointermove', handleMove);
+    window.addEventListener('pointermove', handleMove);
 
     return () => {
-      el.removeEventListener('pointermove', handleMove);
+      window.removeEventListener('pointermove', handleMove);
       split.revert();
     };
-  }, [radius, duration, speed, scrambleChars]);
+  }, [radius, duration, speed, scrambleChars, text]);
 
   return (
     <div
@@ -78,7 +82,7 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
       className={className}
       style={style}
     >
-      <p>{children}</p>
+      <p></p>
     </div>
   );
 };

@@ -5,6 +5,8 @@ import { t } from "../../data/i18n";
 import HoverText from "./HoverText";
 import GlitchText from "../common/GlitchText";
 import ScrambledText from "../common/ScrambledText";
+import InteractiveShape from "./InteractiveShape";
+import DecryptedText from "../common/DecryptedText";
 
 const Hero = () => {
   const { setIsHovering, lang } = usePortfolio();
@@ -27,11 +29,11 @@ const Hero = () => {
       ref={containerRef}
       className="relative w-full h-[100dvh] flex flex-col justify-center px-4 overflow-hidden bg-transparent transition-colors duration-500"
     >
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.1, opacity: 0, filter: "blur(20px)" }}
         animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }} // Syncs with the ~110 frames of 3D camera lerp
-        className="flex flex-col items-center justify-center w-full max-w-[100vw] mx-auto z-10"
+        className="relative h-full w-full max-w-[100vw] mx-auto z-10"
       >
         {/* Parallax gradient accent */}
         <motion.div
@@ -39,11 +41,20 @@ const Hero = () => {
           className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-[#00A889]/5 via-transparent to-transparent blur-[100px] dark:from-[#00A889]/8 pointer-events-none"
           aria-hidden="true"
         />
-        <motion.div style={{ y: textParallax }} className="w-full">
-          <div className="flex items-center justify-center w-full flex-nowrap">
+
+        {/* Huge Interactive Mask Top Right */}
+        <div className="absolute -top-[8%] sm:top-[3%] right-[1%] sm:right-[0%] z-20 pointer-events-auto opacity-100 dark:opacity-100 transform scale-75 sm:scale-100">
+          <InteractiveShape />
+        </div>
+
+        {/* Texts Container Bottom Left */}
+        <div className="absolute bottom-[10%] sm:bottom-[15%] left-[4%] sm:left-[6%] w-full flex flex-col justify-end items-start pointer-events-none">
+
+        <motion.div style={{ y: textParallax }} className="relative z-10">
+          <div className="flex items-center justify-start flex-nowrap">
             {" "}
             <div
-              className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[9vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -62,7 +73,7 @@ const Hero = () => {
               className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu"
             />
             <div
-              className="font-anton text-[13vw] sm:text-[16vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[9vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -77,13 +88,13 @@ const Hero = () => {
             </div>
           </div>
         </motion.div>
-        <motion.div style={{ y: descParallax }} className="w-full">
-          <div className="flex flex-col sm:flex-row w-full items-center sm:items-end justify-between mt-12 sm:mt-10 px-4 sm:px-10 gap-12 sm:gap-0">
+        <motion.div style={{ y: descParallax }} className="relative z-10 mt-[1vw]">
+          <div className="flex flex-row items-center justify-start gap-4 sm:gap-8 -ml-[2vw] sm:-ml-[4vw]">
             <motion.div
               initial={{ opacity: 0, y: 150, filter: 'blur(20px)', scale: 0.9 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
-              className="font-anton text-[12vw] sm:text-[15vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3]"
+              className="font-anton text-[8vw] sm:text-[10vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3]"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -96,32 +107,33 @@ const Hero = () => {
                 DEVELOPER
               </GlitchText>
             </motion.div>
-            <div className="w-full sm:w-[32%] sm:pb-8 flex flex-col items-center sm:items-start text-center sm:text-left min-h-[5rem] sm:min-h-[6rem] relative mt-8 sm:mt-0">
-              <div className="relative w-full max-w-[280px] sm:max-w-none text-left p-4 bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-sm">
-                {/* Minimalist HUD Crosshairs */}
-                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#00A889]/80"></div>
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF2A6D]/80"></div>
-                
-                {/* HUD Label */}
-                <span className="inline-block text-[#00A889] text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.2em] font-bold mb-3 drop-shadow-md">
-                  [01_ {t("heroAbout", lang)}]
-                </span>
-                
-                {/* HUD Text */}
-                <ScrambledText
-                  className="text-black dark:text-white text-xs sm:text-sm leading-relaxed font-mono font-medium max-w-xs sm:max-w-none m-0"
-                  style={{ margin: 0 }}
-                  radius={100}
-                  duration={1.5}
-                  speed={0.6}
-                  scrambleChars=".:-/_+"
-                >
-                  {t("heroDesc", lang)}
-                </ScrambledText>
+            
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="w-[310px] sm:w-[350px] shrink-0 bg-white/5 dark:bg-black/20 backdrop-blur-md border border-[#111]/10 dark:border-white/10 p-4 sm:p-5 relative group hidden sm:block pointer-events-auto"
+            >
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#00A889] -translate-x-[1px] -translate-y-[1px]" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FF2A6D] translate-x-[1px] translate-y-[1px]" />
+              
+              <div className="font-mono text-[9px] sm:text-xs mb-2 text-[#00A889] uppercase font-bold tracking-wider">
+                [01_ ABOUT]
               </div>
-            </div>
+              <div className="font-mono text-[10px] sm:text-sm whitespace-nowrap cursor-default text-gray-600 dark:text-gray-400">
+                <ScrambledText
+                  radius={80}
+                  duration={0.8}
+                  speed={0.5}
+                  scrambleChars="d/_-.:+ "
+                  className="inline-block"
+                  text={t("heroDesc", lang)}
+                />
+              </div>
+            </motion.div>
           </div>
         </motion.div>
+        </div>
       </motion.div>
       <motion.div
         className="absolute bottom-8 right-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-400 mix-blend-difference"

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Header from './components/layout/Header';
+import SideMarquee from './components/layout/SideMarquee';
 import CyberGridBackground from './components/common/CyberGridBackground';
 
 
@@ -82,6 +83,7 @@ export default function App() {
           <ErrorBoundary>
             <PortfolioProvider>
               <CustomCursor />
+              <SideMarquee />
               <Header />
               <CyberGridBackground />
               <Scene />
