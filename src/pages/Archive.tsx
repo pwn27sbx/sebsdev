@@ -19,7 +19,7 @@ const Archive = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const { scrollY } = useScroll();
-  const titleX = useTransform(scrollY, [0, 2000], [0, 1000]);
+  const titleX = useTransform(scrollY, [0, 1000], [0, 1800]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -33,7 +33,7 @@ const Archive = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20" onMouseMove={handleMouseMove}>
+    <div className="min-h-screen relative bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20" onMouseMove={handleMouseMove}>
       <Helmet>
         <title>Archivo de Proyectos | Sebastian</title>
         <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
@@ -45,45 +45,33 @@ const Archive = () => {
       </a>
 
       <nav className="fixed top-0 w-full p-4 sm:p-8 flex justify-between items-center z-[100] pointer-events-none">
-        <Link to="/" className="pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full text-gray-800 dark:text-gray-200 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:text-[#00A889] dark:hover:text-[#00A889]">
+        <Link to="/" className="ml-12 sm:ml-8 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full text-gray-800 dark:text-gray-200 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:text-[#00A889] dark:hover:text-[#00A889]">
           <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
           {t('back', lang)}
         </Link>
-        <div className="pointer-events-auto text-[10px] sm:text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full text-gray-800 dark:text-gray-200 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50">
-          Archive // 2021 — 2026
-        </div>
       </nav>
 
       <motion.header
-        className="px-6 sm:px-12 pt-10 mb-8 sm:mb-20 overflow-visible flex flex-col items-start"
+        className="px-6 sm:px-12 pt-32 sm:pt-32 pb-0 overflow-visible flex flex-col items-start"
       >
-        <div className="w-full max-w-md ml-2 flex items-end relative z-10">
-          <ScrambledText 
-            className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-light leading-relaxed m-0"
-            style={{ margin: 0 }}
-            radius={100}
-            duration={2}
-            speed={0.5}
-            scrambleChars="«¤-¤»"
-          >
-            {t('archiveDesc', lang)}
-          </ScrambledText>
-        </div>
-        <motion.div style={{ x: titleX }} className="w-full relative mt-0 sm:mt-2 mb-16 sm:mb-24 text-[#111] dark:text-white">
-          <TextPressure
-            text={t('projects', lang)}
-            flex={false}
-            alpha={false}
-            stroke={true}
-            width
-            weight
-            italic
-            textColor="currentColor"
-            strokeColor="#00A889"
-            strokeWidth={5}
-            minFontSize={36}
-            className="text-left scale-y-[1.5] sm:scale-y-[1.3] origin-bottom"
-          />
+
+        <motion.div style={{ x: titleX }} className="w-full relative mt-0 mb-[-30px] sm:mb-[-40px] text-[#111] dark:text-white">
+          <div className="transform scale-y-[1.2] sm:scale-y-[1.4] origin-bottom">
+            <TextPressure
+              text={t('projects', lang)}
+              flex={false}
+              alpha={false}
+              stroke={true}
+              width
+              weight
+              italic
+              textColor="currentColor"
+              strokeColor="#00A889"
+              strokeWidth={5}
+              minFontSize={36}
+              className="text-left"
+            />
+          </div>
         </motion.div>
         <div className="h-[2px] w-full bg-[#111] dark:bg-white/20 relative z-10" />
       </motion.header>

@@ -20,16 +20,16 @@ const renderGlitchyTitle = (text: string, reveal: any, isDimmed: boolean = false
     }
     if (part === '') return null;
     return (
-      <DecryptedText 
-        key={i} 
-        text={part} 
+      <DecryptedText
+        key={i}
+        text={part}
         className={`transition-all duration-500 inline-block ${isDimmed ? 'text-gray-300 dark:text-gray-800 [text-shadow:none]' : 'text-[#111] dark:text-white [text-shadow:3px_0_#00A889,-3px_0_#FF2A6D] md:[text-shadow:5px_0_#00A889,-5px_0_#FF2A6D]'}`}
-        animateOn="view" 
-        revealDirection={reveal} 
-        sequential 
-        useOriginalCharsOnly={false} 
-        speed={85} 
-        maxIterations={15} 
+        animateOn="view"
+        revealDirection={reveal}
+        sequential
+        useOriginalCharsOnly={false}
+        speed={85}
+        maxIterations={15}
       />
     );
   });
@@ -49,7 +49,7 @@ const renderMarqueeText = (text: string) => {
     if (part.trim() === '') {
       return <span key={i}>{part}</span>;
     }
-    
+
     return (
       <span key={i} className="text-[#f5f5f5]/40 dark:text-[#0a0a0a]/40 [-webkit-text-stroke:1px_#000] md:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#fff] dark:md:[-webkit-text-stroke:2px_#fff]">
         {part}
@@ -61,7 +61,7 @@ const renderMarqueeText = (text: string) => {
 const ExpertiseSection = () => {
   const { setIsHovering, lang } = usePortfolio();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  
+
   const sectionRef = useRef(null);
   const { scrollYProgress: sectionScrollY } = useScroll({
     target: sectionRef,
@@ -85,11 +85,11 @@ const ExpertiseSection = () => {
   const bgParallax3 = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
 
   return (
-    <motion.section 
+    <motion.section
       ref={sectionRef}
-      style={{ 
-        y: sectionY, 
-        rotate: sectionRotate, 
+      style={{
+        y: sectionY,
+        rotate: sectionRotate,
         scale: sectionScale,
         WebkitBackfaceVisibility: 'hidden',
         backfaceVisibility: 'hidden',
@@ -115,11 +115,13 @@ const ExpertiseSection = () => {
       <div className="relative z-10 w-full px-4 sm:px-12 md:px-24 flex flex-col gap-8 md:gap-12">
         {expertises.map((exp, index) => (
           <div key={'row-' + index}
-            className="flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 py-6 md:py-8 px-4 md:px-8 -mx-4 md:-mx-8 transition-all duration-500 hover:border-[#00A889] bg-transparent hover:bg-gradient-to-r hover:from-[#00A889]/15 hover:to-transparent hover:shadow-[inset_4px_0_0_0_#00A889]"
+            className="relative flex flex-col md:flex-row md:items-center justify-between group md:cursor-none w-full border-b border-gray-300 dark:border-gray-800 py-6 md:py-8 px-4 md:px-8 -mx-4 md:-mx-8 transition-colors duration-500 hover:border-[#00A889] bg-transparent"
             onMouseEnter={() => { setHoveredIndex(index); setIsHovering(true); }}
             onMouseLeave={() => { setHoveredIndex(null); setIsHovering(false); }}
           >
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full text-left">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00A889]/15 to-transparent shadow-[inset_4px_0_0_0_#00A889] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none z-0" />
+            
+            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-12 w-full text-left transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:-translate-x-2">
               <span className={'font-mono text-sm md:text-base transition-colors duration-500 shrink-0 ' + (hoveredIndex === index ? 'text-[#00A889]' : 'text-gray-400 dark:text-gray-600')}>{exp.id}</span>
               <div className="flex lg:hidden flex-col w-full gap-2 mt-4 items-start text-left">
                 <h2 className="font-anton text-5xl md:text-6xl uppercase tracking-tighter leading-[0.9] whitespace-pre-wrap text-left">
@@ -130,10 +132,10 @@ const ExpertiseSection = () => {
                 </div>
               </div>
               <div className="hidden lg:flex flex-1 relative overflow-hidden h-[80px] md:h-[8vw] items-center w-full justify-start">
-                <h2 className={'absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-all duration-500 transform origin-bottom ' + (hoveredIndex === index ? '-translate-y-[120%] opacity-0' : 'translate-y-0 opacity-100')}>
+                <h2 className={'absolute left-0 w-full font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none transition-[transform,opacity] duration-500 transform origin-bottom gpu-layer ' + (hoveredIndex === index ? '-translate-y-[120%] opacity-0' : 'translate-y-0 opacity-100')}>
                   {renderGlitchyTitle(exp.title.replace('\n', ' '), exp.reveal, hoveredIndex !== null && hoveredIndex !== index)}
                 </h2>
-                <div className={'absolute left-0 w-full transition-all duration-500 transform origin-top ' + (hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0')}>
+                <div className={'absolute left-0 w-full transition-[transform,opacity] duration-500 transform origin-top gpu-layer ' + (hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0')}>
                   <div className={'flex whitespace-nowrap font-anton text-5xl sm:text-7xl md:text-[6vw] uppercase tracking-tighter leading-none gpu ' + (exp.direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse')} style={{ width: 'max-content' }}>
                     <span className="shrink-0 flex">{renderMarqueeText(exp.marquee.repeat(4))}</span>
                   </div>
