@@ -10,6 +10,7 @@ import InteractiveBanner from '../components/banner/InteractiveBanner';
 import ProjectsGallery from '../components/gallery/ProjectsGallery';
 import ViewAllBlock from '../components/gallery/ViewAllBlock';
 import Footer from '../components/layout/Footer';
+import ScrollSpyNav from '../components/layout/ScrollSpyNav';
 
 import { useLenis } from 'lenis/react';
 
@@ -33,14 +34,15 @@ const Home = () => {
       </Helmet>
 
       <main className="w-full relative">
+        <ScrollSpyNav />
         <div className="w-full relative z-20">
           <motion.div
             className="relative w-full origin-bottom bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed transition-colors duration-500"
           >
-            <div className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
+            <div id="section-about" className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
               <Hero />
             </div>
-            <div ref={horizontalRef} className="relative z-10 w-full h-[250vh]">
+            <div id="section-expertise" ref={horizontalRef} className="relative z-10 w-full h-[250vh]">
               <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-center bg-transparent pointer-events-none">
                 <div className="w-full flex-shrink-0 pointer-events-auto">
                   <ExpertiseSection />
@@ -53,12 +55,14 @@ const Home = () => {
                 <InteractiveBanner />
               </div>
               <div className="relative z-30 flex flex-col w-full transition-colors duration-300 bg-transparent">
-                <div className="bg-transparent w-full flex flex-col relative pt-12 sm:pt-24 z-10">
+                <div id="section-projects" className="bg-transparent w-full flex flex-col relative pt-12 sm:pt-24 z-10">
                   <ProjectsGallery>
                     <div className="flex-1 flex flex-col items-center justify-center w-full mt-20 mb-4 sm:mt-12 sm:mb-16">
                       <ViewAllBlock />
                     </div>
-                    <Footer />
+                    <div id="section-contact" className="w-full">
+                      <Footer />
+                    </div>
                   </ProjectsGallery>
                 </div>
               </div>
