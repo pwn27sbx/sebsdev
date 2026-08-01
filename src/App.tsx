@@ -53,6 +53,7 @@ const FallbackLoader = () => null;
 import { ReactLenis } from 'lenis/react';
 
 import CustomCursor from './components/layout/CustomCursor';
+import CustomScrollbar from './components/layout/CustomScrollbar';
 
 export default function App() {
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function App() {
         <Router basename="/">
           <ErrorBoundary>
             <PortfolioProvider>
+              <CustomScrollbar />
               <CustomCursor />
               <SideMarquee />
               <Header />

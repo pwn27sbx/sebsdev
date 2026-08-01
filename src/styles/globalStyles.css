@@ -267,44 +267,19 @@ body {
 /* ===== Scroll suave nativo ===== */
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
   color-scheme: light;
-  background-color: #f0f0f0;
-  background-image: radial-gradient(ellipse at top, rgba(0, 168, 137, 0.1), transparent, transparent);
 }
 html.dark {
   color-scheme: dark;
-  background-color: #030303;
-  background-image: radial-gradient(ellipse at top, rgba(0, 168, 137, 0.2), transparent, transparent);
 }
 
 /* ===== Custom Neon Scrollbar ===== */
-@supports (-moz-appearance: none) {
-  html {
-    scrollbar-width: auto;
-    scrollbar-color: #FF2A6D transparent;
-  }
-}
-
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  background: transparent;
+  display: none; /* WebKit */
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
 
-::-webkit-scrollbar-thumb {
-  background: #FF2A6D;
-  border-radius: 0px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #ff4d85;
-}
 
 /* ===== Theme transition: fallback para navegadores sin View Transition API ===== */
 :root.theme-switching,
