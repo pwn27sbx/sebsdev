@@ -8,6 +8,11 @@ import ScrambledText from "../common/ScrambledText";
 import InteractiveShape from "./InteractiveShape";
 import DecryptedText from "../common/DecryptedText";
 
+interface CustomCSSProperties extends React.CSSProperties {
+  "--after-duration"?: string;
+  "--before-duration"?: string;
+}
+
 const Hero = () => {
   const { setIsHovering, lang } = usePortfolio();
   const containerRef = useRef<HTMLElement>(null);
@@ -49,17 +54,19 @@ const Hero = () => {
 
         {/* Texts Container Bottom Left */}
         <div className="absolute bottom-[20%] sm:bottom-[15%] left-[4%] sm:left-[6%] w-full flex flex-col justify-end items-start pointer-events-none">
+        
+        <h1 className="sr-only">Front End Developer</h1>
 
-        <motion.div style={{ y: textParallax }} className="relative z-30 sm:z-10 pl-12 sm:pl-0">
+        <motion.div aria-hidden="true" style={{ y: textParallax }} className="relative z-30 sm:z-10 pl-12 sm:pl-0">
           <div className="flex items-center justify-start flex-nowrap">
             {" "}
             <div
-              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
               <GlitchText speed={0.9} enableShadows enableOnHover={false}>
-                FRONT
+                {t("heroFront", lang)}
               </GlitchText>
             </div>
             <motion.div
@@ -68,12 +75,12 @@ const Hero = () => {
                   width: lineWidth,
                   "--after-duration": "2.7s",
                   "--before-duration": "1.8s",
-                } as any
+                } as CustomCSSProperties
               }
               className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu"
             />
             <div
-              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3] gpu"
+              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -83,7 +90,7 @@ const Hero = () => {
                 enableOnHover={false}
                 variant={2}
               >
-                END
+                {t("heroEnd", lang)}
               </GlitchText>
             </div>
           </div>
@@ -91,10 +98,11 @@ const Hero = () => {
         <motion.div style={{ y: descParallax }} className="relative z-30 sm:z-10 mt-4 sm:mt-[1vw] pl-12 sm:pl-0">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-4 sm:gap-8 ml-0 sm:-ml-[4vw]">
             <motion.div
+              aria-hidden="true"
               initial={{ opacity: 0, y: 150, filter: 'blur(20px)', scale: 0.9 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
-              className="font-anton text-[14vw] sm:text-[10vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent [-webkit-text-stroke:1px_#000] sm:[-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:1px_#a3a3a3] dark:sm:[-webkit-text-stroke:2px_#a3a3a3]"
+              className="font-anton text-[14vw] sm:text-[10vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -104,7 +112,7 @@ const Hero = () => {
                 enableOnHover={false}
                 variant={3}
               >
-                DEVELOPER
+                {t("heroDeveloper", lang)}
               </GlitchText>
             </motion.div>
             
@@ -118,7 +126,7 @@ const Hero = () => {
               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FF2A6D] translate-x-[1px] translate-y-[1px]" />
               
               <div className="font-mono text-[9px] sm:text-xs mb-2 text-[#00A889] uppercase font-bold tracking-wider">
-                [01_ ABOUT]
+                {t("heroAboutLabel", lang)}
               </div>
               <div className="font-mono text-[10px] sm:text-sm whitespace-nowrap cursor-default text-gray-600 dark:text-gray-400">
                 <ScrambledText

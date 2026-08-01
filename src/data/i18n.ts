@@ -3,6 +3,10 @@ const es = {
   seoTitle: 'Sebastian | Front-End Developer & UI/UX Designer',
   seoDesc: 'Portafolio de Sebastian, Frontend Developer de Arequipa, Perú. Experto en React, TypeScript, animaciones web y UI/UX.',
   // Hero
+  heroFront: 'FRONT',
+  heroEnd: 'END',
+  heroDeveloper: 'DEVELOPER',
+  heroAboutLabel: '[01_ ABOUT]',
   heroAbout: 'Acerca de',
   heroDesc: 'UI/UX Design & Software Engineering.',
   heroScroll: 'Hacer Scroll',
@@ -66,6 +70,10 @@ const en = {
   seoTitle: 'Sebastian | Front-End Developer & UI/UX Designer',
   seoDesc: 'Sebastian\'s Portfolio, Frontend Developer from Arequipa, Peru. Expert in React, TypeScript, web animations and UI/UX.',
   // Hero
+  heroFront: 'FRONT',
+  heroEnd: 'END',
+  heroDeveloper: 'DEVELOPER',
+  heroAboutLabel: '[01_ ABOUT]',
   heroAbout: 'About',
   heroDesc: 'UI/UX Design & Software Engineering.',
   heroScroll: 'Scroll down',

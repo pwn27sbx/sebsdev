@@ -28,7 +28,7 @@ const pageVariants = {
   exit: { opacity: 0, filter: 'blur(10px)', y: -40, clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' },
 };
 
-import Scene from './components/canvas/Scene';
+const Scene = lazy(() => import('./components/canvas/Scene'));
 import Transition from './components/layout/Transition';
 
 function AnimatedRoutes() {
@@ -48,7 +48,11 @@ function AnimatedRoutes() {
   );
 }
 
-const FallbackLoader = () => null;
+const FallbackLoader = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-[#0a0a0a] z-[9999] pointer-events-none">
+    <div className="w-8 h-8 border-2 border-[#00A889] border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 import { ReactLenis } from 'lenis/react';
 
@@ -84,7 +88,9 @@ export default function App() {
               <SideMarquee />
               <Header />
               <CyberGridBackground />
-              <Scene />
+              <Suspense fallback={null}>
+                <Scene />
+              </Suspense>
               <AnimatedRoutes />
             </PortfolioProvider>
           </ErrorBoundary>
