@@ -270,12 +270,6 @@ html {
 }
 
 /* ===== Custom Neon Scrollbar ===== */
-@supports (-moz-appearance: none) {
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: #FF2A6D transparent;
-  }
-}
 
 ::-webkit-scrollbar {
   width: 12px;
