@@ -128,7 +128,7 @@ const Footer = () => {
             <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="px-3 py-2 border-2 border-white hover:border-[#00A889] hover:bg-[#00A889] hover:text-black hover:shadow-[4px_4px_0_#FF2A6D] hover:-translate-y-1 hover:-translate-x-1 transition-all">{link.label}</a>
           ))}
           <Link to="/about" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">About</Link>
-          <Link to="/contacto" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
+          <Link to="/contact" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
         </div>
         
         {/* Right Side */}

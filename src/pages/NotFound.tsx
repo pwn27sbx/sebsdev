@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
 import FuzzyText from '../components/common/FuzzyText';
+import ScrambledText from '../components/common/ScrambledText';
 
 const NotFound = () => {
   const { lang, setIsHovering } = usePortfolio();
@@ -18,8 +19,13 @@ const NotFound = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] flex flex-col items-center justify-center text-center px-6 transition-colors duration-500 overflow-hidden">
-      <div className="flex justify-center select-none w-full">
+    <div className="min-h-screen relative bg-[#f0f0f0] dark:bg-[#050505] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed flex flex-col items-center justify-center text-center px-6 transition-colors duration-500 overflow-hidden">
+      
+      {/* Corner Glitch Accents */}
+      <div className="absolute top-8 left-8 w-16 h-16 border-t-4 border-l-4 border-[#00A889] opacity-50" />
+      <div className="absolute bottom-8 right-8 w-16 h-16 border-b-4 border-r-4 border-[#FF2A6D] opacity-50" />
+
+      <div className="flex justify-center select-none w-full z-10">
         <FuzzyText 
           baseIntensity={0.2}
           hoverIntensity={1.5}
@@ -31,7 +37,7 @@ const NotFound = () => {
           404
         </FuzzyText>
       </div>
-      <div className="flex justify-center select-none w-full -mt-4 sm:-mt-8 z-10">
+      <div className="flex justify-center select-none w-full -mt-4 sm:-mt-8 z-20">
         <FuzzyText 
           baseIntensity={0.15}
           hoverIntensity={1}
@@ -44,10 +50,16 @@ const NotFound = () => {
           {t('notFoundTitle', lang)}
         </FuzzyText>
       </div>
+      
+      <div className="mt-8 font-mono text-xs sm:text-sm text-[#FF2A6D] tracking-widest flex items-center gap-2 z-20">
+        <span className="w-2 h-2 bg-[#FF2A6D] animate-pulse" />
+        <ScrambledText text="[ ERR_404: SECTOR_NOT_FOUND ]" speed={0.5} />
+      </div>
+
       <Link to="/" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-        className="mt-10 px-8 py-4 bg-[#00A889] text-white rounded-full font-anton text-sm uppercase tracking-widest hover:bg-[#00c5a1] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#00A889]/30 md:cursor-none"
+        className="mt-12 px-6 py-3 border border-[#00A889] text-[#00A889] font-mono text-xs sm:text-sm uppercase tracking-widest hover:text-black hover:bg-[#00A889] transition-all duration-300 md:cursor-none relative group overflow-hidden z-20"
       >
-        {t('goHome', lang)}
+        <span className="relative z-10">[ {t('goHome', lang) || 'RETURN_TO_ROOT'} ]</span>
       </Link>
     </div>
   );

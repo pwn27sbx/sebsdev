@@ -3,6 +3,8 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { t } from '../../data/i18n';
+import DecryptedText from '../common/DecryptedText';
+import GlitchText from '../common/GlitchText';
 
 const Header = () => {
   const { setIsHovering, darkMode, setDarkMode, lang, setLang } = usePortfolio();
@@ -106,16 +108,20 @@ const Header = () => {
         {/* Mini Menu Dropdown */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div
+              <motion.div
               variants={menuVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-14 right-0 min-w-[200px] bg-[#f5f5f5]/90 dark:bg-[#050505]/90 backdrop-blur-md border-2 border-black dark:border-gray-800 shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#00A889] p-4 rounded-none origin-top-right overflow-hidden before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] before:opacity-50 before:mix-blend-overlay"
+              className="absolute top-14 right-0 min-w-[260px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-[#00A889] shadow-[0_0_15px_rgba(0,168,137,0.2),inset_0_0_10px_rgba(0,168,137,0.1)] dark:shadow-[0_0_20px_rgba(0,168,137,0.4),inset_0_0_15px_rgba(0,168,137,0.2)] rounded-none origin-top-right overflow-hidden flex flex-col"
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-[repeating-linear-gradient(45deg,#00A889,#00A889_5px,#000_5px,#000_10px)]"></div>
+              {/* HUD Header */}
+              <div className="w-full bg-[#00A889] text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold">
+                <span>SYS.NAV // OVERRIDE</span>
+                <span className="animate-pulse">_</span>
+              </div>
               
-              <div className="flex flex-col gap-1 relative z-10 mt-2">
+              <div className="flex flex-col gap-0 relative z-10 p-2">
                 {menuLinks.map((link, i) => {
                   const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
                   return (
@@ -125,34 +131,53 @@ const Header = () => {
                         onClick={() => setIsMenuOpen(false)}
                         onMouseEnter={() => setIsHovering(true)}
                         onMouseLeave={() => setIsHovering(false)}
-                        className={`block font-anton text-2xl uppercase tracking-tighter px-3 py-2 transition-all duration-300 transform origin-left glitch-hover relative overflow-hidden group ${isActive ? 'text-[#00A889] translate-x-2' : 'text-black dark:text-white hover:text-[#00A889] hover:translate-x-2'}`}
+                        className={`group flex items-center justify-between px-3 py-3 transition-colors duration-200 border-b border-[#00A889]/20 last:border-b-0 ${isActive ? 'bg-[#00A889]/10' : 'hover:bg-[#00A889]'}`}
                       >
-                        <span className="relative z-10">{link.label}</span>
+                        <div className="flex items-center gap-3">
+                          <span className={`font-mono text-[10px] transition-colors duration-200 ${isActive ? 'text-[#00A889]' : 'text-[#00A889]/80 dark:text-[#00A889]/50 group-hover:text-white dark:group-hover:text-black'}`}>
+                            {`<0${i + 1}>`}
+                          </span>
+                          
+                          {/* GlitchText only activates on hover */}
+                          <span className={`font-anton text-3xl uppercase tracking-tighter transition-colors duration-200 ${isActive ? 'text-[#00A889] drop-shadow-[0_0_8px_rgba(0,168,137,0.5)] dark:drop-shadow-[0_0_8px_#00A889]' : 'text-black dark:text-white group-hover:text-white dark:group-hover:text-black'}`}>
+                             <GlitchText enableOnHover={true} speed={0.4} variant={1}>
+                               {link.label}
+                             </GlitchText>
+                          </span>
+                        </div>
+                        
                         {isActive && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#00A889] rounded-none"></span>
+                          <div className="w-2 h-6 bg-[#FF2A6D] animate-pulse shadow-[0_0_10px_rgba(255,42,109,0.5)] dark:shadow-[0_0_10px_#FF2A6D]" />
                         )}
-                        <div className="absolute inset-0 bg-[#00A889]/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 z-0"></div>
                       </Link>
                     </motion.div>
                   );
                 })}
 
-                <div className="w-full h-[1px] bg-gray-200 dark:bg-gray-800 my-2"></div>
+                <div className="w-full h-[1px] bg-[#00A889]/30 my-2"></div>
 
                 <motion.div variants={itemVariants} className="px-3 py-2 flex justify-between items-center">
-                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">
-                    {lang === 'es' ? 'IDIOMA' : 'LANGUAGE'}
+                  <span className="font-mono text-[10px] text-[#00A889]/80 dark:text-[#00A889]/70 uppercase tracking-widest">
+                    CONFIG.LANG
                   </span>
-                  <button
-                    onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-                    className="flex items-center gap-1.5 text-[10px] tracking-[0.2em] font-bold text-gray-800 dark:text-gray-200 hover:text-[#00A889] dark:hover:text-[#00A889] transition-colors duration-300 bg-white/50 dark:bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700"
-                    onMouseEnter={() => setIsHovering(true)}
-                    onMouseLeave={() => setIsHovering(false)}
-                  >
-                    <span className={lang === 'es' ? 'text-[#00A889]' : 'opacity-50'}>ES</span>
-                    <span className="w-1 h-1 rounded-full bg-current" />
-                    <span className={lang === 'en' ? 'text-[#00A889]' : 'opacity-50'}>EN</span>
-                  </button>
+                  <div className="flex items-center gap-1 font-mono text-sm">
+                    <button
+                      onClick={() => setLang('es')}
+                      className={`transition-all duration-200 px-2 py-0.5 border ${lang === 'es' ? 'bg-[#FF2A6D] text-white border-[#FF2A6D] shadow-[0_0_10px_rgba(255,42,109,0.5)] dark:shadow-[0_0_10px_#FF2A6D]' : 'bg-transparent text-[#00A889]/80 dark:text-[#00A889]/70 border-[#00A889]/50 dark:border-[#00A889]/30 hover:bg-[#00A889]/20 hover:text-[#00A889]'}`}
+                      onMouseEnter={() => setIsHovering(true)}
+                      onMouseLeave={() => setIsHovering(false)}
+                    >
+                      ES
+                    </button>
+                    <button
+                      onClick={() => setLang('en')}
+                      className={`transition-all duration-200 px-2 py-0.5 border ${lang === 'en' ? 'bg-[#FF2A6D] text-white border-[#FF2A6D] shadow-[0_0_10px_rgba(255,42,109,0.5)] dark:shadow-[0_0_10px_#FF2A6D]' : 'bg-transparent text-[#00A889]/80 dark:text-[#00A889]/70 border-[#00A889]/50 dark:border-[#00A889]/30 hover:bg-[#00A889]/20 hover:text-[#00A889]'}`}
+                      onMouseEnter={() => setIsHovering(true)}
+                      onMouseLeave={() => setIsHovering(false)}
+                    >
+                      EN
+                    </button>
+                  </div>
                 </motion.div>
               </div>
             </motion.div>

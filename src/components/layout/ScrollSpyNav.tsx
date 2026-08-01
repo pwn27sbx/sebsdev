@@ -131,6 +131,18 @@ const ScrollSpyNav = () => {
   }, []);
 
   const handleClick = (id: string) => {
+    if (id === 'section-contact') {
+      const projectsEl = document.getElementById('section-projects');
+      if (projectsEl) {
+        const rect = projectsEl.getBoundingClientRect();
+        window.scrollTo({
+          top: window.scrollY + rect.bottom - window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });

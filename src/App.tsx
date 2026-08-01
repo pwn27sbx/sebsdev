@@ -48,11 +48,7 @@ function AnimatedRoutes() {
   );
 }
 
-const FallbackLoader = () => (
-  <div className="min-h-screen bg-bg-light dark:bg-bg-dark flex items-center justify-center transition-colors duration-500">
-    <div className="w-10 h-10 border-4 border-gray-300 dark:border-gray-800 border-t-brand-primary dark:border-t-brand-primary rounded-full animate-spin"></div>
-  </div>
-);
+const FallbackLoader = () => null;
 
 import { ReactLenis } from 'lenis/react';
 
