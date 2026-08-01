@@ -270,10 +270,16 @@ html {
 }
 
 /* ===== Custom Neon Scrollbar ===== */
+:root {
+  --scrollbar-track-color: #f5f5f5;
+}
+.dark {
+  --scrollbar-track-color: #0a0a0a;
+}
 @supports (-moz-appearance: none) {
   html {
     scrollbar-width: auto;
-    scrollbar-color: #FF2A6D transparent;
+    scrollbar-color: #FF2A6D var(--scrollbar-track-color);
   }
 }
 
