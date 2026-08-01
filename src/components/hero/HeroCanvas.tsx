@@ -57,7 +57,7 @@ const HeroCanvas = () => {
 
     // --- Renderer Setup ---
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(window.innerWidth, window.innerHeight, false)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.VSMShadowMap

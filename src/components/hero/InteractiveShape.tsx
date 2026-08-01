@@ -74,7 +74,7 @@ const InteractiveShape = () => {
       {/* Background Shadow/Reflection (Moves opposite) */}
       <motion.div 
         style={{ x: xLayer3, y: yLayer3 }}
-        className="absolute inset-0 flex items-center justify-center opacity-20 dark:opacity-40 blur-[20px] sm:blur-[30px] pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center opacity-20 dark:opacity-40 blur-[20px] sm:blur-[30px] pointer-events-none transform-gpu will-change-transform"
       >
         <img src="/cyber_mask_transparent.png" alt="" className="w-full h-full object-contain scale-110 grayscale brightness-75 contrast-125" />
       </motion.div>
@@ -82,7 +82,7 @@ const InteractiveShape = () => {
       {/* Mid Layer (Slight offset, glowing edge) */}
       <motion.div 
         style={{ x: xLayer1, y: yLayer1, rotateX, rotateY }}
-        className="absolute inset-0 flex items-center justify-center opacity-50 pointer-events-none drop-shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_20px_#A3A3A3]"
+        className="absolute inset-0 flex items-center justify-center opacity-50 pointer-events-none drop-shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_20px_#A3A3A3] transform-gpu will-change-transform"
       >
         <img src="/cyber_mask_transparent.png" alt="" className="w-[95%] h-[95%] object-contain grayscale brightness-110 contrast-125" />
       </motion.div>
@@ -90,7 +90,7 @@ const InteractiveShape = () => {
       {/* Front Layer (Main Subject) */}
       <motion.div 
         style={{ x: xLayer2, y: yLayer2, rotateX, rotateY }}
-        className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_15px_rgba(163,163,163,0.3)]"
+        className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_15px_rgba(163,163,163,0.3)] transform-gpu will-change-transform"
       >
         <img src="/cyber_mask_transparent.png" alt="Cyber Oni Mask" className="w-[90%] h-[90%] object-contain grayscale brightness-125 contrast-125" />
       </motion.div>
