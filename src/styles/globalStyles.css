@@ -267,10 +267,10 @@ body {
 /* ===== Scroll suave nativo ===== */
 html {
   scroll-behavior: smooth;
-  background-color: #f0f0f0;
+  color-scheme: light;
 }
 html.dark {
-  background-color: #030303;
+  color-scheme: dark;
 }
 
 /* ===== Custom Neon Scrollbar ===== */
