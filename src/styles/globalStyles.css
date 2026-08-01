@@ -268,9 +268,13 @@ body {
 html {
   scroll-behavior: smooth;
   color-scheme: light;
+  background-color: #f0f0f0;
+  background-image: radial-gradient(ellipse at top, rgba(0, 168, 137, 0.1), transparent, transparent);
 }
 html.dark {
   color-scheme: dark;
+  background-color: #030303;
+  background-image: radial-gradient(ellipse at top, rgba(0, 168, 137, 0.2), transparent, transparent);
 }
 
 /* ===== Custom Neon Scrollbar ===== */
@@ -289,11 +293,8 @@ html.dark {
 
 ::-webkit-scrollbar-track {
   background: transparent;
-  border-left: 1px solid rgba(255, 42, 109, 0.15);
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb {
