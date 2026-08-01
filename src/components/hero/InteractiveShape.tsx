@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useSpring, useMotionValue, useInView } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 
 const InteractiveShape = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
   const { setIsHovering } = usePortfolio();
   
   const mouseX = useMotionValue(0);
@@ -47,6 +48,8 @@ const InteractiveShape = () => {
   }, [mouseX, mouseY, xLayer1, yLayer1, xLayer2, yLayer2, xLayer3, yLayer3, rotateX, rotateY]);
 
   useEffect(() => {
+    if (!isInView) return; // Si no está en pantalla, no añadimos el listener en absoluto
+
     const handleMouseMove = (e: MouseEvent) => {
       // Normalize to -0.5 to 0.5 based on screen size so movement is consistent
       const nx = (e.clientX - window.innerWidth / 2) / window.innerWidth;
@@ -60,10 +63,11 @@ const InteractiveShape = () => {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, isInView]);
 
   return (
     <div 
+      ref={containerRef}
       className="relative w-[400px] h-[400px] sm:w-[900px] sm:h-[900px] flex items-center justify-center cursor-crosshair group [perspective:1000px]"
       onMouseEnter={() => setIsHovering(true)}
     >

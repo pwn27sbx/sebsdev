@@ -430,6 +430,11 @@ const HeroCanvas = () => {
       window.removeEventListener('resize', handleResize)
 
       // Cleanup Three.js resources
+      torusComposer.dispose()
+      bloomComposer.dispose()
+      finalComposer.dispose()
+      finalPassMaterial.dispose()
+      
       renderer.dispose()
       scene.clear()
       geo.dispose()
