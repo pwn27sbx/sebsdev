@@ -69,7 +69,7 @@ const CustomScrollbar = () => {
   return (
     <div 
       ref={trackRef}
-      className="fixed top-0 right-0 h-screen w-[12px] z-[150] hidden md:block group"
+      className="fixed top-0 right-0 h-screen w-[6px] z-[150] hidden md:block group"
     >
       <motion.div
         style={{ height: thumbHeight, y }}
