@@ -270,9 +270,11 @@ html {
 }
 
 /* ===== Custom Neon Scrollbar ===== */
-html {
-  scrollbar-width: auto;
-  scrollbar-color: #FF2A6D transparent;
+@supports (-moz-appearance: none) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #FF2A6D transparent;
+  }
 }
 
 ::-webkit-scrollbar {
