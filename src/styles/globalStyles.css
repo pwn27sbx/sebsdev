@@ -270,9 +270,11 @@ html {
 }
 
 /* ===== Custom Neon Scrollbar ===== */
-html {
-  scrollbar-width: auto;
-  scrollbar-color: #FF2A6D #0a0a0a;
+@supports (-moz-appearance: none) {
+  html {
+    scrollbar-width: auto;
+    scrollbar-color: #FF2A6D transparent;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -282,7 +284,7 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
+  background: transparent;
   border-left: 1px solid rgba(255, 42, 109, 0.15);
 }
 
