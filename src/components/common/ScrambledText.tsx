@@ -15,7 +15,7 @@ export interface ScrambledTextProps {
   text: string;
 }
 
-const ScrambledText: React.FC<ScrambledTextProps> = ({
+export default function ScrambledText({
   radius = 100,
   duration = 1.2,
   speed = 0.5,
@@ -23,7 +23,7 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
   className = '',
   style = {},
   text
-}) => {
+}: ScrambledTextProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -85,6 +85,5 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
       <p></p>
     </div>
   );
-};
+}
 
-export default ScrambledText;

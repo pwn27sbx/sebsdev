@@ -15,7 +15,7 @@ interface ProjectsGalleryProps {
   children?: React.ReactNode;
 }
 
-const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
+export default function ProjectsGallery({ children }: ProjectsGalleryProps) {
   const { lang } = usePortfolio();
   const sectionRef = useRef(null);
   const isMobile = useIsMobile();
@@ -79,5 +79,5 @@ const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
       />
     </motion.section>
   );
-};
-export default ProjectsGallery;
+}
+

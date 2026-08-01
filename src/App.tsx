@@ -96,7 +96,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
+      <ReactLenis root options={{ lerp: 0.05, smoothWheel: true, syncTouch: true, touchMultiplier: 2 }}>
         <Router basename="/">
           <ErrorBoundary>
             <PortfolioProvider>

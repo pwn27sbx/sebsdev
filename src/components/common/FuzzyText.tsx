@@ -22,7 +22,7 @@ interface FuzzyTextProps {
   className?: string;
 }
 
-const FuzzyText: React.FC<FuzzyTextProps> = ({
+export default function FuzzyText({
   children,
   fontSize = 'clamp(2rem, 8vw, 8rem)',
   fontWeight = 900,
@@ -42,7 +42,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   gradient = null,
   letterSpacing = 0,
   className = ''
-}) => {
+}: FuzzyTextProps) {
   const canvasRef = useRef<HTMLCanvasElement & { cleanupFuzzyText?: () => void }>(null);
 
   useEffect(() => {
@@ -328,5 +328,3 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
 
   return <canvas ref={canvasRef} className={className} />;
 };
-
-export default FuzzyText;

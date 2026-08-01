@@ -41,7 +41,7 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
   };
 };
 
-const TextPressure: React.FC<TextPressureProps> = ({
+export default function TextPressure({
   text = 'Compressa',
   fontFamily = 'Roboto Flex',
   fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap',
@@ -57,7 +57,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
   strokeWidth = 2,
   className = '',
   minFontSize = 24
-}) => {
+}: TextPressureProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const spansRef = useRef<(HTMLSpanElement | null)[]>([]);
@@ -253,5 +253,3 @@ const TextPressure: React.FC<TextPressureProps> = ({
     </div>
   );
 };
-
-export default TextPressure;
