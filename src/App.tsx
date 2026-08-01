@@ -1,18 +1,11 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Header from './components/layout/Header';
 import SideMarquee from './components/layout/SideMarquee';
 import CyberGridBackground from './components/common/CyberGridBackground';
-
-
-
-
-
-
-
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/globalStyles.css';
 
@@ -21,12 +14,6 @@ const Archive = lazy(() => import('./pages/Archive'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
-
-const pageVariants = {
-  initial: { opacity: 0, filter: 'blur(10px)', y: 40, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)' },
-  animate: { opacity: 1, filter: 'blur(0px)', y: 0, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
-  exit: { opacity: 0, filter: 'blur(10px)', y: -40, clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' },
-};
 
 const Scene = lazy(() => import('./components/canvas/Scene'));
 import Transition from './components/layout/Transition';
@@ -55,24 +42,54 @@ const FallbackLoader = () => (
 );
 
 import { ReactLenis } from 'lenis/react';
-
 import CustomCursor from './components/layout/CustomCursor';
 import CustomScrollbar from './components/layout/CustomScrollbar';
 
 export default function App() {
   useEffect(() => {
+    // Bloqueo de click derecho
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
     };
+
+    // Bloqueo de atajos de teclado para herramientas de desarrollador
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Prevenir F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+      // Prevenir Ctrl+Shift+I (Inspeccionar)
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+      }
+      // Prevenir Ctrl+Shift+J (Consola)
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+      }
+      // Prevenir Ctrl+Shift+C (Inspector de elementos)
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+      }
+      // Prevenir Ctrl+U (Ver código fuente)
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+      }
+    };
+
+    // Bloqueo de arrastre de imágenes (opcional pero lo tenías antes)
     const handleDragStart = (e: DragEvent) => {
       if (e.target && (e.target as HTMLElement).tagName === 'IMG') {
         e.preventDefault();
       }
     };
+
     document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('dragstart', handleDragStart);
+
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('dragstart', handleDragStart);
     };
   }, []);

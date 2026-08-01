@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
@@ -12,18 +12,8 @@ import ViewAllBlock from '../components/gallery/ViewAllBlock';
 import Footer from '../components/layout/Footer';
 import ScrollSpyNav from '../components/layout/ScrollSpyNav';
 
-import { useLenis } from 'lenis/react';
-
 const Home = () => {
   const { lang } = usePortfolio();
-
-  const horizontalRef = useRef(null);
-  const { scrollYProgress: horizontalProgress } = useScroll({
-    target: horizontalRef,
-    offset: ["start start", "end end"]
-  });
-  
-  const horizontalX = useTransform(horizontalProgress, [0, 1], ["0vw", "-100vw"]);
 
   return (
     <div className="bg-transparent text-[#111] dark:text-white min-h-screen font-sans md:cursor-none transition-colors duration-500 overflow-x-clip">
@@ -42,7 +32,7 @@ const Home = () => {
             <div id="section-about" className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
               <Hero />
             </div>
-            <div id="section-expertise" ref={horizontalRef} className="relative z-10 w-full h-[250vh]">
+            <div id="section-expertise" className="relative z-10 w-full h-[250vh]">
               <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-center bg-transparent pointer-events-none">
                 <div className="w-full flex-shrink-0 pointer-events-auto">
                   <ExpertiseSection />

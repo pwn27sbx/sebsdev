@@ -2,11 +2,9 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { usePortfolio } from "../../context/PortfolioContext";
 import { t } from "../../data/i18n";
-import HoverText from "./HoverText";
 import GlitchText from "../common/GlitchText";
 import ScrambledText from "../common/ScrambledText";
 import InteractiveShape from "./InteractiveShape";
-import DecryptedText from "../common/DecryptedText";
 
 interface CustomCSSProperties extends React.CSSProperties {
   "--after-duration"?: string;

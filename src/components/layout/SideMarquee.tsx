@@ -1,9 +1,6 @@
 import React from 'react';
-import { usePortfolio } from '../../context/PortfolioContext';
 
 const SideMarquee = () => {
-  const { lang } = usePortfolio();
-
   const TextBlock = () => (
     <div className="flex flex-col w-full items-center gap-16 py-8">
       {/* SEB - Left aligned, big */}

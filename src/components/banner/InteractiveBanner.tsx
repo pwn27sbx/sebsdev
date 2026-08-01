@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { usePortfolio } from "../../context/PortfolioContext";
 import { t } from "../../data/i18n";

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { t } from '../../data/i18n';
-import DecryptedText from '../common/DecryptedText';
 import GlitchText from '../common/GlitchText';
 
 const Header = () => {
