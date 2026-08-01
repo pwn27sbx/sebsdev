@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { t } from '../../data/i18n';
@@ -9,6 +9,8 @@ import DraggablePolaroid from './DraggablePolaroid';
 import DesktopScrollText from './DesktopScrollText';
 import MobileVerticalWaveText from './MobileVerticalWaveText';
 import ProjectModal from './ProjectModal';
+import { useGalleryAnimations } from '../../hooks/useGalleryAnimations';
+
 interface ProjectsGalleryProps {
   children?: React.ReactNode;
 }
@@ -22,21 +24,15 @@ const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ children }) => {
   const handleBringToFront = () => { globalZIndexCounter.current += 1; return globalZIndexCounter.current; };
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const cardsProgress = useTransform(scrollYProgress, [0, 0.75], [0, 1]);
-  const slideX = useTransform(scrollYProgress, [0, 0.75, 1], ["0vw", "0vw", "-100vw"]);
-
-  const xSelectedDesktop = useTransform(cardsProgress, [0, 0.25, 0.55, 0.75], ['100vw', '0vw', '0vw', '-100vw']);
-  const xWorksDesktop = useTransform(cardsProgress, [0, 0.25, 0.55, 0.75], ['-100vw', '0vw', '0vw', '100vw']);
-  const xSelectedMobile = useTransform(cardsProgress, [0, 0.25], ['100vw', '0vw']);
-  const xWorksMobile = useTransform(cardsProgress, [0, 0.25], ['-100vw', '0vw']);
-  const ySelectedMobile = useTransform(cardsProgress, [0.55, 0.85], ['0vh', '-32vh']);
-  const yWorksMobile = useTransform(cardsProgress, [0.55, 0.85], ['0vh', '-36vh']);
-  const yDesktop = useTransform(cardsProgress, [0, 1], ['0vh', '0vh']);
-
-  const xSelected = isMobile ? xSelectedMobile : xSelectedDesktop;
-  const xWorks = isMobile ? xWorksMobile : xWorksDesktop;
-  const ySelectedFinal = isMobile ? ySelectedMobile : yDesktop;
-  const yWorksFinal = isMobile ? yWorksMobile : yDesktop;
+  
+  const {
+    cardsProgress,
+    slideX,
+    xSelected,
+    xWorks,
+    ySelectedFinal,
+    yWorksFinal,
+  } = useGalleryAnimations(scrollYProgress, isMobile);
 
   return (
     <motion.section ref={sectionRef}

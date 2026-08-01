@@ -63,6 +63,15 @@ const es = {
   contactPlaceholder: 'Tu nombre',
   emailPlaceholder: 'tu@email.com',
   msgPlaceholder: 'Cuéntame sobre tu proyecto...',
+  // Navigation
+  navHome: 'INICIO',
+  navWork: 'PROYECTOS',
+  navAbout: 'SOBRE MÍ',
+  navContact: 'CONTACTO',
+  spyAbout: '01 ACERCA',
+  spyExpertise: '02 EXPERIENCIA',
+  spyProjects: '03 PROYECTOS',
+  spyContact: '04 CONTACTO',
 };
 
 const en = {
@@ -130,6 +139,15 @@ const en = {
   contactPlaceholder: 'Your name',
   emailPlaceholder: 'your@email.com',
   msgPlaceholder: 'Tell me about your project...',
+  // Navigation
+  navHome: 'HOME',
+  navWork: 'WORK',
+  navAbout: 'ABOUT',
+  navContact: 'CONTACT',
+  spyAbout: '01 ABOUT',
+  spyExpertise: '02 EXPERTISE',
+  spyProjects: '03 PROJECTS',
+  spyContact: '04 CONTACT',
 };
 
 export type Lang = 'es' | 'en';

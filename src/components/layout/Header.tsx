@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
+import { t } from '../../data/i18n';
 import GlitchText from '../common/GlitchText';
 
 const Header = () => {
@@ -10,10 +11,10 @@ const Header = () => {
   const location = useLocation();
 
   const menuLinks = [
-    { path: '/', label: lang === 'es' ? 'INICIO' : 'HOME' },
-    { path: '/proyectos', label: lang === 'es' ? 'PROYECTOS' : 'WORK' },
-    { path: '/about', label: lang === 'es' ? 'SOBRE MÍ' : 'ABOUT' },
-    { path: '/contact', label: lang === 'es' ? 'CONTACTO' : 'CONTACT' }
+    { path: '/', label: t('navHome', lang) },
+    { path: '/proyectos', label: t('navWork', lang) },
+    { path: '/about', label: t('navAbout', lang) },
+    { path: '/contact', label: t('navContact', lang) }
   ];
 
   const menuVariants: Variants = {
