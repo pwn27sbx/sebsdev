@@ -244,7 +244,7 @@ const Header = () => {
                 <span className="animate-pulse">_</span>
               </div>
               
-              <div className="flex flex-col gap-0 relative z-10 p-2">
+              <div className="flex flex-col gap-0 relative z-10 p-2 pb-4">
                 
                 {/* Immersion Mode Switch */}
                 <div className="px-3 py-3 border-b border-primary/20 mb-2">

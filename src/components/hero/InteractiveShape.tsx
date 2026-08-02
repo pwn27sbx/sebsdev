@@ -74,11 +74,11 @@ const InteractiveShape = () => {
       {/* Background Shadow/Reflection (Moves opposite) */}
       <motion.div 
         style={{ x: xLayer3, y: yLayer3 }}
-        className="absolute inset-0 flex items-center justify-center opacity-20 dark:opacity-40 blur-[20px] sm:blur-[30px] pointer-events-none transform-gpu will-change-transform"
+        className="absolute inset-0 flex items-center justify-center opacity-20 dark:opacity-40 [.immersion-full_&]:opacity-60 blur-[20px] sm:blur-[30px] [.immersion-full_&]:blur-[40px] pointer-events-none transform-gpu will-change-transform"
       >
         <div className="relative w-full h-full flex items-center justify-center">
-          <img src="/cyber_mask_transparent.png" alt="" className="w-full h-full object-contain scale-110 grayscale brightness-75 contrast-125 [.immersion-full_&]:opacity-0 transition-opacity duration-500" />
-          <div className="absolute inset-0 scale-110 bg-primary opacity-0 [.immersion-full_&]:opacity-100 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
+          <img src="/cyber_mask_transparent.png" alt="" className="w-full h-full object-contain scale-110 grayscale brightness-75 contrast-125 transition-all duration-500 [.immersion-full_&]:opacity-0" />
+          <div className="absolute inset-0 scale-110 bg-primary opacity-0 [.immersion-full_&]:opacity-100 [.immersion-full_&]:saturate-150 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
         </div>
       </motion.div>
 
@@ -88,19 +88,19 @@ const InteractiveShape = () => {
         className="absolute inset-0 flex items-center justify-center opacity-50 pointer-events-none drop-shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_20px_#A3A3A3] [.immersion-full_&]:drop-shadow-[0_0_30px_var(--color-secondary)] transform-gpu will-change-transform transition-[filter] duration-500"
       >
         <div className="relative w-[95%] h-[95%] flex items-center justify-center">
-          <img src="/cyber_mask_transparent.png" alt="" className="w-full h-full object-contain grayscale brightness-110 contrast-125 [.immersion-full_&]:opacity-0 transition-opacity duration-500" />
-          <div className="absolute inset-0 bg-secondary opacity-0 [.immersion-full_&]:opacity-100 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
+          <img src="/cyber_mask_transparent.png" alt="" className="w-full h-full object-contain grayscale brightness-110 contrast-125 transition-all duration-500 [.immersion-full_&]:opacity-0" />
+          <div className="absolute inset-0 bg-secondary opacity-0 [.immersion-full_&]:opacity-100 [.immersion-full_&]:saturate-150 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
         </div>
       </motion.div>
 
       {/* Front Layer (Main Subject) */}
       <motion.div 
         style={{ x: xLayer2, y: yLayer2, rotateX, rotateY }}
-        className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_15px_rgba(163,163,163,0.3)] [.immersion-full_&]:drop-shadow-[0_0_20px_var(--color-primary)] transform-gpu will-change-transform transition-[filter] duration-500"
+        className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_0_15px_rgba(163,163,163,0.3)] [.immersion-full_&]:drop-shadow-[0_0_25px_var(--color-primary)] transform-gpu will-change-transform transition-[filter] duration-500"
       >
         <div className="relative w-[90%] h-[90%] flex items-center justify-center">
-          <img src="/cyber_mask_transparent.png" alt="Cyber Oni Mask" className="w-full h-full object-contain grayscale brightness-125 contrast-125 [.immersion-full_&]:opacity-0 transition-opacity duration-500" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 [.immersion-full_&]:opacity-100 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
+          <img src="/cyber_mask_transparent.png" alt="Cyber Oni Mask" className="w-full h-full object-contain grayscale brightness-125 contrast-125 transition-all duration-500 [.immersion-full_&]:opacity-0" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 [.immersion-full_&]:opacity-100 [.immersion-full_&]:saturate-150 transition-opacity duration-500" style={{ WebkitMaskImage: 'url(/cyber_mask_transparent.png)', WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat' }}></div>
         </div>
       </motion.div>
 
