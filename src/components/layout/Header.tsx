@@ -71,7 +71,7 @@ const Header = () => {
           <div style={{ viewTransitionName: 'color-theme-toggle' }}>
             <button
               onClick={() => { setIsThemeMenuOpen(!isThemeMenuOpen); setIsMenuOpen(false); }}
-              className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 relative overflow-hidden group ${isThemeMenuOpen ? 'text-bg-dark bg-accent shadow-[0_0_15px_var(--color-accent)] border-accent [.immersion-full_&]:text-bg-dark' : 'text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)]'}`}
+              className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 relative overflow-hidden group ${isThemeMenuOpen ? 'text-white dark:text-black bg-primary shadow-[0_0_15px_var(--color-primary)] border-primary [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_15px_var(--color-accent)] [.immersion-full_&]:border-accent [.immersion-full_&]:text-bg-dark' : 'text-primary hover:text-primary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-primary hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)]'}`}
               aria-label="Open color themes"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
@@ -93,7 +93,7 @@ const Header = () => {
                 role="switch"
                 aria-checked={darkMode}
                 onClick={() => setDarkMode(!darkMode)}
-                className="flex items-center justify-center w-10 h-10 rounded-full text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] relative overflow-hidden group"
+                className="flex items-center justify-center w-10 h-10 rounded-full text-primary hover:text-primary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] relative overflow-hidden group"
                 aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -131,7 +131,7 @@ const Header = () => {
           {/* Menu Toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex flex-col items-center justify-center w-10 h-10 rounded-full text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)] gap-1 relative overflow-hidden group"
+            className="flex flex-col items-center justify-center w-10 h-10 rounded-full text-primary hover:text-primary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)] gap-1 relative overflow-hidden group"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
