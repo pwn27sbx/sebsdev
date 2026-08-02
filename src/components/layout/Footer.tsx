@@ -10,7 +10,7 @@ const HollowDashedLine = ({ className = "" }) => {
   const dashString = Array(80).fill("—").join(" ");
   return (
     <div className={`w-full h-[15px] md:h-[20px] overflow-hidden flex items-center pointer-events-none z-20 ${className}`}>
-      <div className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] text-[30px] md:text-[45px] w-full flex items-center mt-[-8px] md:mt-[-12px] opacity-80">
+      <div className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-primary)] [.immersion-full_&]:drop-shadow-[0_0_8px_var(--color-primary)] text-[30px] md:text-[45px] w-full flex items-center mt-[-8px] md:mt-[-12px] opacity-80">
         <GlitchText speed={0.9} enableShadows enableOnHover={false} variant={1}>
           {dashString}
         </GlitchText>
@@ -30,7 +30,7 @@ const Footer = () => {
         className="flex items-center h-full relative cursor-crosshair"
       >
         {/* Hollow default */}
-        <span className={`shrink-0 leading-none whitespace-pre text-[#f5f5f5]/40 dark:text-[#0a0a0a]/40 [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] transition-all duration-300 relative ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>
+        <span className={`shrink-0 leading-none whitespace-pre text-[#f5f5f5]/40 dark:text-[#0a0a0a]/40 [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-primary)] transition-all duration-300 relative ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>
           {marqueeText}
         </span>
         {/* Solid hover with chromatic aberration */}
@@ -49,7 +49,7 @@ const Footer = () => {
 
         {/* Separator - Hollow default */}
         <div className="relative flex items-center mx-4 sm:mx-8 -translate-y-[0.1em]">
-          <span className={`shrink-0 leading-none text-[0.8em] text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] transition-colors ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>—</span>
+          <span className={`shrink-0 leading-none text-[0.8em] text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-primary)] transition-colors ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>—</span>
           <span className={`absolute left-0 top-0 shrink-0 leading-none text-[0.8em] text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)] transition-colors ${isHovered ? 'opacity-100' : 'opacity-0'}`}>—</span>
         </div>
       </div>
