@@ -27,7 +27,7 @@ const Home = () => {
         <ScrollSpyNav />
         <div className="w-full relative z-20">
           <motion.div
-            className="relative w-full origin-bottom bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed transition-colors duration-500"
+            className="relative w-full origin-bottom bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed transition-colors duration-500"
           >
             <div id="section-about" className="relative z-10 w-full h-[100dvh] bg-transparent transition-colors gpu">
               <Hero />
@@ -46,7 +46,7 @@ const Home = () => {
                 className="absolute inset-0 z-0 pointer-events-none transform-gpu"
                 style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 200px)', maskImage: 'linear-gradient(to bottom, transparent 0%, black 200px)' }}
               >
-                <div className="absolute inset-0 w-full h-full bg-[#f0f0f0] dark:bg-[#030303] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed" />
+                <div className="absolute inset-0 w-full h-full bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed" />
               </div>
               
               <div className="relative z-10 w-full flex flex-col">

@@ -41,8 +41,8 @@ const Footer = () => {
               animateOn="view"
               speed={40}
               maxIterations={12}
-              className="text-[#000] dark:text-white [text-shadow:4px_0_#00A889,-4px_0_#FF2A6D]"
-              encryptedClassName="text-[#00A889] [text-shadow:0_0_8px_#00A889]"
+              className="text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)]"
+              encryptedClassName="text-secondary [text-shadow:0_0_8px_var(--color-secondary)]"
             />
           )}
         </span>
@@ -50,7 +50,7 @@ const Footer = () => {
         {/* Separator - Hollow default */}
         <div className="relative flex items-center mx-4 sm:mx-8 -translate-y-[0.1em]">
           <span className={`shrink-0 leading-none text-[0.8em] text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] transition-colors ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>—</span>
-          <span className={`absolute left-0 top-0 shrink-0 leading-none text-[0.8em] text-[#000] dark:text-white [text-shadow:4px_0_#00A889,-4px_0_#FF2A6D] transition-colors ${isHovered ? 'opacity-100' : 'opacity-0'}`}>—</span>
+          <span className={`absolute left-0 top-0 shrink-0 leading-none text-[0.8em] text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)] transition-colors ${isHovered ? 'opacity-100' : 'opacity-0'}`}>—</span>
         </div>
       </div>
     );
@@ -108,32 +108,32 @@ const Footer = () => {
       </div>
 
       <div className="mt-12 mb-12 z-10 text-center flex justify-center">
-        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-[#00A889] dark:hover:text-[#00A889] transition-colors duration-300 relative inline-block group md:cursor-none font-mono" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <DecryptedText text={EMAIL} animateOn="hover" maxIterations={12} encryptedClassName="text-[#00A889] [text-shadow:0_0_8px_#00A889]" />
-          <span className="absolute -bottom-2 sm:-bottom-3 left-0 w-0 h-[2px] bg-[#00A889] transition-all duration-300 group-hover:w-full"></span>
+        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-secondary dark:hover:text-secondary transition-colors duration-300 relative inline-block group md:cursor-none font-mono" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <DecryptedText text={EMAIL} animateOn="hover" maxIterations={12} encryptedClassName="text-secondary [text-shadow:0_0_8px_var(--color-secondary)]" />
+          <span className="absolute -bottom-2 sm:-bottom-3 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center py-6 px-4 sm:px-8 text-[10px] sm:text-xs text-white uppercase tracking-widest border-t-8 border-[#FF2A6D] font-mono font-black bg-[#050505] relative z-20 w-full mt-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center py-6 px-4 sm:px-8 text-[10px] sm:text-xs text-white uppercase tracking-widest border-t-8 border-primary font-mono font-black bg-[var(--color-bg-dark)] relative z-20 w-full mt-auto">
         
         {/* Left Side */}
         <div className="flex flex-col gap-1 items-center md:items-start mb-8 md:mb-0">
-          <p className="px-3 py-1.5 bg-[#00A889] text-black shadow-[4px_4px_0_#FF2A6D] rotate-[-2deg] hover:rotate-0 transition-transform">SYS-AREQUIPA//PERU</p>
+          <p className="px-3 py-1.5 bg-secondary text-black shadow-[4px_4px_0_var(--color-primary)] rotate-[-2deg] hover:rotate-0 transition-transform">SYS-AREQUIPA//PERU</p>
           <span className="text-gray-500 text-[8px] mt-2">LAT: -16.4090, LON: -71.5375</span>
         </div>
         
         {/* Center Links */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-8 md:mb-0">
           {SOCIAL_LINKS.map((link) => (
-            <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="px-3 py-2 border-2 border-white hover:border-[#00A889] hover:bg-[#00A889] hover:text-black hover:shadow-[4px_4px_0_#FF2A6D] hover:-translate-y-1 hover:-translate-x-1 transition-all">{link.label}</a>
+            <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="px-3 py-2 border-2 border-white hover:border-secondary hover:bg-secondary hover:text-black hover:shadow-[4px_4px_0_var(--color-primary)] hover:-translate-y-1 hover:-translate-x-1 transition-all">{link.label}</a>
           ))}
-          <Link to="/about" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">About</Link>
-          <Link to="/contact" className="px-3 py-2 border-2 border-white hover:border-[#FF2A6D] hover:bg-[#FF2A6D] hover:text-black hover:shadow-[4px_4px_0_#00A889] hover:-translate-y-1 hover:-translate-x-1 transition-all">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
+          <Link to="/about" className="px-3 py-2 border-2 border-white hover:border-primary hover:bg-primary hover:text-black hover:shadow-[4px_4px_0_var(--color-secondary)] hover:-translate-y-1 hover:-translate-x-1 transition-all">About</Link>
+          <Link to="/contact" className="px-3 py-2 border-2 border-white hover:border-primary hover:bg-primary hover:text-black hover:shadow-[4px_4px_0_var(--color-secondary)] hover:-translate-y-1 hover:-translate-x-1 transition-all">{lang === 'es' ? 'Contacto' : 'Contact'}</Link>
         </div>
         
         {/* Right Side */}
         <div className="flex flex-col items-center md:items-end">
-          <p className="px-3 py-1.5 bg-[#FF2A6D] text-black shadow-[4px_4px_0_#00A889] rotate-[2deg] hover:rotate-0 transition-transform">DEV-SEBASTIAN</p>
+          <p className="px-3 py-1.5 bg-primary text-black shadow-[4px_4px_0_var(--color-secondary)] rotate-[2deg] hover:rotate-0 transition-transform">DEV-SEBASTIAN</p>
           <span className="text-gray-500 text-[8px] mt-2">© {new Date().getFullYear()} // ALL RIGHTS RESERVED</span>
         </div>
       </div>

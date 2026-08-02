@@ -9,12 +9,12 @@ const SideMarquee = () => {
       </div>
 
       {/* Geometric Icon - Centered */}
-      <div className="w-5 h-5 border-2 border-[#00A889] rotate-45 opacity-80 flex items-center justify-center">
-        <div className="w-1 h-1 bg-[#FF2A6D] rounded-full"></div>
+      <div className="w-5 h-5 border-2 border-secondary rotate-45 opacity-80 flex items-center justify-center">
+        <div className="w-1 h-1 bg-primary rounded-full"></div>
       </div>
       
       {/* 2026 - Right aligned, small mono */}
-      <div className="[writing-mode:vertical-rl] rotate-180 text-[#FF2A6D] font-mono text-[10px] tracking-[0.4em] font-bold translate-x-2 sm:translate-x-3">
+      <div className="[writing-mode:vertical-rl] rotate-180 text-primary font-mono text-[10px] tracking-[0.4em] font-bold translate-x-2 sm:translate-x-3">
         2026
       </div>
 
@@ -36,19 +36,19 @@ const SideMarquee = () => {
       <div className="relative w-5 h-5 opacity-60">
          <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-black dark:border-white"></div>
          <div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-black dark:border-white"></div>
-         <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-[#00A889]"></div>
-         <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-[#00A889]"></div>
+         <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-secondary"></div>
+         <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-secondary"></div>
       </div>
 
       {/* Japanese/Korean Text - Left aligned */}
       <div className="[writing-mode:vertical-rl] rotate-180 font-mono text-[10px] sm:text-xs tracking-widest text-black/60 dark:text-white/60 -translate-x-1 sm:-translate-x-2 flex gap-4">
         <span>七転び八起き</span>
-        <span className="text-[#00A889]">사이버</span>
+        <span className="text-secondary">사이버</span>
       </div>
 
       {/* Katana 2 Icon (Replaces Dashed Line and Plus) */}
       <div className="w-8 h-10 flex items-center justify-center opacity-70">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.0 -10.0 110.0 135.0" className="w-full h-full fill-[#FF2A6D]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.0 -10.0 110.0 135.0" className="w-full h-full fill-[var(--color-primary)]">
           <path d="m55.102 40.27c-0.41797 0-0.78906-0.25781-0.9375-0.64844-0.14453-0.38672-0.035156-0.82812 0.27734-1.1016 1.8984-1.6797 3.75-3.2539 5.5586-4.7188l0.078125-0.078125 0.55078-0.44922c1.1992-1 2.3594-2 3.4883-2.8906l2.8828-2.3828 3.6094-2.8789c2.1719-1.7188 4.1484-3.2383 5.8594-4.5586l2.8516-2.1484 2.3398-1.7305 0.73047-0.53906v-0.003906c0.10938-0.078125 0.1875-0.19141 0.21875-0.32031 0.03125-0.16406-0.011719-0.33203-0.12109-0.46094l-2-2.3594c-0.17578-0.21875-0.49609-0.26172-0.72656-0.10156l-3.3711 2.3789-2.8516 2.0898-3 2.25-0.44922 0.33984c-0.76172 0.57812-1.5586 1.1797-2.3789 1.8203-1.1719 0.89062-2.3789 1.8281-3.6484 2.8203l-0.78125 0.62109c-0.69922 0.55859-1.4297 1.1289-2.1484 1.7188-1.2695 1-2.5898 2.0781-3.9219 3.1797-1.9297 1.5703-4.0586 3.3594-6.5195 5.4688v0.003906c-0.20312 0.17188-0.46484 0.25781-0.73047 0.23828-0.26172-0.023437-0.50781-0.14844-0.67969-0.34766-0.35938-0.42188-0.3125-1.0508 0.10938-1.4102 2.4688-2.1211 4.6094-3.9219 6.5508-5.5 1.3398-1.1016 2.6602-2.1719 3.9297-3.1914 0.73047-0.58984 1.4609-1.1602 2.1719-1.7188l0.78125-0.62109c1.2812-1 2.5-1.9492 3.6719-2.8398 0.82031-0.64062 1.6211-1.25 2.3906-1.8281l0.41406-0.37109 3-2.2617c1-0.78125 2-1.4805 2.8789-2.1016 1.4609-1.0508 2.6016-1.8594 3.3906-2.4102v0.003907c1.0781-0.75391 2.5547-0.55859 3.3984 0.44922l2.0312 2.3203c0.47656 0.55078 0.69141 1.2812 0.58984 2v0.058594c-0.10547 0.65234-0.46484 1.2344-1 1.6211l-0.73047 0.53906-2.3281 1.7812-2.8398 2.1484c-1.6914 1.3125-3.6914 2.8516-5.832 4.543-1.1484 0.89844-2.3398 1.8594-3.5898 2.8711-1 0.76172-1.9219 1.5508-2.9102 2.3594l-3.4805 2.8789-0.46875 0.39062c-0.023437 0.027344-0.050781 0.050782-0.082031 0.070313-1.8008 1.5195-3.6602 3.1016-5.5703 4.7695h0.003907c-0.18359 0.15625-0.42188 0.24219-0.66016 0.23828z"/>
           <path d="m9.5586 89.219h-0.17188 0.003906c-0.38281-0.0625-0.69531-0.34375-0.80078-0.71875l-2-7.6992c-0.085938-0.26562-0.058594-0.55859 0.082031-0.80078 8.6992-13 21.328-27 37.559-41.469 0.41406-0.28516 0.97266-0.21875 1.3086 0.15234 0.33594 0.37109 0.34375 0.93359 0.019532 1.3164-15.938 14.27-28.379 28-36.98 40.699l1.4219 5.1523c9.0508-13.133 22.289-27.531 39.328-42.852 0.41406-0.37109 1.0469-0.33594 1.418 0.074219 0.36719 0.41406 0.33594 1.0469-0.074219 1.4141-17.672 15.91-31.262 30.801-40.281 44.281-0.18359 0.28125-0.49609 0.44922-0.83203 0.44922z"/>
           <path d="m68.539 36.621c-0.29297 0-0.57031-0.12891-0.75781-0.35156l-11.711-13.738c-0.17578-0.20312-0.26172-0.46484-0.24219-0.73047 0.023437-0.26562 0.14844-0.50781 0.35156-0.67969l2.8203-2.4414c0.20312-0.17188 0.46484-0.25391 0.73047-0.23047 0.26562 0.019531 0.50781 0.14844 0.67969 0.35156l11.75 13.73c0.17188 0.20312 0.25391 0.46484 0.23047 0.73047-0.023437 0.26172-0.14844 0.50781-0.35156 0.67969l-2.8594 2.4414v-0.003906c-0.17969 0.15234-0.40625 0.23828-0.64063 0.24219zm-10.301-14.621 10.41 12.211 1.3516-1.1406-10.43-12.219z"/>

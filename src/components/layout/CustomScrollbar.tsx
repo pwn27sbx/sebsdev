@@ -74,7 +74,7 @@ const CustomScrollbar = () => {
       <motion.div
         style={{ height: thumbHeight, y }}
         onMouseDown={handleDragStart}
-        className={`w-full bg-[#FF2A6D] cursor-grab active:cursor-grabbing transition-colors duration-200 ${isDragging ? 'bg-[#ff4d85]' : 'group-hover:bg-[#ff4d85]'}`}
+        className={`w-full bg-primary cursor-grab active:cursor-grabbing transition-colors duration-200 ${isDragging ? 'bg-[#ff4d85]' : 'group-hover:bg-[#ff4d85]'}`}
       />
     </div>
   );

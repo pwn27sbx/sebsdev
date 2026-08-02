@@ -41,7 +41,7 @@ const Hero = () => {
         {/* Parallax gradient accent */}
         <motion.div
           style={{ y: useTransform(scrollYProgress, [0, 0.2], ["0%", "15%"]) }}
-          className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-[#00A889]/5 via-transparent to-transparent blur-[100px] dark:from-[#00A889]/8 pointer-events-none"
+          className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-[var(--color-secondary)]/5 via-transparent to-transparent blur-[100px] dark:from-[var(--color-secondary)]/8 pointer-events-none"
           aria-hidden="true"
         />
 
@@ -75,7 +75,7 @@ const Hero = () => {
                   "--before-duration": "1.8s",
                 } as CustomCSSProperties)
               }}
-              className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-[#00A889] shrink-0 gpu"
+              className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-secondary shrink-0 gpu"
             />
             <div
               className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
@@ -120,10 +120,10 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 1 }}
               className="w-[70vw] sm:w-[350px] shrink-0 bg-white/5 dark:bg-black/20 backdrop-blur-md border border-[#111]/10 dark:border-white/10 p-4 sm:p-5 relative group block pointer-events-auto mt-2 sm:mt-0"
             >
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#00A889] -translate-x-[1px] -translate-y-[1px]" />
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#FF2A6D] translate-x-[1px] translate-y-[1px]" />
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-secondary -translate-x-[1px] -translate-y-[1px]" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary translate-x-[1px] translate-y-[1px]" />
               
-              <div className="font-mono text-[9px] sm:text-xs mb-2 text-[#00A889] uppercase font-bold tracking-wider">
+              <div className="font-mono text-[9px] sm:text-xs mb-2 text-secondary uppercase font-bold tracking-wider">
                 {t("heroAboutLabel", lang)}
               </div>
               <div className="font-mono text-[10px] sm:text-sm whitespace-nowrap cursor-default text-gray-600 dark:text-gray-400">

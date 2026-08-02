@@ -10,10 +10,10 @@ import { usePortfolio } from '../../context/PortfolioContext'
 
 // Cyberpunk / Matrix Theme Constants
 const bgColor       = '#030504'   // Deep dark cyber space
-const flameColor    = '#00A889'   // Brand emerald
+const flameColor    = 'var(--color-secondary)'   // Brand emerald
 const flameColor2   = '#00f0ff'   // Neon cyan
 const flameAmt      = 0.35        // Flame intensity
-const atmoColor     = '#00A889'   // Ambient motes color
+const atmoColor     = 'var(--color-secondary)'   // Ambient motes color
 const atmoCount     = 300
 const atmoSize      = 24
 const atmoSpeed     = 1.0

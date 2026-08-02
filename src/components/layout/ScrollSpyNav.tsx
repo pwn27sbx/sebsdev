@@ -7,10 +7,10 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
 
 const navItems = [
-  { id: 'section-about', labelKey: 'spyAbout', color: '#FF2A6D' },
-  { id: 'section-expertise', labelKey: 'spyExpertise', color: '#FF2A6D' },
-  { id: 'section-projects', labelKey: 'spyProjects', color: '#FF2A6D' },
-  { id: 'section-contact', labelKey: 'spyContact', color: '#FF2A6D' }
+  { id: 'section-about', labelKey: 'spyAbout', color: 'var(--color-primary)' },
+  { id: 'section-expertise', labelKey: 'spyExpertise', color: 'var(--color-primary)' },
+  { id: 'section-projects', labelKey: 'spyProjects', color: 'var(--color-primary)' },
+  { id: 'section-contact', labelKey: 'spyContact', color: 'var(--color-primary)' }
 ] as const;
 
 const ActiveIndicator = ({ item }: { item: { id: string, labelKey: string, color: string } }) => {
@@ -166,7 +166,7 @@ const ScrollSpyNav = () => {
             {/* Label */}
             <div 
               className={`font-mono text-[10px] tracking-widest uppercase transition-all duration-300 min-w-[100px] text-right ${isActive ? 'opacity-40' : 'opacity-40 group-hover:opacity-80'}`}
-              style={{ color: '#00A889' }}
+              style={{ color: 'var(--color-secondary)' }}
             >
               {t(item.labelKey, lang)}
             </div>
@@ -174,7 +174,7 @@ const ScrollSpyNav = () => {
             {/* Base Katana Container */}
             <div className="relative flex items-center justify-center w-10 h-10">
               <div className={`absolute inset-0 w-full h-full transition-all duration-300 ${isActive ? 'opacity-50' : 'opacity-40 group-hover:opacity-80'}`}>
-                <KatanaIcon color={isActive ? item.color : '#00A889'} isActive={false} />
+                <KatanaIcon color={isActive ? item.color : 'var(--color-secondary)'} isActive={false} />
               </div>
             </div>
 

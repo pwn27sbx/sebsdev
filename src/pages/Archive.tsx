@@ -23,7 +23,7 @@ const Archive = () => {
   const titleOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <div className="min-h-screen relative bg-[#f0f0f0] dark:bg-[#050505] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed text-[#111] dark:text-white font-sans transition-colors duration-500 pt-24 pb-20">
+    <div className="min-h-screen relative bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed text-[#111] dark:text-white font-sans transition-colors duration-500 pt-24 pb-20">
       <Helmet>
         <title>Archivo de Proyectos | Sebastian</title>
         <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
@@ -31,7 +31,7 @@ const Archive = () => {
       </Helmet>
 
       {/* Skip to content link */}
-      <a href="#archive-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-[#00A889] focus:text-white focus:rounded-md focus:text-sm focus:uppercase focus:tracking-widest">
+      <a href="#archive-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-secondary focus:text-white focus:rounded-md focus:text-sm focus:uppercase focus:tracking-widest">
         {lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}
       </a>
 
@@ -39,7 +39,7 @@ const Archive = () => {
       <nav className="fixed top-0 w-full p-4 sm:p-8 flex justify-between items-center z-[100] pointer-events-none">
         <Link 
           to="/" 
-          className="ml-4 sm:ml-8 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 text-[#00A889] bg-transparent hover:text-[#FF2A6D] transition-colors duration-300"
+          className="ml-4 sm:ml-8 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 text-secondary bg-transparent hover:text-primary transition-colors duration-300"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
@@ -52,8 +52,8 @@ const Archive = () => {
         style={{ y: titleY, opacity: titleOpacity }}
         className="px-4 sm:px-12 pt-4 sm:pt-8 pb-12 flex flex-col items-start relative z-20"
       >
-        <div className="font-mono text-xs sm:text-sm text-[#FF2A6D] mb-4 tracking-widest flex items-center gap-2">
-          <span className="w-2 h-2 bg-[#FF2A6D] animate-pulse" />
+        <div className="font-mono text-xs sm:text-sm text-primary mb-4 tracking-widest flex items-center gap-2">
+          <span className="w-2 h-2 bg-primary animate-pulse" />
           <ScrambledText text="[ DATA_ARCHIVE_ACCESS // 2021-2026 ]" speed={0.4} />
         </div>
         <h1 className="font-anton text-6xl sm:text-8xl md:text-[10vw] uppercase tracking-tighter leading-none text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#fff]">
@@ -86,16 +86,16 @@ const Archive = () => {
                 rel="noopener noreferrer"
                 onMouseEnter={() => { setActiveProject(project); setIsHovering(true); }}
                 onMouseLeave={() => { setActiveProject(null); setIsHovering(false); }}
-                className="group relative flex items-center py-6 sm:py-8 px-4 border border-transparent hover:border-[#00A889]/30 bg-transparent hover:bg-black/5 dark:hover:bg-[#00A889]/5 transition-all duration-300"
+                className="group relative flex items-center py-6 sm:py-8 px-4 border border-transparent hover:border-secondary/30 bg-transparent hover:bg-black/5 dark:hover:bg-secondary/5 transition-all duration-300"
               >
                 {/* Active Indicator */}
-                <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[#00A889] transition-transform duration-300 origin-bottom ${activeProject?.id === project.id ? 'scale-y-100' : 'scale-y-0'}`} />
+                <div className={`absolute left-0 top-0 bottom-0 w-1 bg-secondary transition-transform duration-300 origin-bottom ${activeProject?.id === project.id ? 'scale-y-100' : 'scale-y-0'}`} />
                 
-                <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400 group-hover:text-[#00A889] transition-colors">{project.id}</div>
+                <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400 group-hover:text-secondary transition-colors">{project.id}</div>
                 <div className="w-[15%] font-mono text-xs sm:text-sm text-gray-400 hidden sm:block">{project.year}</div>
                 
                 <div className="flex-1">
-                  <h2 className="font-anton text-3xl sm:text-5xl uppercase text-[#111] dark:text-white group-hover:text-[#00A889] transition-colors tracking-wide">
+                  <h2 className="font-anton text-3xl sm:text-5xl uppercase text-[#111] dark:text-white group-hover:text-secondary transition-colors tracking-wide">
                     <TextType
                       as="span"
                       text={project.title}
@@ -121,16 +121,16 @@ const Archive = () => {
 
         {/* Static HUD Preview (Right Side) */}
         <div className="w-full lg:w-2/5 hidden lg:block h-[calc(100vh-160px)] sticky top-24">
-          <div className="w-full h-full relative border border-gray-300 dark:border-gray-800 bg-white/10 dark:bg-black/20 backdrop-blur-md overflow-hidden p-4 flex flex-col justify-center items-center group-hover:border-[#00A889]/50 transition-colors duration-500">
+          <div className="w-full h-full relative border border-gray-300 dark:border-gray-800 bg-white/10 dark:bg-black/20 backdrop-blur-md overflow-hidden p-4 flex flex-col justify-center items-center group-hover:border-secondary/50 transition-colors duration-500">
             
             {/* Corner HUD Elements */}
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#00A889]" />
-            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#00A889]" />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#FF2A6D]" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#FF2A6D]" />
+            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-secondary" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-secondary" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary" />
             
             {/* Scanline Overlay */}
-            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,168,137,0.05)_50%)] bg-[length:100%_4px] z-10" />
+            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(transparent_50%,color-mix(in srgb, var(--color-secondary) calc(0.05 * 100%), transparent)_50%)] bg-[length:100%_4px] z-10" />
 
             <AnimatePresence mode="wait">
               {activeProject ? (
@@ -149,8 +149,8 @@ const Archive = () => {
                   )}
                   
                   {/* HUD Info Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm border border-white/10 p-4 font-mono text-xs text-[#00A889] flex flex-col gap-1">
-                    <div className="flex justify-between border-b border-[#00A889]/30 pb-2 mb-2">
+                  <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm border border-white/10 p-4 font-mono text-xs text-secondary flex flex-col gap-1">
+                    <div className="flex justify-between border-b border-secondary/30 pb-2 mb-2">
                       <span>STATUS: [ OK ]</span>
                       <span>ID: {activeProject.id}</span>
                     </div>
@@ -168,7 +168,7 @@ const Archive = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-[#00A889]/50 font-mono text-sm tracking-widest flex flex-col items-center gap-4"
+                  className="text-secondary/50 font-mono text-sm tracking-widest flex flex-col items-center gap-4"
                 >
                   <svg className="w-12 h-12 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -187,7 +187,7 @@ const Archive = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: showBackToTop ? 1 : 0, scale: showBackToTop ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed bottom-8 right-8 z-[60] w-12 h-12 bg-transparent border-2 border-[#FF2A6D] text-[#FF2A6D] flex items-center justify-center hover:bg-[#FF2A6D] hover:text-black transition-colors duration-300 md:cursor-none"
+        className="fixed bottom-8 right-8 z-[60] w-12 h-12 bg-transparent border-2 border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-black transition-colors duration-300 md:cursor-none"
         aria-label={t('backToTop', lang)}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square">

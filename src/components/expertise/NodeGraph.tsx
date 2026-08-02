@@ -27,28 +27,28 @@ const NODES: Node[] = [
   { id: 'core', title: 'SEBS.DEV', desc: 'Creative Developer', x: CENTER, y: CENTER, color: '#CORE' }, // Special marker
   
   // ----------------------------------------------------
-  // BRANCH 1: FRONT-END (Top Left) - Color: #00A889
+  // BRANCH 1: FRONT-END (Top Left) - Color: var(--color-secondary)
   // ----------------------------------------------------
-  { id: 'frontend', title: 'FRONT-END', desc: 'Architecture', x: CENTER - 400, y: CENTER - 200, color: '#00A889' },
-  { id: 'ts', title: 'TypeScript', desc: 'Type Safety', x: CENTER - 350, y: CENTER - 450, color: '#00A889' },
-  { id: 'react', title: 'React', desc: 'UI Library', x: CENTER - 700, y: CENTER - 350, color: '#00A889' },
-  { id: 'next', title: 'Next.js', desc: 'Meta Framework', x: CENTER - 700, y: CENTER - 150, color: '#00A889' },
+  { id: 'frontend', title: 'FRONT-END', desc: 'Architecture', x: CENTER - 400, y: CENTER - 200, color: 'var(--color-secondary)' },
+  { id: 'ts', title: 'TypeScript', desc: 'Type Safety', x: CENTER - 350, y: CENTER - 450, color: 'var(--color-secondary)' },
+  { id: 'react', title: 'React', desc: 'UI Library', x: CENTER - 700, y: CENTER - 350, color: 'var(--color-secondary)' },
+  { id: 'next', title: 'Next.js', desc: 'Meta Framework', x: CENTER - 700, y: CENTER - 150, color: 'var(--color-secondary)' },
   // Front-end sub-branches
-  { id: 'zustand', title: 'Zustand', desc: 'State Management', x: CENTER - 1000, y: CENTER - 400, color: '#00A889' },
-  { id: 'tailwind', title: 'Tailwind CSS', desc: 'Utility Styling', x: CENTER - 1000, y: CENTER - 200, color: '#00A889' },
-  { id: 'vite', title: 'Vite', desc: 'Build Tool', x: CENTER - 950, y: CENTER - 50, color: '#00A889' },
+  { id: 'zustand', title: 'Zustand', desc: 'State Management', x: CENTER - 1000, y: CENTER - 400, color: 'var(--color-secondary)' },
+  { id: 'tailwind', title: 'Tailwind CSS', desc: 'Utility Styling', x: CENTER - 1000, y: CENTER - 200, color: 'var(--color-secondary)' },
+  { id: 'vite', title: 'Vite', desc: 'Build Tool', x: CENTER - 950, y: CENTER - 50, color: 'var(--color-secondary)' },
 
   // ----------------------------------------------------
-  // BRANCH 2: WEBGL & MOTION (Top Right) - Color: #FF2A6D
+  // BRANCH 2: WEBGL & MOTION (Top Right) - Color: var(--color-primary)
   // ----------------------------------------------------
-  { id: 'motion', title: 'WEBGL & MOTION', desc: 'Interactive 3D', x: CENTER + 400, y: CENTER - 200, color: '#FF2A6D' },
-  { id: 'gsap', title: 'GSAP', desc: 'Complex Timelines', x: CENTER + 350, y: CENTER - 450, color: '#FF2A6D' },
-  { id: 'framer', title: 'Framer Motion', desc: 'React Animations', x: CENTER + 700, y: CENTER - 150, color: '#FF2A6D' },
-  { id: 'three', title: 'Three.js', desc: '3D Graphics', x: CENTER + 700, y: CENTER - 350, color: '#FF2A6D' },
+  { id: 'motion', title: 'WEBGL & MOTION', desc: 'Interactive 3D', x: CENTER + 400, y: CENTER - 200, color: 'var(--color-primary)' },
+  { id: 'gsap', title: 'GSAP', desc: 'Complex Timelines', x: CENTER + 350, y: CENTER - 450, color: 'var(--color-primary)' },
+  { id: 'framer', title: 'Framer Motion', desc: 'React Animations', x: CENTER + 700, y: CENTER - 150, color: 'var(--color-primary)' },
+  { id: 'three', title: 'Three.js', desc: '3D Graphics', x: CENTER + 700, y: CENTER - 350, color: 'var(--color-primary)' },
   // Motion sub-branches
-  { id: 'r3f', title: 'React Three Fiber', desc: 'Declarative 3D', x: CENTER + 1050, y: CENTER - 400, color: '#FF2A6D' },
-  { id: 'shaders', title: 'GLSL Shaders', desc: 'GPU Materials', x: CENTER + 1000, y: CENTER - 550, color: '#FF2A6D' },
-  { id: 'lenis', title: 'Lenis', desc: 'Smooth Scroll', x: CENTER + 1000, y: CENTER - 100, color: '#FF2A6D' },
+  { id: 'r3f', title: 'React Three Fiber', desc: 'Declarative 3D', x: CENTER + 1050, y: CENTER - 400, color: 'var(--color-primary)' },
+  { id: 'shaders', title: 'GLSL Shaders', desc: 'GPU Materials', x: CENTER + 1000, y: CENTER - 550, color: 'var(--color-primary)' },
+  { id: 'lenis', title: 'Lenis', desc: 'Smooth Scroll', x: CENTER + 1000, y: CENTER - 100, color: 'var(--color-primary)' },
 
   // ----------------------------------------------------
   // BRANCH 3: BACK-END (Bottom Left) - Color: #0088FF
@@ -148,7 +148,7 @@ export default function NodeGraph() {
   return (
     <div 
       ref={containerRef} 
-      className="relative w-full h-full bg-[#f0f0f0] dark:bg-[#050505] overflow-hidden cursor-grab active:cursor-grabbing transition-colors duration-700"
+      className="relative w-full h-full bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] overflow-hidden cursor-grab active:cursor-grabbing transition-colors duration-700"
     >
       {/* Infinite Canvas */}
       <motion.div
@@ -229,28 +229,28 @@ export default function NodeGraph() {
               className="group pointer-events-auto cursor-pointer"
             >
               <div 
-                className={`bg-white dark:bg-[#0A0A0A] border rounded-lg p-4 shadow-xl transition-all duration-300 hover:scale-105 ${node.id === 'core' ? 'ring-2 ring-black/50 dark:ring-white/50 animate-pulse' : ''}`}
+                className={`bg-white dark:bg-[#0A0A0A] [.immersion-full_&]:bg-primary/15 [.immersion-full_&]:backdrop-blur-md border rounded-lg p-4 shadow-xl transition-all duration-300 hover:scale-105 ${node.id === 'core' ? 'ring-2 ring-black/50 dark:ring-white/50 [.immersion-full_&]:ring-white/50 animate-pulse' : ''}`}
                 style={{ 
                   borderColor: `${actualColor}40`,
                   boxShadow: `0 10px 30px -10px ${actualColor}30` 
                 }}
               >
                 {/* Node Ports (Dots) */}
-                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#f0f0f0] dark:bg-[#050505] border-2 flex items-center justify-center transition-colors group-hover:bg-black dark:group-hover:bg-white" style={{ borderColor: actualColor }}>
+                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] border-2 flex items-center justify-center transition-colors group-hover:bg-black dark:group-hover:bg-white" style={{ borderColor: actualColor }}>
                   <div className="w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100" />
                 </div>
-                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#f0f0f0] dark:bg-[#050505] border-2 flex items-center justify-center transition-colors group-hover:bg-black dark:group-hover:bg-white" style={{ borderColor: actualColor }}>
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] border-2 flex items-center justify-center transition-colors group-hover:bg-black dark:group-hover:bg-white" style={{ borderColor: actualColor }}>
                   <div className="w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100" />
                 </div>
 
                 {/* Node Content */}
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: actualColor }} />
-                  <h3 className="font-mono font-bold text-black dark:text-white text-sm tracking-wider uppercase">
+                  <h3 className="font-mono font-bold text-black dark:text-white [.immersion-full_&]:text-white text-sm tracking-wider uppercase">
                     {node.title}
                   </h3>
                 </div>
-                <p className="font-sans text-xs text-gray-600 dark:text-gray-400 mt-2 pl-5">
+                <p className="font-sans text-xs text-gray-600 dark:text-gray-400 [.immersion-full_&]:text-gray-400 mt-2 pl-5">
                   {node.desc}
                 </p>
               </div>
@@ -261,12 +261,12 @@ export default function NodeGraph() {
 
       {/* Interface HUD overlay */}
       <div className="absolute top-8 left-8 pointer-events-none z-10 flex flex-col gap-2">
-        <h2 className="font-anton text-4xl md:text-6xl text-black dark:text-white uppercase tracking-wider drop-shadow-lg">
-          EXPERTISE <span className="text-[#00A889]">GRAPH</span>
+        <h2 className="font-anton text-4xl md:text-6xl text-black dark:text-white [.immersion-full_&]:text-white uppercase tracking-wider drop-shadow-lg">
+          EXPERTISE <span className="text-secondary">GRAPH</span>
         </h2>
-        <div className="flex flex-wrap gap-4 font-mono text-xs text-gray-600 dark:text-gray-400 max-w-2xl">
-          <span className="flex items-center gap-2"><div className="w-2 h-2 bg-[#00A889] rounded-full" /> FRONT-END</span>
-          <span className="flex items-center gap-2"><div className="w-2 h-2 bg-[#FF2A6D] rounded-full" /> WEBGL & MOTION</span>
+        <div className="flex flex-wrap gap-4 font-mono text-xs text-gray-600 dark:text-gray-400 [.immersion-full_&]:text-gray-300 max-w-2xl">
+          <span className="flex items-center gap-2"><div className="w-2 h-2 bg-secondary rounded-full" /> FRONT-END</span>
+          <span className="flex items-center gap-2"><div className="w-2 h-2 bg-primary rounded-full" /> WEBGL & MOTION</span>
           <span className="flex items-center gap-2"><div className="w-2 h-2 bg-[#0088FF] rounded-full" /> BACK-END</span>
           <span className="flex items-center gap-2"><div className="w-2 h-2 bg-[#FF8800] rounded-full" /> DEVOPS</span>
           <span className="flex items-center gap-2"><div className="w-2 h-2 bg-[#888888] rounded-full" /> DESIGN SYSTEMS</span>
@@ -279,7 +279,7 @@ export default function NodeGraph() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isDragged ? 1 : 0, y: isDragged ? 0 : 20 }}
           onClick={handleRecenter}
-          className={`pointer-events-auto bg-[#FF2A6D] hover:bg-[#FF2A6D]/80 text-white px-4 py-2 rounded-full font-mono text-xs font-bold transition-colors shadow-[0_0_15px_rgba(255,42,109,0.5)] ${!isDragged && 'pointer-events-none'}`}
+          className={`pointer-events-auto bg-primary hover:bg-primary/80 text-white px-4 py-2 rounded-full font-mono text-xs font-bold transition-colors shadow-[0_0_15px_color-mix(in srgb, var(--color-primary) calc(0.5 * 100%), transparent)] ${!isDragged && 'pointer-events-none'}`}
         >
           RECENTER MAP
         </motion.button>

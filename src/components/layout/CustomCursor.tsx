@@ -22,7 +22,7 @@ const CustomCursor = () => {
 
   return (
     <motion.div
-      className="custom-cursor fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-[100] bg-[#00A889] shadow-[0_0_10px_#00A889] hidden md:block"
+      className="custom-cursor fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-[100] bg-secondary shadow-[0_0_10px_var(--color-secondary)] hidden md:block"
       style={{ x: cursorX, y: cursorY }}
     />
   );

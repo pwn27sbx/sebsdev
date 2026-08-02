@@ -37,7 +37,7 @@ function AnimatedRoutes() {
 
 const FallbackLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-[#0a0a0a] z-[9999] pointer-events-none">
-    <div className="w-8 h-8 border-2 border-[#00A889] border-t-transparent rounded-full animate-spin"></div>
+    <div className="w-8 h-8 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 

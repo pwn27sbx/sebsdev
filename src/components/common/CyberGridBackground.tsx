@@ -20,9 +20,9 @@ const CyberGridBackground = ({ transparent = false }: { transparent?: boolean })
   );
 
   return (
-    <motion.div style={transparent ? {} : { opacity }} className={`${transparent ? 'sticky top-0 h-[100vh] w-full' : 'fixed inset-0'} pointer-events-none overflow-hidden transition-colors duration-500 ${transparent ? 'bg-transparent z-0' : 'bg-[#f0f0f0] dark:bg-[#030303] z-0'}`}>
+    <motion.div style={transparent ? {} : { opacity }} className={`${transparent ? 'sticky top-0 h-[100vh] w-full' : 'fixed inset-0'} pointer-events-none overflow-hidden transition-colors duration-500 ${transparent ? 'bg-transparent z-0' : 'bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] z-0'}`}>
       {/* Background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#00A889]/10 via-transparent to-transparent dark:from-[#00A889]/20"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/10 via-transparent to-transparent dark:from-[var(--color-secondary)]/20"></div>
       
       {/* The moving floor grid */}
       <div className="absolute top-1/2 left-0 right-0 bottom-0 overflow-hidden perspective-1000">

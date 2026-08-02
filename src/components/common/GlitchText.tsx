@@ -29,8 +29,8 @@ const GlitchText: FC<GlitchTextProps> = ({
   const inlineStyles: CustomCSSProperties = {
     '--after-duration': `${speed * 3}s`,
     '--before-duration': `${speed * 2}s`,
-    '--after-shadow': enableShadows ? '-5px 0 #00A889' : 'none',
-    '--before-shadow': enableShadows ? '5px 0 #FF2A6D' : 'none'
+    '--after-shadow': enableShadows ? '-5px 0 var(--color-secondary)' : 'none',
+    '--before-shadow': enableShadows ? '5px 0 var(--color-primary)' : 'none'
   };
 
   const baseClasses = `relative inline-block select-none glitch-anim-${variant}`;

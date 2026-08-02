@@ -2,6 +2,9 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import type { Lang } from '../data/i18n';
 
+export type ColorTheme = 'default' | 'holonoir' | 'metrovapor' | 'biohazard' | 'dataheist' | 'tealnight' | 'laserlime' | 'circuitgarden';
+export type ImmersionMode = 'relax' | 'full';
+
 interface PortfolioContextType {
   isHovering: boolean;
   setIsHovering: (v: boolean) => void;
@@ -9,6 +12,10 @@ interface PortfolioContextType {
   setDarkMode: (v: boolean) => void;
   lang: Lang;
   setLang: (v: Lang) => void;
+  colorTheme: ColorTheme;
+  setColorTheme: (v: ColorTheme) => void;
+  immersionMode: ImmersionMode;
+  setImmersionMode: (v: ImmersionMode) => void;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | null>(null);
@@ -30,6 +37,33 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     setLangState(value);
   }, []);
 
+  const [colorTheme, setColorThemeState] = useState<ColorTheme>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('portfolio_color_theme') as ColorTheme;
+      const validThemes = ['default', 'holonoir', 'metrovapor', 'biohazard', 'dataheist', 'tealnight', 'laserlime', 'circuitgarden'];
+      if (validThemes.includes(saved)) return saved;
+    }
+    return 'default';
+  });
+
+  const setColorTheme = useCallback((value: ColorTheme) => {
+    localStorage.setItem('portfolio_color_theme', value);
+    setColorThemeState(value);
+  }, []);
+
+  const [immersionMode, setImmersionModeState] = useState<ImmersionMode>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('portfolio_immersion_mode') as ImmersionMode;
+      return saved === 'full' ? 'full' : 'relax';
+    }
+    return 'relax';
+  });
+
+  const setImmersionMode = useCallback((value: ImmersionMode) => {
+    localStorage.setItem('portfolio_immersion_mode', value);
+    setImmersionModeState(value);
+  }, []);
+
   // Dark mode: empieza leyendo de localStorage, luego del sistema
   const [darkMode, setDarkModeState] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -49,12 +83,26 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
+    const applyClasses = () => {
+      root.classList.toggle('dark', darkMode);
+      root.classList.remove(
+        'theme-holonoir', 'theme-metrovapor', 'theme-biohazard', 
+        'theme-dataheist', 'theme-tealnight', 'theme-laserlime', 
+        'theme-circuitgarden', 'immersion-full'
+      );
+      if (colorTheme !== 'default') {
+        root.classList.add(`theme-${colorTheme}`);
+      }
+      if (immersionMode === 'full') {
+        root.classList.add('immersion-full');
+      }
+    };
 
     // View Transition API: transición nativa (Chrome 111+, Firefox 125+)
     if (document.startViewTransition) {
       try {
         const transition = document.startViewTransition(() => {
-          root.classList.toggle('dark', darkMode);
+          applyClasses();
         });
         
         // Catch unhandled promise rejections that occur in React 18 Strict Mode
@@ -63,7 +111,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
         if (transition.ready) transition.ready.catch(() => {});
         if (transition.updateCallbackDone) transition.updateCallbackDone.catch(() => {});
       } catch (e) {
-        root.classList.toggle('dark', darkMode);
+        applyClasses();
       }
       return;
     }
@@ -71,10 +119,10 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     // Fallback: CSS transition para Firefox viejo y otros navegadores
     root.classList.add('theme-switching');
     void getComputedStyle(root).backgroundColor;
-    root.classList.toggle('dark', darkMode);
+    applyClasses();
     const timer = setTimeout(() => root.classList.remove('theme-switching'), 500);
     return () => clearTimeout(timer);
-  }, [darkMode]);
+  }, [darkMode, colorTheme, immersionMode]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -89,7 +137,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <PortfolioContext.Provider value={{ isHovering, setIsHovering, darkMode, setDarkMode, lang, setLang }}>
+    <PortfolioContext.Provider value={{ isHovering, setIsHovering, darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode }}>
       {children}
     </PortfolioContext.Provider>
   );

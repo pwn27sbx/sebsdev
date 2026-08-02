@@ -19,7 +19,7 @@ const CharSpan = ({ char, scrollYProgress, turn, step }: CharSpanProps) => {
     <span className="relative inline-block whitespace-pre">
       {/* Cyan offset base (Always visible, always glitching) */}
       <span 
-        className="absolute text-transparent [-webkit-text-stroke:8px_#00A889] md:[-webkit-text-stroke:10px_#00A889] pointer-events-none -top-[0.8vw] -left-[0.6vw] z-0" 
+        className="absolute text-transparent [-webkit-text-stroke:8px_var(--color-secondary)] md:[-webkit-text-stroke:10px_var(--color-secondary)] pointer-events-none -top-[0.8vw] -left-[0.6vw] z-0" 
         style={{ animation: 'glitch-1 2.5s infinite step-end' }}
       >
         {char}
@@ -27,7 +27,7 @@ const CharSpan = ({ char, scrollYProgress, turn, step }: CharSpanProps) => {
       
       {/* Magenta offset base (Always visible, always glitching) */}
       <span 
-        className="absolute text-transparent [-webkit-text-stroke:8px_#FF2A6D] md:[-webkit-text-stroke:10px_#FF2A6D] pointer-events-none top-[0.8vw] left-[0.6vw] z-0" 
+        className="absolute text-transparent [-webkit-text-stroke:8px_var(--color-primary)] md:[-webkit-text-stroke:10px_var(--color-primary)] pointer-events-none top-[0.8vw] left-[0.6vw] z-0" 
         style={{ animation: 'glitch-2 2s infinite step-end' }}
       >
         {char}

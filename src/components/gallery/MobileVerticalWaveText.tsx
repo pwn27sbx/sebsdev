@@ -6,12 +6,12 @@ const MobileVerticalWaveText = ({ text, delay }: MobileWaveProps) => {
   return (
     <span className="relative inline-flex whitespace-nowrap py-2 sm:py-4 leading-none">
       {/* Cyan outline layer (Always visible, glitching) */}
-      <span className="absolute -top-[1.5vw] -left-[1vw] sm:-top-[1vw] sm:-left-[0.8vw] z-0 text-transparent [-webkit-text-stroke:6px_#00A889] sm:[-webkit-text-stroke:8px_#00A889]" style={{ animation: 'glitch-1 2.5s infinite step-end' }}>
+      <span className="absolute -top-[1.5vw] -left-[1vw] sm:-top-[1vw] sm:-left-[0.8vw] z-0 text-transparent [-webkit-text-stroke:6px_var(--color-secondary)] sm:[-webkit-text-stroke:8px_var(--color-secondary)]" style={{ animation: 'glitch-1 2.5s infinite step-end' }}>
         {text}
       </span>
 
       {/* Magenta outline layer (Always visible, glitching) */}
-      <span className="absolute top-[1.5vw] left-[1vw] sm:top-[1vw] sm:left-[0.8vw] z-0 text-transparent [-webkit-text-stroke:6px_#FF2A6D] sm:[-webkit-text-stroke:8px_#FF2A6D]" style={{ animation: 'glitch-2 2s infinite step-end' }}>
+      <span className="absolute top-[1.5vw] left-[1vw] sm:top-[1vw] sm:left-[0.8vw] z-0 text-transparent [-webkit-text-stroke:6px_var(--color-primary)] sm:[-webkit-text-stroke:8px_var(--color-primary)]" style={{ animation: 'glitch-2 2s infinite step-end' }}>
         {text}
       </span>
 

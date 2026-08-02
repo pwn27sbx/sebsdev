@@ -5,7 +5,7 @@ const Scene = () => {
   const { darkMode } = usePortfolio();
 
   return (
-    <div className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-colors duration-500 ${darkMode ? 'bg-[#050505]' : 'bg-[#f0f0f0]'}`}>
+    <div className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-colors duration-500 ${darkMode ? 'bg-[var(--color-bg-dark)]' : 'bg-[var(--color-bg-light)]'}`}>
       {/* Engineering Grid */}
       <div 
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
