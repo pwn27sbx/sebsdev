@@ -8,17 +8,11 @@ import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectio
 import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { usePortfolio } from '../../context/PortfolioContext'
 
-// Cyberpunk / Matrix Theme Constants
-const bgColor       = '#030504'   // Deep dark cyber space
-const flameColor    = 'var(--color-secondary)'   // Brand emerald
-const flameColor2   = '#00f0ff'   // Neon cyan
+// Animation config
 const flameAmt      = 0.35        // Flame intensity
-const atmoColor     = 'var(--color-secondary)'   // Ambient motes color
 const atmoCount     = 300
 const atmoSize      = 24
 const atmoSpeed     = 1.0
-const colorLow      = '#02160c'
-const colorHigh     = '#00ffa3'   // Bright neon green
 const opacity       = 0.35
 const pointSize     = 5.5
 const brightness    = 0.6
@@ -46,7 +40,7 @@ const LAYERS = { NONE: 0, TORUS_SCENE: 1, BLOOM_SCENE: 2, ENTIRE_SCENE: 3 }
 
 const HeroCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { darkMode } = usePortfolio()
+  const { darkMode, colorTheme, immersionMode } = usePortfolio()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -54,6 +48,22 @@ const HeroCanvas = () => {
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
+
+    // Get active theme colors
+    const rs = getComputedStyle(document.documentElement)
+    const getC = (name: string, fallback: string) => rs.getPropertyValue(name).trim() || fallback
+    const cPrimary = getC('--color-primary', '#FF2A6D')
+    const cSecondary = getC('--color-secondary', '#00A889')
+    const cAccent = getC('--color-accent', '#00f0ff')
+    const cTertiary = getC('--color-tertiary', '#02160c')
+    const cBgDark = getC('--color-bg-dark', '#0a0a0a')
+
+    const bgColor = immersionMode === 'full' ? cBgDark : (darkMode ? '#030504' : '#f0f0f0')
+    const flameColor = cPrimary
+    const flameColor2 = cAccent
+    const atmoColor = cSecondary
+    const colorLow = cBgDark
+    const colorHigh = cTertiary
 
     // --- Renderer Setup ---
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
@@ -439,7 +449,7 @@ const HeroCanvas = () => {
       atmoGeo.dispose()
       atmoMat.dispose()
     }
-  }, [darkMode])
+  }, [darkMode, colorTheme, immersionMode])
 
   return (
     <canvas

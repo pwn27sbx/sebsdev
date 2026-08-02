@@ -229,7 +229,7 @@ export default function NodeGraph() {
               className="group pointer-events-auto cursor-pointer"
             >
               <div 
-                className={`bg-white dark:bg-[#0A0A0A] [.immersion-full_&]:bg-primary/15 [.immersion-full_&]:backdrop-blur-md border rounded-lg p-4 shadow-xl transition-all duration-300 hover:scale-105 ${node.id === 'core' ? 'ring-2 ring-black/50 dark:ring-white/50 [.immersion-full_&]:ring-white/50 animate-pulse' : ''}`}
+                className={`bg-white dark:bg-[#0A0A0A] [.immersion-full_&]:bg-[var(--color-tertiary)]/50 [.immersion-full_&]:backdrop-blur-md border rounded-lg p-4 shadow-xl transition-all duration-300 hover:scale-105 ${node.id === 'core' ? 'ring-2 ring-black/50 dark:ring-white/50 [.immersion-full_&]:ring-[var(--color-accent)] [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent)] animate-pulse' : ''}`}
                 style={{ 
                   borderColor: `${actualColor}40`,
                   boxShadow: `0 10px 30px -10px ${actualColor}30` 

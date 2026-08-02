@@ -4,57 +4,75 @@
 @theme {
   --color-primary: var(--brand-primary);
   --color-secondary: var(--brand-secondary);
+  --color-accent: var(--brand-accent);
+  --color-tertiary: var(--brand-tertiary);
   --color-bg-light: #f5f5f5;
   --color-bg-dark: #0a0a0a;
 }
 
 :root {
-  /* Theme: Default (Cyberpunk) */
-  --brand-primary: #FF2A6D;
-  --brand-secondary: #00A889;
-  --brand-bg-dark: #0a0a0a;
+  /* Theme: Synthwave Circuit (Default) */
+  --brand-bg-dark: #120A3A;
+  --brand-primary: #FF3B7F;
+  --brand-secondary: #00F5D4;
+  --brand-accent: #FFD166;
+  --brand-tertiary: #2D1B69;
 }
 
 :root.theme-holonoir {
+  --brand-bg-dark: #0A0F1E;
   --brand-primary: #FF4FD8;
   --brand-secondary: #2EF9B6;
-  --brand-bg-dark: #0A0F1E;
+  --brand-accent: #B8B8FF;
+  --brand-tertiary: #2A2F45;
 }
 
 :root.theme-metrovapor {
+  --brand-bg-dark: #101820;
   --brand-primary: #E71D36;
   --brand-secondary: #2EC4B6;
-  --brand-bg-dark: #101820;
+  --brand-accent: #FF9F1C;
+  --brand-tertiary: #350912; /* Deep dark red instead of flat white */
 }
 
 :root.theme-biohazard {
+  --brand-bg-dark: #0C0F0A;
   --brand-primary: #FF4D6D;
   --brand-secondary: #B7FF00;
-  --brand-bg-dark: #0C0F0A;
+  --brand-accent: #00FF87;
+  --brand-tertiary: #1E3F20; /* Deep toxic green instead of muddy olive */
 }
 
 :root.theme-dataheist {
+  --brand-bg-dark: #070A0F;
   --brand-primary: #FF2E88;
   --brand-secondary: #00F0FF;
-  --brand-bg-dark: #070A0F;
+  --brand-accent: #00FF6A;
+  --brand-tertiary: #3A103D; /* Deep cyberpunk purple instead of gray */
 }
 
 :root.theme-tealnight {
+  --brand-bg-dark: #05060A;
   --brand-primary: #00A8E8;
   --brand-secondary: #00FFC6;
-  --brand-bg-dark: #05060A;
+  --brand-accent: #E8EDDF;
+  --brand-tertiary: #062B3D; /* Deep ocean blue instead of gray */
 }
 
 :root.theme-laserlime {
+  --brand-bg-dark: #0A0C10;
   --brand-primary: #00BBF9;
   --brand-secondary: #D6FF00;
-  --brand-bg-dark: #0A0C10;
+  --brand-accent: #4DFF4D;
+  --brand-tertiary: #1B1F2E;
 }
 
 :root.theme-circuitgarden {
+  --brand-bg-dark: #0B1E1A;
   --brand-primary: #FF5D8F;
   --brand-secondary: #00FFB3;
-  --brand-bg-dark: #0B1E1A;
+  --brand-accent: #B8F2E6;
+  --brand-tertiary: #3D2C8D;
 }
 
 /* Immersion Mode: Full */
@@ -82,7 +100,7 @@ html.immersion-full body {
 
   /* Immersion Full overrides the stroke color */
   .immersion-full & {
-    --stroke-color: var(--color-secondary);
+    --stroke-color: var(--color-accent);
   }
 }
 

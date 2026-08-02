@@ -31,7 +31,7 @@ const Header = () => {
   ];
 
   const themes: { id: ColorTheme; label: string }[] = [
-    { id: 'default', label: 'Default' },
+    { id: 'default', label: 'Synthwave Circuit' },
     { id: 'holonoir', label: 'Holo Noir' },
     { id: 'metrovapor', label: 'Metro Vapor' },
     { id: 'biohazard', label: 'Biohazard' },
@@ -71,7 +71,7 @@ const Header = () => {
           <div style={{ viewTransitionName: 'color-theme-toggle' }}>
             <button
               onClick={() => { setIsThemeMenuOpen(!isThemeMenuOpen); setIsMenuOpen(false); }}
-              className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 relative overflow-hidden group ${isThemeMenuOpen ? 'text-white bg-primary shadow-[0_0_15px_var(--color-primary)] border-primary' : 'text-gray-600 dark:text-gray-300 hover:text-secondary dark:hover:text-secondary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:scale-105 hover:shadow-[0_0_15px_var(--color-secondary)]'}`}
+              className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 relative overflow-hidden group ${isThemeMenuOpen ? 'text-bg-dark bg-accent shadow-[0_0_15px_var(--color-accent)] border-accent [.immersion-full_&]:text-bg-dark' : 'text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)]'}`}
               aria-label="Open color themes"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
@@ -93,7 +93,7 @@ const Header = () => {
                 role="switch"
                 aria-checked={darkMode}
                 onClick={() => setDarkMode(!darkMode)}
-                className="flex items-center justify-center w-10 h-10 rounded-full text-gray-600 dark:text-gray-300 hover:text-secondary dark:hover:text-secondary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-secondary)] relative overflow-hidden group"
+                className="flex items-center justify-center w-10 h-10 rounded-full text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] relative overflow-hidden group"
                 aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -131,7 +131,7 @@ const Header = () => {
           {/* Menu Toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex flex-col items-center justify-center w-10 h-10 rounded-full text-gray-600 dark:text-gray-300 hover:text-secondary dark:hover:text-secondary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-secondary)] gap-1 relative overflow-hidden group"
+            className="flex flex-col items-center justify-center w-10 h-10 rounded-full text-primary hover:text-accent bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-accent transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)] gap-1 relative overflow-hidden group"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
@@ -158,10 +158,10 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-14 right-0 min-w-[260px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-secondary shadow-[0_0_15px_var(--color-secondary),inset_0_0_10px_var(--color-secondary)] rounded-none origin-top-right overflow-hidden flex flex-col"
+              className="absolute top-14 right-0 min-w-[260px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-secondary shadow-[0_0_15px_var(--color-secondary),inset_0_0_10px_var(--color-secondary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
             >
               {/* HUD Header */}
-              <div className="w-full bg-secondary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold">
+              <div className="w-full bg-secondary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark">
                 <span>SYS.NAV // OVERRIDE</span>
                 <span className="animate-pulse">_</span>
               </div>
@@ -184,7 +184,7 @@ const Header = () => {
                           </span>
                           
                           {/* GlitchText only activates on hover */}
-                          <span className={`font-anton text-3xl uppercase tracking-tighter transition-colors duration-200 ${isActive ? 'text-secondary drop-shadow-[0_0_8px_var(--color-secondary)]' : 'text-black dark:text-white group-hover:text-white dark:group-hover:text-black'}`}>
+                          <span className={`font-anton text-3xl uppercase tracking-tighter transition-colors duration-200 ${isActive ? 'text-secondary drop-shadow-[0_0_8px_var(--color-secondary)] [.immersion-full_&]:text-accent [.immersion-full_&]:drop-shadow-[0_0_8px_var(--color-accent)]' : 'text-black dark:text-white group-hover:text-white dark:group-hover:text-black [.immersion-full_&]:text-white/70 [.immersion-full_&]:group-hover:text-white'}`}>
                              <GlitchText enableOnHover={true} speed={0.4} variant={1}>
                                {link.label}
                              </GlitchText>
@@ -192,7 +192,7 @@ const Header = () => {
                         </div>
                         
                         {isActive && (
-                          <div className="w-2 h-6 bg-primary animate-pulse shadow-[0_0_10px_var(--color-primary)]" />
+                          <div className="w-2 h-6 bg-primary animate-pulse shadow-[0_0_10px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_10px_var(--color-accent)]" />
                         )}
                       </Link>
                     </motion.div>
@@ -237,9 +237,9 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-14 right-24 min-w-[280px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col"
+              className="absolute top-14 right-24 min-w-[280px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
             >
-              <div className="w-full bg-primary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold">
+              <div className="w-full bg-primary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark">
                 <span>SYS.THEME // OVERRIDE</span>
                 <span className="animate-pulse">_</span>
               </div>
@@ -253,7 +253,7 @@ const Header = () => {
                       IMMERSION_MODE
                     </span>
                   </div>
-                  <div className="flex bg-black/10 dark:bg-white/10 p-1 rounded-sm border border-primary/30">
+                  <div className="flex bg-black/10 dark:bg-white/10 p-1 rounded-sm border border-primary/30 [.immersion-full_&]:border-accent/30">
                     <button
                       onClick={() => setImmersionMode('relax')}
                       className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${immersionMode === 'relax' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)]' : 'text-gray-500 hover:text-primary'}`}
@@ -264,7 +264,7 @@ const Header = () => {
                     </button>
                     <button
                       onClick={() => setImmersionMode('full')}
-                      className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${immersionMode === 'full' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)]' : 'text-gray-500 hover:text-primary'}`}
+                      className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${immersionMode === 'full' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark [.immersion-full_&]:shadow-[0_0_10px_var(--color-accent)]' : 'text-gray-500 hover:text-primary [.immersion-full_&]:hover:text-accent'}`}
                       onMouseEnter={() => setIsHovering(true)}
                       onMouseLeave={() => setIsHovering(false)}
                     >
@@ -296,12 +296,12 @@ const Header = () => {
                             <span className={`font-mono text-[10px] transition-colors duration-200 ${isActive ? 'text-primary' : 'text-primary/50 group-hover:text-primary/80'}`}>
                               {`<0${i + 1}>`}
                             </span>
-                            <span className={`font-anton text-lg uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-primary drop-shadow-[0_0_5px_var(--color-primary)]' : 'text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'}`}>
+                            <span className={`font-anton text-lg uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-primary drop-shadow-[0_0_5px_var(--color-primary)] [.immersion-full_&]:text-accent [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)]' : 'text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white [.immersion-full_&]:text-white/70 [.immersion-full_&]:group-hover:text-white'}`}>
                               {theme.label}
                             </span>
                           </div>
                           {isActive && (
-                            <div className="w-1.5 h-4 bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]" />
+                            <div className="w-1.5 h-4 bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_8px_var(--color-accent)]" />
                           )}
                         </button>
                       </motion.div>
