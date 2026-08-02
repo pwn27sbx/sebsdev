@@ -41,7 +41,7 @@ const Footer = () => {
               animateOn="view"
               speed={40}
               maxIterations={12}
-              className="text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)]"
+              className="text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)] [.immersion-full_&]:text-accent [.immersion-full_&]:[text-shadow:0_0_12px_var(--color-accent),5px_0_var(--color-secondary),-5px_0_var(--color-primary)]"
               encryptedClassName="text-secondary [text-shadow:0_0_8px_var(--color-secondary)]"
             />
           )}
@@ -50,7 +50,7 @@ const Footer = () => {
         {/* Separator - Hollow default */}
         <div className="relative flex items-center mx-4 sm:mx-8 -translate-y-[0.1em]">
           <span className={`shrink-0 leading-none text-[0.8em] text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-accent)] [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)] transition-colors ${isHovered ? 'opacity-0' : 'opacity-[0.85]'}`}>—</span>
-          <span className={`absolute left-0 top-0 shrink-0 leading-none text-[0.8em] text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)] transition-colors ${isHovered ? 'opacity-100' : 'opacity-0'}`}>—</span>
+          <span className={`absolute left-0 top-0 shrink-0 leading-none text-[0.8em] text-[#000] dark:text-white [text-shadow:4px_0_var(--color-secondary),-4px_0_var(--color-primary)] [.immersion-full_&]:text-accent [.immersion-full_&]:[text-shadow:0_0_8px_var(--color-accent),4px_0_var(--color-secondary),-4px_0_var(--color-primary)] transition-colors ${isHovered ? 'opacity-100' : 'opacity-0'}`}>—</span>
         </div>
       </div>
     );
@@ -84,7 +84,7 @@ const Footer = () => {
   return (
     <footer className="relative flex flex-col justify-end pt-8 w-full bg-transparent transition-colors overflow-hidden">
       <div className="max-w-md text-center px-4 mb-4 mx-auto z-10">
-        <p className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-sm font-mono tracking-wider leading-relaxed">{t('footerDesc', lang)}</p>
+        <p className="text-gray-600 dark:text-gray-400 [.immersion-full_&]:text-accent/70 text-[11px] sm:text-sm font-mono tracking-wider leading-relaxed">{t('footerDesc', lang)}</p>
       </div>
 
       <div className="w-full relative flex flex-col items-center">
@@ -108,7 +108,7 @@ const Footer = () => {
       </div>
 
       <div className="mt-12 mb-12 z-10 text-center flex justify-center">
-        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 hover:text-secondary dark:hover:text-secondary transition-colors duration-300 relative inline-block group md:cursor-none font-mono" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 [.immersion-full_&]:text-secondary hover:text-secondary dark:hover:text-secondary transition-colors duration-300 relative inline-block group md:cursor-none font-mono" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           <DecryptedText text={EMAIL} animateOn="hover" maxIterations={12} encryptedClassName="text-secondary [text-shadow:0_0_8px_var(--color-secondary)]" />
           <span className="absolute -bottom-2 sm:-bottom-3 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>

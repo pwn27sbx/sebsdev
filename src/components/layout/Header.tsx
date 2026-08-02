@@ -237,7 +237,7 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-14 right-24 min-w-[320px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
+              className="absolute top-14 right-24 min-w-[380px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
             >
               <div className="w-full bg-primary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark">
                 <span>SYS.THEME // OVERRIDE</span>
@@ -296,7 +296,7 @@ const Header = () => {
                             <span className={`font-mono text-[10px] transition-colors duration-200 ${isActive ? 'text-primary' : 'text-primary/50 group-hover:text-primary/80'}`}>
                               {`<0${i + 1}>`}
                             </span>
-                            <span className={`font-anton text-lg uppercase tracking-wider transition-colors duration-200 ${isActive ? 'text-primary drop-shadow-[0_0_5px_var(--color-primary)] [.immersion-full_&]:text-accent [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)]' : 'text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white [.immersion-full_&]:text-white/70 [.immersion-full_&]:group-hover:text-white'}`}>
+                            <span className={`font-anton text-lg uppercase tracking-wider whitespace-nowrap transition-colors duration-200 ${isActive ? 'text-primary drop-shadow-[0_0_5px_var(--color-primary)] [.immersion-full_&]:text-accent [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)]' : 'text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white [.immersion-full_&]:text-white/70 [.immersion-full_&]:group-hover:text-white'}`}>
                               {theme.label}
                             </span>
                           </div>

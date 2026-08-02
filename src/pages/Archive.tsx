@@ -56,7 +56,7 @@ const Archive = () => {
           <span className="w-2 h-2 bg-primary animate-pulse" />
           <ScrambledText text="[ DATA_ARCHIVE_ACCESS // 2021-2026 ]" speed={0.4} />
         </div>
-        <h1 className="font-anton text-6xl sm:text-8xl md:text-[10vw] uppercase tracking-tighter leading-none text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#fff]">
+        <h1 className="font-anton text-6xl sm:text-8xl md:text-[10vw] uppercase tracking-tighter leading-none text-transparent [-webkit-text-stroke:2px_#111] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-accent)]">
           <GlitchText speed={1.2} enableShadows enableOnHover={false}>
             {t('projects', lang)}
           </GlitchText>
@@ -69,7 +69,7 @@ const Archive = () => {
         {/* Project List (Left Side) */}
         <div className="w-full lg:w-3/5 flex flex-col">
           {/* List Header */}
-          <div className="flex font-mono text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 border-b border-gray-300 dark:border-gray-800 pb-4 mb-4">
+          <div className="flex font-mono text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 [.immersion-full_&]:text-accent/60 border-b border-gray-300 dark:border-gray-800 [.immersion-full_&]:border-accent/20 pb-4 mb-4">
             <div className="w-[10%]">#ID</div>
             <div className="w-[15%] hidden sm:block">YEAR</div>
             <div className="flex-1">PROJECT_NAME</div>
@@ -86,16 +86,16 @@ const Archive = () => {
                 rel="noopener noreferrer"
                 onMouseEnter={() => { setActiveProject(project); setIsHovering(true); }}
                 onMouseLeave={() => { setActiveProject(null); setIsHovering(false); }}
-                className="group relative flex items-center py-6 sm:py-8 px-4 border border-transparent hover:border-secondary/30 bg-transparent hover:bg-black/5 dark:hover:bg-secondary/5 transition-all duration-300"
+                className="group relative flex items-center py-6 sm:py-8 px-4 border border-transparent hover:border-secondary/30 bg-transparent hover:bg-black/5 dark:hover:bg-secondary/5 [.immersion-full_&]:hover:bg-secondary/10 transition-all duration-300"
               >
                 {/* Active Indicator */}
                 <div className={`absolute left-0 top-0 bottom-0 w-1 bg-secondary transition-transform duration-300 origin-bottom ${activeProject?.id === project.id ? 'scale-y-100' : 'scale-y-0'}`} />
                 
-                <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400 group-hover:text-secondary transition-colors">{project.id}</div>
-                <div className="w-[15%] font-mono text-xs sm:text-sm text-gray-400 hidden sm:block">{project.year}</div>
+                <div className="w-[10%] font-mono text-xs sm:text-sm text-gray-400 [.immersion-full_&]:text-primary/60 group-hover:text-secondary transition-colors">{project.id}</div>
+                <div className="w-[15%] font-mono text-xs sm:text-sm text-gray-400 [.immersion-full_&]:text-accent/50 hidden sm:block">{project.year}</div>
                 
                 <div className="flex-1">
-                  <h2 className="font-anton text-3xl sm:text-5xl uppercase text-[#111] dark:text-white group-hover:text-secondary transition-colors tracking-wide">
+                  <h2 className="font-anton text-3xl sm:text-5xl uppercase text-[#111] dark:text-white [.immersion-full_&]:text-secondary group-hover:text-secondary [.immersion-full_&]:group-hover:text-primary transition-colors tracking-wide">
                     <TextType
                       as="span"
                       text={project.title}
@@ -111,7 +111,7 @@ const Archive = () => {
                   </h2>
                 </div>
                 
-                <div className="w-[25%] text-right font-mono text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 group-hover:text-[#111] dark:group-hover:text-white transition-colors">
+                <div className="w-[25%] text-right font-mono text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 [.immersion-full_&]:text-accent/50 group-hover:text-[#111] dark:group-hover:text-white [.immersion-full_&]:group-hover:text-accent transition-colors">
                   {project.category}
                 </div>
               </a>
@@ -121,7 +121,7 @@ const Archive = () => {
 
         {/* Static HUD Preview (Right Side) */}
         <div className="w-full lg:w-2/5 hidden lg:block h-[calc(100vh-160px)] sticky top-24">
-          <div className="w-full h-full relative border border-gray-300 dark:border-gray-800 bg-white/10 dark:bg-black/20 backdrop-blur-md overflow-hidden p-4 flex flex-col justify-center items-center group-hover:border-secondary/50 transition-colors duration-500">
+          <div className="w-full h-full relative border border-gray-300 dark:border-gray-800 [.immersion-full_&]:border-primary/30 bg-white/10 dark:bg-black/20 [.immersion-full_&]:bg-[var(--brand-bg-dark)]/40 backdrop-blur-md overflow-hidden p-4 flex flex-col justify-center items-center group-hover:border-secondary/50 transition-colors duration-500">
             
             {/* Corner HUD Elements */}
             <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-secondary" />
@@ -157,7 +157,7 @@ const Archive = () => {
                     <div className="uppercase tracking-widest text-white text-sm">
                       <ScrambledText text={activeProject.title} speed={0.5} />
                     </div>
-                    <div className="text-gray-400 text-[10px]">
+                    <div className="text-gray-400 [.immersion-full_&]:text-accent/60 text-[10px]">
                       SYS_TECH: {activeProject.category} // {activeProject.year}
                     </div>
                   </div>
