@@ -30,15 +30,15 @@ const Header = () => {
     { path: '/contact', label: t('navContact', lang) }
   ];
 
-  const themes: { id: ColorTheme; label: string }[] = [
-    { id: 'default', label: 'Synthwave Circuit' },
-    { id: 'holonoir', label: 'Holo Noir' },
-    { id: 'metrovapor', label: 'Metro Vapor' },
-    { id: 'biohazard', label: 'Biohazard' },
-    { id: 'dataheist', label: 'Data Heist' },
-    { id: 'tealnight', label: 'Teal Night' },
-    { id: 'laserlime', label: 'Laser Lime' },
-    { id: 'circuitgarden', label: 'Circuit Garden' }
+  const themes: { id: ColorTheme; label: string; colors: string[] }[] = [
+    { id: 'default', label: 'Synthwave Circuit', colors: ['#120A3A', '#FF3B7F', '#00F5D4', '#FFD166', '#2D1B69'] },
+    { id: 'holonoir', label: 'Holo Noir', colors: ['#0A0F1E', '#FF4FD8', '#2EF9B6', '#B8B8FF', '#2A2F45'] },
+    { id: 'metrovapor', label: 'Metro Vapor', colors: ['#101820', '#E71D36', '#2EC4B6', '#FF9F1C', '#350912'] },
+    { id: 'biohazard', label: 'Biohazard', colors: ['#0C0F0A', '#FF4D6D', '#B7FF00', '#00FF87', '#1E3F20'] },
+    { id: 'dataheist', label: 'Data Heist', colors: ['#070A0F', '#FF2E88', '#00F0FF', '#00FF6A', '#3A103D'] },
+    { id: 'tealnight', label: 'Teal Night', colors: ['#05060A', '#00A8E8', '#00FFC6', '#E8EDDF', '#062B3D'] },
+    { id: 'laserlime', label: 'Laser Lime', colors: ['#0A0C10', '#00BBF9', '#D6FF00', '#4DFF4D', '#1B1F2E'] },
+    { id: 'circuitgarden', label: 'Circuit Garden', colors: ['#0B1E1A', '#FF5D8F', '#00FFB3', '#B8F2E6', '#3D2C8D'] }
   ];
 
   const menuVariants: Variants = {
@@ -237,7 +237,7 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-14 right-24 min-w-[280px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
+              className="absolute top-14 right-24 min-w-[320px] bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-primary shadow-[0_0_15px_var(--color-primary),inset_0_0_10px_var(--color-primary)] rounded-none origin-top-right overflow-hidden flex flex-col [.immersion-full_&]:bg-bg-dark/95 [.immersion-full_&]:border-accent [.immersion-full_&]:shadow-[0_0_20px_var(--color-accent),inset_0_0_15px_var(--color-accent)]"
             >
               <div className="w-full bg-primary text-white dark:text-black font-mono text-[10px] px-3 py-1 flex justify-between items-center uppercase tracking-widest font-bold [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark">
                 <span>SYS.THEME // OVERRIDE</span>
@@ -287,7 +287,7 @@ const Header = () => {
                     return (
                       <motion.div key={theme.id} variants={itemVariants}>
                         <button
-                          onClick={() => { setColorTheme(theme.id); }}
+                          onClick={() => { setColorTheme(theme.id); setIsThemeMenuOpen(false); }}
                           onMouseEnter={() => setIsHovering(true)}
                           onMouseLeave={() => setIsHovering(false)}
                           className={`w-full group flex items-center justify-between px-3 py-2 transition-colors duration-200 border-b border-primary/10 last:border-b-0 ${isActive ? 'bg-primary/10' : 'hover:bg-primary/5'}`}
@@ -300,9 +300,21 @@ const Header = () => {
                               {theme.label}
                             </span>
                           </div>
-                          {isActive && (
-                            <div className="w-1.5 h-4 bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_8px_var(--color-accent)]" />
-                          )}
+                          <div className="flex items-center gap-3">
+                            <div className={`flex items-center gap-[3px] px-1.5 py-1 rounded-full border transition-all duration-300 ${isActive ? 'bg-primary/20 border-primary/30 shadow-[0_0_10px_var(--color-primary)_inset] [.immersion-full_&]:bg-accent/20 [.immersion-full_&]:border-accent/30' : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/10'}`}>
+                              {theme.colors.map((color, idx) => (
+                                <div 
+                                  key={idx} 
+                                  className="w-2.5 h-2.5 rounded-full shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] border border-black/20 dark:border-white/20 transition-transform duration-300 group-hover:scale-110" 
+                                  style={{ backgroundColor: color }} 
+                                  title={color} 
+                                />
+                              ))}
+                            </div>
+                            {isActive && (
+                              <div className="w-1.5 h-4 bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_8px_var(--color-accent)]" />
+                            )}
+                          </div>
                         </button>
                       </motion.div>
                     );

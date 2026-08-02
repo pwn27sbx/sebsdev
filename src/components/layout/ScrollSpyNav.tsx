@@ -13,7 +13,7 @@ const navItems = [
   { id: 'section-contact', labelKey: 'spyContact', color: 'var(--color-primary)' }
 ] as const;
 
-const ActiveIndicator = ({ item }: { item: { id: string, labelKey: string, color: string } }) => {
+const ActiveIndicator = ({ item }: { item: typeof navItems[number] }) => {
   const { lang } = usePortfolio();
   const [element, setElement] = useState<HTMLElement | null>(null);
 
@@ -165,7 +165,7 @@ const ScrollSpyNav = () => {
             {/* INACTIVE BASE LAYER */}
             {/* Label */}
             <div 
-              className={`font-mono text-[10px] tracking-widest uppercase transition-all duration-300 min-w-[100px] text-right ${isActive ? 'opacity-40' : 'opacity-40 group-hover:opacity-80'}`}
+              className={`font-mono text-[10px] tracking-widest uppercase transition-all duration-300 min-w-[100px] text-right ${isActive ? 'opacity-80' : 'opacity-80 group-hover:opacity-100'}`}
               style={{ color: 'var(--color-secondary)' }}
             >
               {t(item.labelKey, lang)}
@@ -173,7 +173,7 @@ const ScrollSpyNav = () => {
 
             {/* Base Katana Container */}
             <div className="relative flex items-center justify-center w-10 h-10">
-              <div className={`absolute inset-0 w-full h-full transition-all duration-300 ${isActive ? 'opacity-50' : 'opacity-40 group-hover:opacity-80'}`}>
+              <div className={`absolute inset-0 w-full h-full transition-all duration-300 ${isActive ? 'opacity-80' : 'opacity-80 group-hover:opacity-100'}`}>
                 <KatanaIcon color={isActive ? item.color : 'var(--color-secondary)'} isActive={false} />
               </div>
             </div>

@@ -34,7 +34,7 @@ const HollowDashedLine = ({ className = "", style }: { className?: string, style
 
   return (
     <div className={`w-full h-[30px] md:h-[40px] overflow-hidden flex items-center pointer-events-none z-20 ${className}`}>
-      <motion.div style={style} className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-primary)] [.immersion-full_&]:drop-shadow-[0_0_8px_var(--color-primary)] text-[55px] md:text-[75px] w-max flex items-center mt-[-12px] md:mt-[-18px]">
+      <motion.div style={style} className="whitespace-pre font-anton text-transparent [-webkit-text-stroke:2px_#000] dark:[-webkit-text-stroke:2px_#fff] [.immersion-full_&]:[-webkit-text-stroke:2px_var(--color-secondary)] [.immersion-full_&]:drop-shadow-[0_0_8px_var(--color-secondary)] text-[55px] md:text-[75px] w-max flex items-center mt-[-12px] md:mt-[-18px]">
         <GlitchText speed={0.9} enableShadows enableOnHover={false} variant={1}>
           {dashString}
         </GlitchText>
@@ -85,7 +85,7 @@ const InteractiveBanner = () => {
               {row1Words.map((word, wIdx) => (
                 <React.Fragment key={wIdx}>
                   <GiantWord text={word} />
-                  <span className="font-anton text-transparent [-webkit-text-stroke:1.5px_#000] dark:[-webkit-text-stroke:1.5px_#fff] [.immersion-full_&]:[-webkit-text-stroke:1.5px_var(--color-primary)] text-[30px] md:text-[45px] mx-2">
+                  <span className="font-anton text-transparent [-webkit-text-stroke:1.5px_#000] dark:[-webkit-text-stroke:1.5px_#fff] [.immersion-full_&]:[-webkit-text-stroke:1.5px_var(--color-accent)] [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)] text-[30px] md:text-[45px] mx-2">
                     <GlitchText speed={0.9} enableShadows enableOnHover={false} variant={1}>+</GlitchText>
                   </span>
                 </React.Fragment>
@@ -106,7 +106,7 @@ const InteractiveBanner = () => {
               {row2Words.map((word, wIdx) => (
                 <React.Fragment key={wIdx}>
                   <GiantWord text={word} />
-                  <span className="font-anton text-transparent [-webkit-text-stroke:1.5px_#000] dark:[-webkit-text-stroke:1.5px_#fff] [.immersion-full_&]:[-webkit-text-stroke:1.5px_var(--color-primary)] text-[30px] md:text-[45px] mx-2">
+                  <span className="font-anton text-transparent [-webkit-text-stroke:1.5px_#000] dark:[-webkit-text-stroke:1.5px_#fff] [.immersion-full_&]:[-webkit-text-stroke:1.5px_var(--color-accent)] [.immersion-full_&]:drop-shadow-[0_0_5px_var(--color-accent)] text-[30px] md:text-[45px] mx-2">
                     <GlitchText speed={0.9} enableShadows enableOnHover={false} variant={2}>+</GlitchText>
                   </span>
                 </React.Fragment>
