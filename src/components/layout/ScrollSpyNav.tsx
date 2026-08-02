@@ -13,7 +13,8 @@ const navItems = [
   { id: 'section-contact', labelKey: 'spyContact', color: '#FF2A6D' }
 ] as const;
 
-const ActiveKatanaIndicator = ({ item }: { item: { id: string, labelKey: string, color: string } }) => {
+const ActiveIndicator = ({ item }: { item: { id: string, labelKey: string, color: string } }) => {
+  const { lang } = usePortfolio();
   const [element, setElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -49,23 +50,38 @@ const ActiveKatanaIndicator = ({ item }: { item: { id: string, labelKey: string,
     mappedProgress = progressExpertise;
   }
 
-  // Convert progress (0 to 1) into a clip-path inset percentage (100% to 0%)
+  // Convert progress (0 to 1) into clip-path inset percentages
   const clipHeight = useTransform(mappedProgress, [0, 1], ["100%", "0%"]);
-  const clipPathStyle = useTransform(clipHeight, (h) => `inset(${h} 0 0 0)`);
+  const clipPathKatana = useTransform(clipHeight, (h) => `inset(${h} 0 0 0)`);
+
+  const clipLeft = useTransform(mappedProgress, [0, 1], ["100%", "0%"]);
+  const clipPathText = useTransform(clipLeft, (l) => `inset(0 0 0 ${l})`);
 
   return (
     <motion.div
-      className="absolute inset-0 pointer-events-none flex items-center justify-center z-10"
+      className="absolute inset-0 pointer-events-none flex items-center justify-end gap-4 z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
     >
+      {/* Pink Text (Fills from Right to Left) */}
+      <motion.div 
+        className="font-mono text-[10px] tracking-widest uppercase min-w-[100px] text-right font-bold"
+        style={{ 
+          color: item.color, 
+          textShadow: `0 0 8px ${item.color}80`,
+          clipPath: clipPathText 
+        }}
+      >
+        {t(item.labelKey, lang)}
+      </motion.div>
+
+      {/* Pink Katana (Fills from Bottom to Top) */}
       <div 
         className="relative w-10 h-10 flex items-center justify-center"
         style={{ filter: `drop-shadow(0px 0px 6px ${item.color}80)` }}
       >
-        {/* Colored Active Katana with scroll-based clip-path */}
-        <KatanaIcon color={item.color} isActive={true} clipPathStyle={clipPathStyle} />
+        <KatanaIcon color={item.color} isActive={true} clipPathStyle={clipPathKatana} />
       </div>
     </motion.div>
   );
@@ -143,40 +159,29 @@ const ScrollSpyNav = () => {
         return (
           <div 
             key={item.id}
-            className="group flex items-center justify-end gap-4 cursor-pointer pointer-events-auto"
+            className="relative group flex items-center justify-end gap-4 cursor-pointer pointer-events-auto"
             onClick={() => handleClick(item.id)}
           >
+            {/* INACTIVE BASE LAYER */}
             {/* Label */}
             <div 
-              className={`font-mono text-[10px] tracking-widest uppercase transition-opacity duration-300 min-w-[100px] text-right ${isActive ? 'opacity-100 font-bold' : 'opacity-0 group-hover:opacity-50 text-gray-500 dark:text-gray-400'}`}
-              style={{ color: isActive ? '#00A889' : undefined }}
+              className={`font-mono text-[10px] tracking-widest uppercase transition-all duration-300 min-w-[100px] text-right ${isActive ? 'opacity-40' : 'opacity-40 group-hover:opacity-80'}`}
+              style={{ color: '#00A889' }}
             >
-              {isActive ? (
-                <DecryptedText 
-                  text={t(item.labelKey, lang)} 
-                  speed={80} 
-                  maxIterations={15} 
-                  animateOn="view"
-                  encryptedClassName="opacity-80" 
-                  style={{ textShadow: `0 0 8px #00A889` }}
-                />
-              ) : (
-                t(item.labelKey, lang)
-              )}
+              {t(item.labelKey, lang)}
             </div>
 
-            {/* Indicator Container */}
+            {/* Base Katana Container */}
             <div className="relative flex items-center justify-center w-10 h-10">
-              {/* Glowing Crossed Katanas for Active State */}
-              {isActive && (
-                <ActiveKatanaIndicator item={item} />
-              )}
-              
-              {/* Inactive State Line */}
-              {!isActive && (
-                <div className="w-6 h-[1.5px] bg-gray-400 dark:bg-gray-500 group-hover:bg-[#00A889] group-hover:w-8 transition-all duration-300" />
-              )}
+              <div className={`absolute inset-0 w-full h-full transition-all duration-300 ${isActive ? 'opacity-50' : 'opacity-40 group-hover:opacity-80'}`}>
+                <KatanaIcon color={isActive ? item.color : '#00A889'} isActive={false} />
+              </div>
             </div>
+
+            {/* ACTIVE TINT LAYER */}
+            {isActive && (
+              <ActiveIndicator item={item} />
+            )}
           </div>
         );
       })}

@@ -29,7 +29,7 @@ export default function KatanaIcon({ color, isActive = false, clipPathStyle }: K
       xmlns="http://www.w3.org/2000/svg" 
       viewBox="-5.0 -10.0 110.0 135.0" 
       fill={color} 
-      className="absolute inset-0 opacity-20 w-full h-full"
+      className="absolute inset-0 w-full h-full"
     >
       <path d={pathD} fillRule="evenodd" />
     </svg>
