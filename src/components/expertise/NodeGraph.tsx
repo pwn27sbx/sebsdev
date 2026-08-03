@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useAnimation, useDragControls } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
 // Types
@@ -123,9 +124,82 @@ const EDGES: Edge[] = [
 
 export default function NodeGraph() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const dragControls = useAnimation();
+  const animControls = useAnimation();
+  const pointerDragControls = useDragControls();
   const [isDragged, setIsDragged] = useState(false);
+  const [hasTouched, setHasTouched] = useState(false);
+  const [showTouchHint, setShowTouchHint] = useState(false);
   const { darkMode } = usePortfolio();
+  const lenis = useLenis();
+
+  // Track canvas position for manual two-finger pan on touch devices
+  const posRef = useRef({ x: 0, y: 0 });
+  const panRef = useRef({ active: false, startMidX: 0, startMidY: 0, startPosX: 0, startPosY: 0 });
+  const hintTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  // Two-finger pan for touch devices: one finger = scroll page, two fingers = pan graph
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      setHasTouched(true);
+      if (e.touches.length >= 2) {
+        // Two fingers: start panning the graph
+        panRef.current.active = true;
+        const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        panRef.current.startMidX = midX;
+        panRef.current.startMidY = midY;
+        panRef.current.startPosX = posRef.current.x;
+        panRef.current.startPosY = posRef.current.y;
+        lenis?.stop();
+        setShowTouchHint(false);
+      } else if (e.touches.length === 1) {
+        // One finger: show hint that two fingers are needed
+        setShowTouchHint(true);
+        clearTimeout(hintTimerRef.current);
+        hintTimerRef.current = setTimeout(() => setShowTouchHint(false), 1500);
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!panRef.current.active || e.touches.length < 2) return;
+      e.preventDefault(); // Prevent pinch-zoom while two-finger panning
+
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+
+      const dx = midX - panRef.current.startMidX;
+      const dy = midY - panRef.current.startMidY;
+
+      posRef.current.x = panRef.current.startPosX + dx;
+      posRef.current.y = panRef.current.startPosY + dy;
+
+      animControls.set({ x: posRef.current.x, y: posRef.current.y });
+      setIsDragged(true);
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2 && panRef.current.active) {
+        panRef.current.active = false;
+        lenis?.start();
+      }
+    };
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+    el.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+      el.removeEventListener('touchcancel', onTouchEnd);
+      clearTimeout(hintTimerRef.current);
+    };
+  }, [animControls, lenis]);
 
   const coreColor = darkMode ? '#FFFFFF' : '#000000';
   const gridColor = darkMode ? '#333' : '#ccc';
@@ -141,21 +215,60 @@ export default function NodeGraph() {
   };
 
   const handleRecenter = () => {
-    dragControls.start({ x: 0, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } });
+    animControls.start({ x: 0, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } });
+    posRef.current = { x: 0, y: 0 };
     setIsDragged(false);
+  };
+
+  // Only start drag for mouse/pen pointers, not touch (touch uses two-finger handler)
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'touch') {
+      pointerDragControls.start(e);
+    }
   };
 
   return (
     <div 
       ref={containerRef} 
       className="relative w-full h-full bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] overflow-hidden cursor-grab active:cursor-grabbing transition-colors duration-700"
+      onPointerDown={handlePointerDown}
     >
+      {/* Touch hint overlay - only rendered after user actually touches the screen */}
+      {hasTouched && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showTouchHint ? 1 : 0 }}
+          transition={{ duration: 0.25 }}
+          className="absolute inset-0 z-50 flex items-center justify-center bg-[var(--color-bg-dark)]/60 backdrop-blur-md pointer-events-none"
+        >
+          <div className="relative bg-[var(--color-tertiary)]/80 backdrop-blur-xl border border-[var(--color-secondary)]/20 px-8 py-4 shadow-[0_0_30px_color-mix(in_srgb,var(--color-secondary)_calc(0.15*100%),transparent)]">
+            {/* Corner accents */}
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-secondary -translate-x-[1px] -translate-y-[1px]" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-secondary translate-x-[1px] -translate-y-[1px]" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-primary -translate-x-[1px] translate-y-[1px]" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary translate-x-[1px] translate-y-[1px]" />
+
+            <div className="flex items-center gap-4">
+              <svg className="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+              </svg>
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-white">
+                USE TWO FINGERS TO MOVE
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* Infinite Canvas */}
       <motion.div
         drag
+        dragListener={false}
+        dragControls={pointerDragControls}
         dragConstraints={containerRef}
         dragElastic={0.1}
-        animate={dragControls}
+        dragMomentum={false}
+        animate={animControls}
         onDragStart={() => setIsDragged(true)}
         className="absolute"
         style={{
@@ -163,7 +276,6 @@ export default function NodeGraph() {
           height: CANVAS_SIZE,
           left: `calc(50% - ${CENTER}px)`,
           top: `calc(50% - ${CENTER}px)`,
-          // Dotted grid background changes based on theme
           backgroundImage: `radial-gradient(circle, ${gridColor} 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
@@ -288,7 +400,7 @@ export default function NodeGraph() {
           <svg className="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
           </svg>
-          CLICK & DRAG TO PAN CANVAS
+          {hasTouched ? 'USE TWO FINGERS TO PAN' : 'CLICK & DRAG TO PAN CANVAS'}
         </div>
       </div>
     </div>
