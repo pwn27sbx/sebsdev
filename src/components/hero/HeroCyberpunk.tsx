@@ -11,7 +11,7 @@ interface CustomCSSProperties extends React.CSSProperties {
   "--before-duration"?: string;
 }
 
-const Hero = () => {
+const HeroCyberpunk = () => {
   const { setIsHovering, lang } = usePortfolio();
   const containerRef = useRef<HTMLElement>(null);
 
@@ -152,4 +152,4 @@ const Hero = () => {
     </section>
   );
 };
-export default Hero;
+export default HeroCyberpunk;

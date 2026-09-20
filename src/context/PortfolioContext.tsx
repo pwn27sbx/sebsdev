@@ -4,6 +4,7 @@ import type { Lang } from '../data/i18n';
 
 export type ColorTheme = 'default' | 'holonoir' | 'metrovapor' | 'biohazard' | 'dataheist' | 'tealnight' | 'laserlime' | 'circuitgarden';
 export type ImmersionMode = 'relax' | 'full';
+export type LayoutMode = 'cyberpunk' | 'minimal';
 
 interface PortfolioContextType {
   isHovering: boolean;
@@ -16,6 +17,8 @@ interface PortfolioContextType {
   setColorTheme: (v: ColorTheme) => void;
   immersionMode: ImmersionMode;
   setImmersionMode: (v: ImmersionMode) => void;
+  layoutMode: LayoutMode;
+  setLayoutMode: (v: LayoutMode) => void;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | null>(null);
@@ -62,6 +65,19 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   const setImmersionMode = useCallback((value: ImmersionMode) => {
     localStorage.setItem('portfolio_immersion_mode', value);
     setImmersionModeState(value);
+  }, []);
+
+  const [layoutMode, setLayoutModeState] = useState<LayoutMode>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('portfolio_layout_mode') as LayoutMode;
+      return saved === 'minimal' ? 'minimal' : 'cyberpunk';
+    }
+    return 'cyberpunk';
+  });
+
+  const setLayoutMode = useCallback((value: LayoutMode) => {
+    localStorage.setItem('portfolio_layout_mode', value);
+    setLayoutModeState(value);
   }, []);
 
   // Dark mode: empieza leyendo de localStorage, luego del sistema
@@ -137,7 +153,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <PortfolioContext.Provider value={{ isHovering, setIsHovering, darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode }}>
+    <PortfolioContext.Provider value={{ isHovering, setIsHovering, darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode, layoutMode, setLayoutMode }}>
       {children}
     </PortfolioContext.Provider>
   );

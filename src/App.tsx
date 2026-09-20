@@ -45,6 +45,30 @@ import { ReactLenis } from 'lenis/react';
 import CustomCursor from './components/layout/CustomCursor';
 import CustomScrollbar from './components/layout/CustomScrollbar';
 
+import { usePortfolio } from './context/PortfolioContext';
+
+function GlobalLayoutManager() {
+  const { layoutMode } = usePortfolio();
+
+  return (
+    <>
+      <CustomScrollbar />
+      {layoutMode === 'cyberpunk' && (
+        <>
+          <CustomCursor />
+          <SideMarquee />
+          <CyberGridBackground />
+          <Suspense fallback={null}>
+            <Scene />
+          </Suspense>
+        </>
+      )}
+      <Header />
+      <AnimatedRoutes />
+    </>
+  );
+}
+
 export default function App() {
   useEffect(() => {
     // Bloqueo de click derecho
@@ -100,15 +124,7 @@ export default function App() {
         <Router basename="/">
           <ErrorBoundary>
             <PortfolioProvider>
-              <CustomScrollbar />
-              <CustomCursor />
-              <SideMarquee />
-              <Header />
-              <CyberGridBackground />
-              <Suspense fallback={null}>
-                <Scene />
-              </Suspense>
-              <AnimatedRoutes />
+              <GlobalLayoutManager />
             </PortfolioProvider>
           </ErrorBoundary>
         </Router>
