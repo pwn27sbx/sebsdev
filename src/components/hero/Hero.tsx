@@ -46,12 +46,12 @@ const Hero = () => {
         />
 
         {/* Huge Interactive Mask Top Right */}
-        <div className="absolute top-[14%] left-[50%] -translate-x-1/2 sm:top-[3%] sm:left-auto sm:-translate-x-0 sm:right-[0%] z-20 pointer-events-auto opacity-100 dark:opacity-100 transform scale-110 sm:scale-100">
+        <div className="absolute top-[14%] left-[50%] -translate-x-1/2 sm:top-[5%] lg:top-[3%] lg:left-auto lg:-translate-x-0 lg:right-[0%] z-20 pointer-events-auto opacity-100 dark:opacity-100 transform scale-110 lg:scale-100">
           <InteractiveShape />
         </div>
 
         {/* Texts Container Bottom Left */}
-        <div className="absolute bottom-[20%] sm:bottom-[15%] left-[4%] sm:left-[6%] w-full flex flex-col justify-end items-start pointer-events-none">
+        <div className="absolute bottom-[20%] sm:bottom-[15%] left-[4%] sm:left-[12%] lg:left-[6%] w-full flex flex-col justify-end items-start pointer-events-none">
         
         <h1 className="sr-only">Front End Developer</h1>
 
@@ -59,7 +59,7 @@ const Hero = () => {
           <div className="flex items-center justify-start flex-nowrap">
             {" "}
             <div
-              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
+              className="font-anton text-[12vw] sm:text-[11vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -75,10 +75,10 @@ const Hero = () => {
                   "--before-duration": "1.8s",
                 } as CustomCSSProperties)
               }}
-              className="glitch-box-anim h-[2vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-secondary shrink-0 gpu"
+              className="glitch-box-anim h-[1.5vw] sm:h-[1.5vw] bg-transparent border-[2px] border-[#111] dark:border-[#a3a3a3] mx-2 sm:mx-4 transition-colors duration-300 hover:border-secondary shrink-0 gpu"
             />
             <div
-              className="font-anton text-[16vw] sm:text-[11vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
+              className="font-anton text-[12vw] sm:text-[11vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >
@@ -93,14 +93,14 @@ const Hero = () => {
             </div>
           </div>
         </motion.div>
-        <motion.div style={{ y: descParallax }} className="relative z-30 sm:z-10 mt-4 sm:mt-[1vw] pl-12 sm:pl-0">
+        <motion.div style={{ y: descParallax }} className="relative z-30 sm:z-10 mt-2 sm:mt-[1vw] pl-12 sm:pl-0">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-4 sm:gap-8 ml-0 sm:-ml-[4vw]">
             <motion.div
               aria-hidden="true"
               initial={{ opacity: 0, y: 150, filter: 'blur(20px)', scale: 0.9 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
-              className="font-anton text-[14vw] sm:text-[10vw] leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero"
+              className="font-anton text-[12vw] sm:text-[10vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero"
               onMouseEnter={hEnter}
               onMouseLeave={hLeave}
             >

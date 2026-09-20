@@ -281,7 +281,7 @@ const Header = () => {
                   COLOR_PALETTE
                 </span>
                 
-                <div className="max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
+                <div className="max-h-[600px] overflow-y-auto custom-scrollbar pr-1">
                   {themes.map((theme, i) => {
                     const isActive = colorTheme === theme.id;
                     return (
