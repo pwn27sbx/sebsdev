@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/contacto",
+      "destination": "/contact",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
