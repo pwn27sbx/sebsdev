@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SITE_ORIGIN } from '../config/site';
 import { usePortfolio } from '../context/PortfolioContext';

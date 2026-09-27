@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, MotionStyle } from 'framer-motion';
 
 interface KatanaIconProps {

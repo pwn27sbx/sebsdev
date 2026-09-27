@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, useTransform, MotionValue } from 'framer-motion';
 
 interface CharSpanProps {

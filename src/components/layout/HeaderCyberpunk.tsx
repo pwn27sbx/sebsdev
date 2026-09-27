@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePortfolio, ColorTheme } from '../../context/PortfolioContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useTransform, MotionValue } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 import type { GalleryProject } from '../../data/projects';

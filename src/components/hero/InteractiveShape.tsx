@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useSpring, useMotionValue, useInView } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 interface HoverTextProps { text: string; }
 const HoverText = ({ text }: HoverTextProps) => (
   <>{text.split('').map((char, i) => (

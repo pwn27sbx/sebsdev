@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import DecryptedText from '../common/DecryptedText';
+import type { UseScrollOptions } from 'framer-motion';
 import KatanaIcon from '../icons/KatanaIcon';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { t } from '../../data/i18n';
@@ -24,7 +24,7 @@ const ActiveIndicator = ({ item }: { item: typeof navItems[number] }) => {
     setElement(el);
   }, [item.id]);
 
-  let scrollOffset: any = ["start center", "end center"];
+  let scrollOffset: NonNullable<UseScrollOptions['offset']> = ["start center", "end center"];
   if (item.id === 'section-about') {
     scrollOffset = ["start start", "end center"];
   } else if (item.id === 'section-projects' || item.id === 'section-contact') {

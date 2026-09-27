@@ -126,7 +126,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
         if (transition.finished) transition.finished.catch(() => {});
         if (transition.ready) transition.ready.catch(() => {});
         if (transition.updateCallbackDone) transition.updateCallbackDone.catch(() => {});
-      } catch (e) {
+      } catch {
         applyClasses();
       }
       return;

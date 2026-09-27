@@ -1,4 +1,3 @@
-import React from 'react';
 import { MotionValue } from 'framer-motion';
 import CharSpan from './CharSpan';
 

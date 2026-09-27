@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import type { MotionStyle } from "framer-motion";
 import { usePortfolio } from "../../context/PortfolioContext";
 import { t } from "../../data/i18n";
 import DecryptedText from "../common/DecryptedText";
@@ -28,7 +29,7 @@ const GiantWord = ({ text }: { text: string }) => {
   );
 };
 
-const HollowDashedLine = ({ className = "", style }: { className?: string, style?: any }) => {
+const HollowDashedLine = ({ className = "", style }: { className?: string, style?: MotionStyle }) => {
   // Revert back to pure dashes as requested
   const dashString = Array(150).fill("—").join(" ");
 

@@ -1,4 +1,3 @@
-import React from 'react';
 interface MobileWaveProps { text: string; delay: string; }
 const MobileVerticalWaveText = ({ text, delay }: MobileWaveProps) => {
   const animStyle = { animation: 'wave-fill 4s cubic-bezier(0.25, 1, 0.5, 1) infinite', animationDelay: delay, clipPath: 'inset(150% -50% -50% -50%)' };

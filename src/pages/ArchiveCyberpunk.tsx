@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SITE_ORIGIN } from '../config/site';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { usePortfolio } from '../../context/PortfolioContext';
 
 const HeaderMinimal = () => {
-  const { darkMode, setDarkMode, layoutMode, setLayoutMode, setIsHovering } = usePortfolio();
+  const { darkMode, setDarkMode, setLayoutMode, setIsHovering } = usePortfolio();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
