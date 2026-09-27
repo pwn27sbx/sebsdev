@@ -4,6 +4,7 @@ import { OrbitControls, OrthographicCamera, Html, useProgress } from '@react-thr
 import ErrorBoundary from '../common/ErrorBoundary';
 import { VoxelModel } from './VoxelModel';
 import { zoomForCanvasHeight } from './voxelFraming';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 /** Fixed viewing angle. The orthographic zoom, not this position, controls the framed size. */
 const CAMERA_POSITION: [number, number, number] = [15, 10, 15];
@@ -37,6 +38,8 @@ function FramedCamera() {
 }
 
 export default function VoxelCanvas() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
     <div 
       className="w-full h-full cursor-grab active:cursor-grabbing" 
@@ -64,10 +67,10 @@ export default function VoxelCanvas() {
           </Suspense>
 
           {/* Camera controls */}
-          <OrbitControls 
+          <OrbitControls
             enableZoom={true}
             enablePan={false}
-            autoRotate
+            autoRotate={!prefersReducedMotion}
             autoRotateSpeed={1.0}
             target={[0, 0, 0]}
             minZoom={15}

@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Header from './components/layout/Header';
@@ -72,15 +72,17 @@ function GlobalLayoutManager() {
 export default function App() {
   return (
     <HelmetProvider>
-      <ReactLenis root options={{ lerp: 0.05, smoothWheel: true, syncTouch: true, touchMultiplier: 2 }}>
-        <Router basename="/">
-          <ErrorBoundary>
-            <PortfolioProvider>
-              <GlobalLayoutManager />
-            </PortfolioProvider>
-          </ErrorBoundary>
-        </Router>
-      </ReactLenis>
+      <MotionConfig reducedMotion="user">
+        <ReactLenis root options={{ lerp: 0.05, smoothWheel: true, syncTouch: true, touchMultiplier: 2 }}>
+          <Router basename="/">
+            <ErrorBoundary>
+              <PortfolioProvider>
+                <GlobalLayoutManager />
+              </PortfolioProvider>
+            </ErrorBoundary>
+          </Router>
+        </ReactLenis>
+      </MotionConfig>
     </HelmetProvider>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
@@ -25,6 +26,7 @@ export default function ScrambledText({
   text
 }: ScrambledTextProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -43,6 +45,10 @@ export default function ScrambledText({
       const c = el as HTMLElement;
       gsap.set(c, { attr: { 'data-content': c.innerText } });
     });
+
+    if (prefersReducedMotion) {
+      return () => split.revert();
+    }
 
     const handleMove = (e: PointerEvent) => {
       split.chars.forEach(el => {
@@ -74,7 +80,7 @@ export default function ScrambledText({
       window.removeEventListener('pointermove', handleMove);
       split.revert();
     };
-  }, [radius, duration, speed, scrambleChars, text]);
+  }, [radius, duration, speed, scrambleChars, text, prefersReducedMotion]);
 
   return (
     <div

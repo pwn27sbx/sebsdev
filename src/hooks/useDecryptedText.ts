@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
 type Direction = 'forward' | 'reverse';
 
@@ -25,6 +26,7 @@ export function useDecryptedText({
   animateOn = 'hover',
   clickMode = 'once',
 }: UseDecryptedTextProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [displayText, setDisplayText] = useState<string>(text);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
@@ -139,6 +141,21 @@ export function useDecryptedText({
 
   useEffect(() => {
     if (!isAnimating) return;
+
+    if (prefersReducedMotion) {
+      // Render the final state instantly instead of looping the scramble animation.
+      if (direction === 'forward') {
+        setRevealedIndices(fillAllIndices());
+        setDisplayText(text);
+        setIsDecrypted(true);
+      } else {
+        setRevealedIndices(new Set());
+        setDisplayText(shuffleText(text, new Set()));
+        setIsDecrypted(false);
+      }
+      setIsAnimating(false);
+      return;
+    }
 
     let currentIteration = 0;
 
@@ -256,7 +273,8 @@ export function useDecryptedText({
     fillAllIndices,
     removeRandomIndices,
     characters,
-    useOriginalCharsOnly
+    useOriginalCharsOnly,
+    prefersReducedMotion
   ]);
 
   /* Click Behaviour */

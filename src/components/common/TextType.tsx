@@ -2,6 +2,7 @@
 
 import { ElementType, useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
 import { gsap } from 'gsap';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 interface TextTypeProps {
   className?: string;
@@ -54,6 +55,7 @@ const TextType = ({
   const [isVisible, setIsVisible] = useState(!startOnVisible);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
@@ -87,6 +89,7 @@ const TextType = ({
   }, [startOnVisible, rootMargin]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     if (showCursor && cursorRef.current) {
       gsap.set(cursorRef.current, { opacity: 1 });
       gsap.to(cursorRef.current, {
@@ -97,9 +100,16 @@ const TextType = ({
         ease: 'power2.inOut'
       });
     }
-  }, [showCursor, cursorBlinkDuration]);
+  }, [showCursor, cursorBlinkDuration, prefersReducedMotion]);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      const finalText = reverseMode
+        ? textArray[currentTextIndex].split('').reverse().join('')
+        : textArray[currentTextIndex];
+      setDisplayedText(finalText);
+      return;
+    }
     if (!isVisible) return;
 
     let timeout: ReturnType<typeof setTimeout>;
@@ -167,11 +177,14 @@ const TextType = ({
     reverseMode,
     variableSpeed,
     onSentenceComplete,
-    getRandomSpeed
+    getRandomSpeed,
+    prefersReducedMotion
   ]);
 
   const shouldHideCursor =
-    hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
+    !prefersReducedMotion &&
+    hideCursorWhileTyping &&
+    (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
 
   return createElement(
     Component,
