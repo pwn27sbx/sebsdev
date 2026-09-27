@@ -11,8 +11,8 @@ const ArchiveMinimal = () => {
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
       <Helmet>
-        <title>Archivo de Proyectos | Sebastian</title>
-        <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
+        <title>{t('archiveSeoTitle', lang)}</title>
+        <meta name="description" content={t('archiveSeoDesc', lang)} />
         <link rel="canonical" href={`${SITE_ORIGIN}/proyectos`} />
       </Helmet>
 

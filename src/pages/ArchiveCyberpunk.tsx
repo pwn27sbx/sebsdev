@@ -26,8 +26,8 @@ const ArchiveCyberpunk = () => {
   return (
     <div className="min-h-screen relative bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed text-[#111] dark:text-white font-sans transition-colors duration-500 pt-24 pb-20">
       <Helmet>
-        <title>Archivo de Proyectos | Sebastian</title>
-        <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
+        <title>{t('archiveSeoTitle', lang)}</title>
+        <meta name="description" content={t('archiveSeoDesc', lang)} />
         <link rel="canonical" href={`${SITE_ORIGIN}/proyectos`} />
       </Helmet>
 

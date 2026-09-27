@@ -36,6 +36,8 @@ const es = {
   footerCta: '¿EMPEZAMOS ALGO? HABLEMOS',
   footerDesc: '¿Tienes una pregunta, propuesta o proyecto, o quieres que trabajemos juntos en algo? No dudes en contactarme.',
   // Archive
+  archiveSeoTitle: 'Archivo de Proyectos | Sebastian',
+  archiveSeoDesc: 'Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX.',
   back: 'Volver',
   archiveYear: 'AÑO',
   archiveProject: 'PROYECTO',
@@ -48,12 +50,16 @@ const es = {
   goHome: 'Volver al Inicio',
   // About
   aboutTitle: 'SOBRE MÍ',
+  aboutSeoTitle: 'Sobre Mi | Sebastian',
+  aboutSeoDesc: 'Conoce más sobre Sebastian, Frontend Developer y diseñador de UI/UX.',
   aboutDesc1: 'Soy un desarrollador frontend de Arequipa, Perú, apasionado por crear experiencias digitales que combinan diseño de alta calidad con tecnología moderna.',
   aboutDesc2: 'Me especializo en React, animaciones web con Framer Motion, y diseño UI/UX. Disfruto trabajar en proyectos creativos que desafían los límites de lo que es posible en la web.',
   aboutTechs: 'TECNOLOGÍAS',
   aboutContact: 'Contáctame',
   // Contact
   contactTitle: 'CONTACTO',
+  contactSeoTitle: 'Contacto | Sebastian',
+  contactSeoDesc: 'Ponte en contacto con Sebastian para colaborar en tu próximo proyecto web.',
   contactName: 'Nombre',
   contactEmail: 'Email',
   contactMsg: 'Mensaje',
@@ -112,6 +118,8 @@ const en = {
   footerCta: "LET'S TALK",
   footerDesc: 'Got a question, proposal or project or want to work together on something? Feel free to reach out.',
   // Archive
+  archiveSeoTitle: 'Project Archive | Sebastian',
+  archiveSeoDesc: 'Explore my archive of interactive projects from 2021 to 2026. Specialized in React and UI/UX.',
   back: 'Back',
   archiveYear: 'YEAR',
   archiveProject: 'PROJECT',
@@ -124,12 +132,16 @@ const en = {
   goHome: 'Go Back Home',
   // About
   aboutTitle: 'ABOUT ME',
+  aboutSeoTitle: 'About Me | Sebastian',
+  aboutSeoDesc: 'Learn more about Sebastian, Frontend Developer and UI/UX designer.',
   aboutDesc1: 'I am a frontend developer from Arequipa, Peru, passionate about creating digital experiences that blend high-quality design with modern technology.',
   aboutDesc2: 'I specialize in React, web animations with Framer Motion, and UI/UX design. I enjoy working on creative projects that push the boundaries of what is possible on the web.',
   aboutTechs: 'TECHNOLOGIES',
   aboutContact: 'Contact Me',
   // Contact
   contactTitle: 'CONTACT',
+  contactSeoTitle: 'Contact | Sebastian',
+  contactSeoDesc: 'Get in touch with Sebastian to collaborate on your next web project.',
   contactName: 'Name',
   contactEmail: 'Email',
   contactMsg: 'Message',

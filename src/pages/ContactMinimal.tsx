@@ -10,8 +10,8 @@ const ContactMinimal = () => {
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
       <Helmet>
-        <title>Contacto | Sebastian</title>
-        <meta name="description" content="Ponte en contacto con Sebastian para colaborar en tu próximo proyecto web." />
+        <title>{t('contactSeoTitle', lang)}</title>
+        <meta name="description" content={t('contactSeoDesc', lang)} />
         <link rel="canonical" href={`${SITE_ORIGIN}/contact`} />
       </Helmet>
 

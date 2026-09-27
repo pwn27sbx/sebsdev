@@ -11,8 +11,8 @@ const AboutMinimal = () => {
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
       <Helmet>
-        <title>Sobre Mi | Sebastian</title>
-        <meta name="description" content="Conoce más sobre Sebastian, Frontend Developer y diseñador de UI/UX." />
+        <title>{t('aboutSeoTitle', lang)}</title>
+        <meta name="description" content={t('aboutSeoDesc', lang)} />
         <link rel="canonical" href={`${SITE_ORIGIN}/about`} />
       </Helmet>
 

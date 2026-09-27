@@ -43,12 +43,12 @@ describe('Minimal layout shares Cyberpunk content', () => {
     const minimal = readRepoFile('src/pages/AboutMinimal.tsx');
 
     const cyberTitle = cyber.match(/<title>([^<]+)<\/title>/)?.[1];
-    const cyberDesc = cyber.match(/name="description" content="([^"]+)"/)?.[1];
+    const cyberDesc = cyber.match(/name="description"\s+content=(\{[^}]+\}|"[^"]*")/)?.[1];
     expect(cyberTitle).toBeDefined();
     expect(cyberDesc).toBeDefined();
 
     expect(minimal).toContain(`<title>${cyberTitle}</title>`);
-    expect(minimal).toContain(`name="description" content="${cyberDesc}"`);
+    expect(minimal).toContain(`name="description" content=${cyberDesc}`);
   });
 
   test('Archive Minimal does not hard-code "All Works" and shares the Cyberpunk Helmet copy', () => {
@@ -59,9 +59,9 @@ describe('Minimal layout shares Cyberpunk content', () => {
     expect(minimal).toMatch(/t\('projects', lang\)/);
 
     const cyberTitle = cyber.match(/<title>([^<]+)<\/title>/)?.[1];
-    const cyberDesc = cyber.match(/name="description" content="([^"]+)"/)?.[1];
+    const cyberDesc = cyber.match(/name="description"\s+content=(\{[^}]+\}|"[^"]*")/)?.[1];
     expect(minimal).toContain(`<title>${cyberTitle}</title>`);
-    expect(minimal).toContain(`name="description" content="${cyberDesc}"`);
+    expect(minimal).toContain(`name="description" content=${cyberDesc}`);
   });
 
   test('Contact Minimal does not hard-code "Get in Touch" and shares the Cyberpunk Helmet copy', () => {
@@ -72,9 +72,9 @@ describe('Minimal layout shares Cyberpunk content', () => {
     expect(minimal).toMatch(/t\('contactTitle', lang\)/);
 
     const cyberTitle = cyber.match(/<title>([^<]+)<\/title>/)?.[1];
-    const cyberDesc = cyber.match(/name="description" content="([^"]+)"/)?.[1];
+    const cyberDesc = cyber.match(/name="description"\s+content=(\{[^}]+\}|"[^"]*")/)?.[1];
     expect(minimal).toContain(`<title>${cyberTitle}</title>`);
-    expect(minimal).toContain(`name="description" content="${cyberDesc}"`);
+    expect(minimal).toContain(`name="description" content=${cyberDesc}`);
   });
 
   test('NotFound Minimal reuses the notFoundTitle/goHome i18n keys instead of hard-coded English', () => {
