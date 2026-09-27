@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SEO_ROUTES, canonicalUrl } from '../src/config/site.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,23 +16,7 @@ if (!fs.existsSync(indexPath)) {
 
 const baseHtml = fs.readFileSync(indexPath, 'utf-8');
 
-const routes = [
-  {
-    path: 'proyectos',
-    title: 'Archivo de Proyectos | Sebastian',
-    description: 'Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX.',
-  },
-  {
-    path: 'about',
-    title: 'Sobre Mí | Sebastian',
-    description: 'Desarrollador frontend de Arequipa, Perú, apasionado por crear experiencias digitales.',
-  },
-  {
-    path: 'contacto',
-    title: 'Contacto | Sebastian',
-    description: '¿Tienes una propuesta o proyecto? Contáctame para trabajar juntos.',
-  }
-];
+const routes = SEO_ROUTES;
 
 const replaceMeta = (html, metaName, metaValue, isProperty = false) => {
   const attr = isProperty ? 'property' : 'name';
@@ -57,8 +42,10 @@ for (const route of routes) {
   newHtml = replaceMeta(newHtml, 'twitter:title', route.title);
   newHtml = replaceMeta(newHtml, 'twitter:description', route.description);
   
-  // Replace Canonical
-  newHtml = newHtml.replace(/<link rel="canonical" href="[^"]*" \/>/i, `<link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/${route.path}" />`);
+  // Replace Canonical and og:url
+  const routeUrl = canonicalUrl(route.path);
+  newHtml = newHtml.replace(/<link rel="canonical" href="[^"]*" \/>/i, `<link rel="canonical" href="${routeUrl}" />`);
+  newHtml = replaceMeta(newHtml, 'og:url', routeUrl, true);
 
   // Ensure directory exists
   const routeDir = path.join(distDir, route.path);

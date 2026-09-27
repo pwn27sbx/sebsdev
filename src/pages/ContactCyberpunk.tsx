@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SITE_ORIGIN } from '../config/site';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -23,7 +24,7 @@ const ContactCyberpunk = () => {
       <Helmet>
         <title>Contacto | Sebastian</title>
         <meta name="description" content="Ponte en contacto con Sebastian para colaborar en tu próximo proyecto web." />
-        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/contacto" />
+        <link rel="canonical" href={`${SITE_ORIGIN}/contact`} />
       </Helmet>
 
       {/* Navigation */}

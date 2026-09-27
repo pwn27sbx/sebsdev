@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SITE_ORIGIN } from '../config/site';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -17,7 +18,7 @@ const AboutCyberpunk = () => {
       <Helmet>
         <title>Sobre Mi | Sebastian</title>
         <meta name="description" content="Conoce más sobre Sebastian, Frontend Developer y diseñador de UI/UX." />
-        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/about" />
+        <link rel="canonical" href={`${SITE_ORIGIN}/about`} />
       </Helmet>
 
       {/* Navigation */}

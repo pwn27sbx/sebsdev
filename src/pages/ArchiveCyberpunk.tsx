@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SITE_ORIGIN } from '../config/site';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -27,7 +28,7 @@ const ArchiveCyberpunk = () => {
       <Helmet>
         <title>Archivo de Proyectos | Sebastian</title>
         <meta name="description" content="Explora mi archivo de proyectos interactivos desde 2021 a 2026. Especializado en React y UI/UX." />
-        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/proyectos" />
+        <link rel="canonical" href={`${SITE_ORIGIN}/proyectos`} />
       </Helmet>
 
       {/* Skip to content link */}

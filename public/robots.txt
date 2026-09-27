@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pwn27sbx.github.io/mi-portafolio/sitemap.xml
+Sitemap: https://sebsportfolio.vercel.app/sitemap.xml

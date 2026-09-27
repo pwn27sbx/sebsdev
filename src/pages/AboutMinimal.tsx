@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SITE_ORIGIN } from '../config/site';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
 import FooterMinimal from '../components/layout/FooterMinimal';
@@ -11,6 +12,7 @@ const AboutMinimal = () => {
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
       <Helmet>
         <title>{t('seoTitle', lang)} - About</title>
+        <link rel="canonical" href={`${SITE_ORIGIN}/about`} />
       </Helmet>
 
       <main className="w-full max-w-2xl mx-auto px-6 relative">

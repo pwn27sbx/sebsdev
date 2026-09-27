@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { SITE_ORIGIN } from '../config/site';
 import { usePortfolio } from '../context/PortfolioContext';
 import { t } from '../data/i18n';
 
@@ -20,7 +21,7 @@ const HomeCyberpunk = () => {
       <Helmet>
         <title>{t('seoTitle', lang)}</title>
         <meta name="description" content={t('seoDesc', lang)} />
-        <link rel="canonical" href="https://pwn27sbx.github.io/mi-portafolio/" />
+        <link rel="canonical" href={`${SITE_ORIGIN}/`} />
       </Helmet>
 
       <main className="w-full relative">
