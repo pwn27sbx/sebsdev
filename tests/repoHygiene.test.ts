@@ -23,9 +23,13 @@ describe('repo hygiene', () => {
   });
 
   test('every public/cyber_mask*.png file is referenced somewhere under src/', () => {
-    const publicDir = path.join(ROOT, 'public');
-    const maskFiles = readdirSync(publicDir).filter((f) => /^cyber_mask.*\.png$/.test(f));
-    expect(maskFiles.length).toBeGreaterThan(0);
+    // Tracked files only, so the result never depends on untracked local files.
+    const tracked = spawnSync('git', ['ls-files', 'public'], { cwd: ROOT, encoding: 'utf8' }).stdout;
+    const maskFiles = tracked
+      .split('\n')
+      .map((f) => path.basename(f))
+      .filter((f) => /^cyber_mask.*\.png$/.test(f));
+    expect(maskFiles).toContain('cyber_mask_transparent.png');
 
     function listFilesRecursive(dir: string): string[] {
       const abs = path.join(ROOT, dir);
