@@ -78,7 +78,7 @@ export default defineConfig({
         prefer_related_applications: false
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2,glb}'],
         navigateFallback: 'index.html',
         runtimeCaching: [
           {

@@ -2,6 +2,11 @@ import React from 'react';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
+  /**
+   * Rendered instead of the full-page message. Pass a local fallback when the failure should stay
+   * contained, e.g. a decorative canvas that can degrade on its own.
+   */
+  fallback?: React.ReactNode;
 }
 
 interface ErrorBoundaryState {
@@ -17,6 +22,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   componentDidCatch(error: Error, info: React.ErrorInfo) { console.error('ErrorBoundary caught:', error, info); }
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback !== undefined) return this.props.fallback;
       return (
         <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] flex items-center justify-center text-center px-6 transition-colors duration-500">
           <div>
