@@ -5,6 +5,7 @@ import ErrorBoundary from '../common/ErrorBoundary';
 import { VoxelModel } from './VoxelModel';
 import { zoomForCanvasHeight } from './voxelFraming';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
+import { useCanvasVisibility } from '../../hooks/useCanvasVisibility';
 
 /** Fixed viewing angle. The orthographic zoom, not this position, controls the framed size. */
 const CAMERA_POSITION: [number, number, number] = [15, 10, 15];
@@ -39,17 +40,21 @@ function FramedCamera() {
 
 export default function VoxelCanvas() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { ref: visibilityRef, isVisible } = useCanvasVisibility<HTMLDivElement>();
 
   return (
-    <div 
-      className="w-full h-full cursor-grab active:cursor-grabbing" 
+    <div
+      ref={visibilityRef}
+      className="w-full h-full cursor-grab active:cursor-grabbing"
       data-lenis-prevent="true"
       onWheel={(e) => e.stopPropagation()}
     >
       {/* Boundary en el árbol DOM: R3F relanza ahí los errores del canvas, así que un fallo al
           cargar el modelo degrada solo el hero en lugar de reemplazar toda la página por el Oops. */}
       <ErrorBoundary fallback={null}>
-        <Canvas gl={{ antialias: true, alpha: true }}>
+        {/* Pausa el render loop cuando el canvas está fuera de viewport o la pestaña está oculta,
+            en vez de seguir dibujando frames que nadie ve. */}
+        <Canvas gl={{ antialias: true, alpha: true }} frameloop={isVisible ? 'always' : 'never'}>
           <FramedCamera />
 
           {/* Sin shadow map: ningún mesh del glTF proyecta ni recibe sombras, la única sombra
