@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 # Local Pi runtime state
 .atl/
+
+# ODD task docs are local-only (mirrored in Engram, not versioned)
+odd/
