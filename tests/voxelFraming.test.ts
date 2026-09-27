@@ -157,6 +157,18 @@ describe('deriveLayout', () => {
     expect(layout.reason).toBe('degenerate');
   });
 
+  test('rejects a non-finite or non-positive subject height', () => {
+    const box = new Box3(new Vector3(0, 0, 0), new Vector3(1, 2, 1));
+    for (const bad of [0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
+      const layout = deriveLayout(box, bad);
+      expect(layout.ok).toBe(false);
+      if (layout.ok) return;
+      expect(layout.reason).toBe('invalid-height');
+    }
+    // The same box with a usable height still derives a layout.
+    expect(deriveLayout(box, 2).ok).toBe(true);
+  });
+
   test('carries the list of subject names it could not find', () => {
     const layout = deriveLayout(
       measureSubject(loadShippedKitty(), SUBJECT_NODES).box,
@@ -238,10 +250,16 @@ describe('measureSubject', () => {
 
   test('does not reparent or mutate the source scene', () => {
     const root = new Group();
+    root.position.set(5, 0, 0);
     const child = new Mesh(new BoxGeometry(1, 1, 1), new MeshBasicMaterial());
     child.name = 'Cuerpo';
+    // Non-identity transforms with a freshly updated world matrix, so the snapshot is meaningful
+    // instead of identity on both sides.
+    child.position.set(1, 2, 3);
     root.add(child);
+    root.updateMatrixWorld(true);
     const worldBefore = child.matrixWorld.clone();
+    expect(worldBefore.elements[12]).toBeCloseTo(6, 10);
 
     measureSubject(root, ['Cuerpo']);
 
@@ -259,9 +277,13 @@ describe('zoomForCanvasHeight', () => {
     }
   });
 
-  test('stays finite for a degenerate canvas height', () => {
-    expect(Number.isFinite(zoomForCanvasHeight(0))).toBe(true);
-    expect(Number.isFinite(zoomForCanvasHeight(Number.NaN))).toBe(true);
+  test('stays finite AND positive for a degenerate canvas height', () => {
+    for (const bad of [0, Number.NaN, Number.POSITIVE_INFINITY, -100]) {
+      const zoom = zoomForCanvasHeight(bad);
+      expect(Number.isFinite(zoom)).toBe(true);
+      // A zero or negative zoom is a degenerate or mirrored projection, not a usable fallback.
+      expect(zoom).toBeGreaterThan(0);
+    }
   });
 
   test('reproduces the reviewed mobile framing (zoom 30 on a 320px canvas)', () => {

@@ -36,7 +36,7 @@ export function zoomForCanvasHeight(canvasHeightPx: number): number {
 
 export type VoxelLayout =
   | { ok: true; center: Vector3; scale: number; floorY: number; missing: readonly string[] }
-  | { ok: false; reason: 'empty' | 'degenerate'; missing: readonly string[] };
+  | { ok: false; reason: 'empty' | 'degenerate' | 'invalid-height'; missing: readonly string[] };
 
 /**
  * Measures the subject subtrees of a loaded scene.
@@ -74,6 +74,11 @@ export function deriveLayout(
   missing: readonly string[] = [],
 ): VoxelLayout {
   if (box.isEmpty()) return { ok: false, reason: 'empty', missing };
+  // The numerator is as load-bearing as the denominator: a zero height collapses the model onto a
+  // singular matrix, and a non-finite one leaves NaN in both scale and floorY.
+  if (!Number.isFinite(subjectHeight) || subjectHeight <= 0) {
+    return { ok: false, reason: 'invalid-height', missing };
+  }
   const size = box.getSize(new Vector3());
   // Every axis, not just y: a NaN x or z extent would still yield a finite-looking height and then
   // hand a non-finite centre to the pivot, which is the failure this guard exists to prevent.
