@@ -8,8 +8,7 @@ import { t } from '../data/i18n';
 import ScrambledText from '../components/common/ScrambledText';
 import GlitchText from '../components/common/GlitchText';
 import DecryptedText from '../components/common/DecryptedText';
-
-const techs = ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Framer Motion', 'Figma', 'Node.js', 'Git', 'Vite', 'Astro', 'GSAP'];
+import { techs } from '../data/profile';
 
 const AboutCyberpunk = () => {
   const { lang, setIsHovering } = usePortfolio();

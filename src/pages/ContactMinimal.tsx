@@ -11,13 +11,14 @@ const ContactMinimal = () => {
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
       <Helmet>
-        <title>{t('seoTitle', lang)} - Contact</title>
+        <title>Contacto | Sebastian</title>
+        <meta name="description" content="Ponte en contacto con Sebastian para colaborar en tu próximo proyecto web." />
         <link rel="canonical" href={`${SITE_ORIGIN}/contact`} />
       </Helmet>
 
       <main className="w-full max-w-2xl mx-auto px-6 relative flex flex-col h-[calc(100vh-8rem)]">
         <div className="flex-1 flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-6 tracking-tight">Get in Touch</h1>
+          <h1 className="text-3xl font-bold mb-6 tracking-tight">{t('contactTitle', lang)}</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-10 max-w-md">
             I'm currently available for freelance work or full-time opportunities. Let's build something great together.
           </p>

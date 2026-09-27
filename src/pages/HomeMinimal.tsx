@@ -15,7 +15,8 @@ const HomeMinimal = () => {
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-16 sm:pt-24">
       <Helmet>
-        <title>{t('seoTitle', lang)} - Minimal</title>
+        <title>{t('seoTitle', lang)}</title>
+        <meta name="description" content={t('seoDesc', lang)} />
         <link rel="canonical" href={`${SITE_ORIGIN}/`} />
       </Helmet>
 
