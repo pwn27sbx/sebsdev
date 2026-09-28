@@ -9,13 +9,19 @@ import {
   Mesh,
   MeshBasicMaterial,
   Object3D,
+  OrthographicCamera,
   Vector3,
 } from 'three';
 import {
+  BODY_NODES,
   SUBJECT_FILL,
   SUBJECT_HEIGHT,
   SUBJECT_NODES,
+  SUBJECT_YAW,
+  compositionAim,
+  compositionShift,
   deriveLayout,
+  measureComposition,
   measureSubject,
   zoomForCanvasHeight,
 } from '../src/components/canvas/voxelFraming';
@@ -121,6 +127,30 @@ function assembleSubjectGroups(center: Vector3, scale: number): Group {
   return pivot;
 }
 
+/**
+ * Same nesting as the production component, now including the composition shift: an outer group
+ * carries the pure translation, its float child carries the model, and the contact shadow anchors
+ * as a sibling of the float group inside the shift group. Returns the pieces a test needs to push
+ * a model-space point (pivot) or the shadow anchor (shiftGroup) through the real chain.
+ */
+function assembleShiftedGroups(center: Vector3, scale: number, shift: Vector3) {
+  const outer = new Group();
+  const shiftGroup = new Group();
+  shiftGroup.position.copy(shift);
+  outer.add(shiftGroup);
+  const float = new Group();
+  shiftGroup.add(float);
+  const rotated = new Group();
+  rotated.rotation.y = SUBJECT_YAW;
+  rotated.scale.setScalar(scale);
+  float.add(rotated);
+  const pivot = new Group();
+  pivot.position.set(-center.x, -center.y, -center.z);
+  rotated.add(pivot);
+  outer.updateMatrixWorld(true);
+  return { outer, shiftGroup, pivot };
+}
+
 describe('deriveLayout', () => {
   test('derives scale, centre and floor height from the shipped subject box', () => {
     const { box } = measureSubject(loadShippedKitty(), SUBJECT_NODES);
@@ -207,6 +237,146 @@ describe('subject placement', () => {
     // The floor plane the contact shadow is placed on: model y = 0 after the same chain.
     const floor = intoGroupSpace(new Vector3(layout.center.x, 0, layout.center.z));
     expect(floor.y).toBeCloseTo(layout.floorY, 6);
+  });
+});
+
+describe('composition framing', () => {
+  test('measures the body and assembly boxes on the same clone as the subject box', () => {
+    const scene = loadShippedKitty();
+    const { subject, body, assembly } = measureComposition(scene);
+    // The single-pass measurement must agree with the dedicated, already-covered accessor.
+    expect(body.equals(measureSubject(scene, BODY_NODES).box)).toBe(true);
+    expect(subject.equals(measureSubject(scene, SUBJECT_NODES).box)).toBe(true);
+    // The assembly is strictly larger than the subject: it also holds the desk, monitor and mug.
+    expect(assembly.containsBox(subject)).toBe(true);
+    expect(assembly.getSize(new Vector3()).z).toBeGreaterThan(subject.getSize(new Vector3()).z);
+  });
+
+  test('pins the derived composition aim and the world shift', () => {
+    const { body, assembly } = measureComposition(loadShippedKitty());
+    const aim = compositionAim(body, assembly);
+    expect(aim).not.toBeNull();
+    if (!aim) return;
+    // Midpoint of the tail-less body centre and the whole assembly centre.
+    expect(aim.x).toBeCloseTo(0.003125, 5);
+    expect(aim.y).toBeCloseTo(0.34149, 5);
+    expect(aim.z).toBeCloseTo(0.1, 5);
+
+    const { box } = measureSubject(loadShippedKitty(), SUBJECT_NODES);
+    const layout = deriveLayout(box, SUBJECT_HEIGHT);
+    if (!layout.ok) throw new Error('expected a usable layout');
+    const shift = compositionShift(aim, layout.center, layout.scale, SUBJECT_YAW);
+    expect(shift).not.toBeNull();
+    if (!shift) return;
+    expect(shift.x).toBeCloseTo(-0.805294, 5);
+    expect(shift.y).toBeCloseTo(0, 6);
+    expect(shift.z).toBeCloseTo(0.025165, 5);
+  });
+
+  test('the shifted chain lands the composition aim on the group origin', () => {
+    const scene = loadShippedKitty();
+    const { subject, body, assembly } = measureComposition(scene);
+    const layout = deriveLayout(subject, SUBJECT_HEIGHT);
+    if (!layout.ok) throw new Error('expected a usable layout');
+    const aim = compositionAim(body, assembly);
+    if (!aim) throw new Error('expected a usable composition aim');
+    const shift = compositionShift(aim, layout.center, layout.scale, SUBJECT_YAW);
+    if (!shift) throw new Error('expected a finite shift');
+
+    // Non-vacuous: without the shift the aim sits well away from the origin.
+    const unshifted = assembleSubjectGroups(layout.center, layout.scale);
+    const before = aim.clone().applyMatrix4(unshifted.matrixWorld);
+    expect(before.length()).toBeGreaterThan(0.5);
+
+    const { outer, pivot } = assembleShiftedGroups(layout.center, layout.scale, shift);
+    expect(aim.clone().applyMatrix4(pivot.matrixWorld).length()).toBeCloseTo(0, 6);
+    expect(outer.position.length()).toBe(0);
+  });
+
+  test('the composition shift keeps the contact shadow offset below the floor plane', () => {
+    const scene = loadShippedKitty();
+    const { subject, body, assembly } = measureComposition(scene);
+    const layout = deriveLayout(subject, SUBJECT_HEIGHT);
+    if (!layout.ok) throw new Error('expected a usable layout');
+    const aim = compositionAim(body, assembly);
+    if (!aim) throw new Error('expected a usable composition aim');
+    const shift = compositionShift(aim, layout.center, layout.scale, SUBJECT_YAW);
+    if (!shift) throw new Error('expected a finite shift');
+
+    // Model-space point on the floor plane (model y = 0), and the ContactShadows anchor it feeds.
+    const floorPoint = new Vector3(layout.center.x, 0, layout.center.z);
+    const shadowAnchor = new Vector3(0, layout.floorY, 0);
+
+    const unshifted = assembleSubjectGroups(layout.center, layout.scale);
+    const gapBefore = shadowAnchor.y - floorPoint.clone().applyMatrix4(unshifted.matrixWorld).y;
+
+    const { pivot, shiftGroup } = assembleShiftedGroups(layout.center, layout.scale, shift);
+    const floorAfter = floorPoint.clone().applyMatrix4(pivot.matrixWorld).y;
+    const gapAfter = shadowAnchor.clone().applyMatrix4(shiftGroup.matrixWorld).y - floorAfter;
+
+    expect(gapBefore).toBeCloseTo(0, 9);
+    expect(gapAfter).toBeCloseTo(gapBefore, 9);
+  });
+
+  test('the shifted assembly fits the hero canvas at ~77% height with no overflow', () => {
+    const scene = loadShippedKitty();
+    const { subject, body, assembly } = measureComposition(scene);
+    const layout = deriveLayout(subject, SUBJECT_HEIGHT);
+    if (!layout.ok) throw new Error('expected a usable layout');
+    const aim = compositionAim(body, assembly);
+    if (!aim) throw new Error('expected a usable composition aim');
+    const shift = compositionShift(aim, layout.center, layout.scale, SUBJECT_YAW);
+    if (!shift) throw new Error('expected a finite shift');
+
+    const { pivot } = assembleShiftedGroups(layout.center, layout.scale, shift);
+
+    // The real hero canvas and the real production orthographic camera.
+    const CANVAS_WIDTH = 650;
+    const CANVAS_HEIGHT = 420;
+    const camera = new OrthographicCamera(
+      -CANVAS_WIDTH / 2,
+      CANVAS_WIDTH / 2,
+      CANVAS_HEIGHT / 2,
+      -CANVAS_HEIGHT / 2,
+      0.01,
+      50000,
+    );
+    camera.position.set(15, 10, 15);
+    camera.zoom = zoomForCanvasHeight(CANVAS_HEIGHT);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+    camera.updateMatrixWorld(true);
+
+    const projected: Vector3[] = [];
+    for (const x of [assembly.min.x, assembly.max.x]) {
+      for (const y of [assembly.min.y, assembly.max.y]) {
+        for (const z of [assembly.min.z, assembly.max.z]) {
+          const ndc = new Vector3(x, y, z)
+            .applyMatrix4(pivot.matrixWorld)
+            .project(camera);
+          projected.push(
+            new Vector3(
+              (ndc.x * 0.5 + 0.5) * CANVAS_WIDTH,
+              (0.5 - ndc.y * 0.5) * CANVAS_HEIGHT,
+              0,
+            ),
+          );
+        }
+      }
+    }
+
+    for (const point of projected) {
+      expect(point.x).toBeGreaterThanOrEqual(0);
+      expect(point.x).toBeLessThanOrEqual(CANVAS_WIDTH);
+      expect(point.y).toBeGreaterThanOrEqual(0);
+      expect(point.y).toBeLessThanOrEqual(CANVAS_HEIGHT);
+    }
+
+    const ys = projected.map((point) => point.y);
+    const heightFraction = (Math.max(...ys) - Math.min(...ys)) / CANVAS_HEIGHT;
+    expect(heightFraction).toBeCloseTo(0.764, 3);
+    // Within 1% of the canvas height of the measured 77% design fill.
+    expect(Math.abs(heightFraction - 0.77)).toBeLessThanOrEqual(0.01);
   });
 });
 
