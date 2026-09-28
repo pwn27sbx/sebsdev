@@ -53,6 +53,35 @@ export function zoomForCanvasHeight(canvasHeightPx: number): number {
   return (canvasHeightPx * SUBJECT_FILL) / SUBJECT_HEIGHT;
 }
 
+/** Orthographic frustum plus zoom, both derived from one measurement of the canvas element. */
+export type CanvasFraming = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+  zoom: number;
+};
+
+/**
+ * Derives the whole orthographic setup from a single measurement of the canvas element.
+ *
+ * The zoom and the frustum must come from the same height. Splitting them across two sources is what
+ * let a stale R3F `size` halve the zoom while the element was at its real height, rendering the model
+ * at half scale and off centre. Returns null for a non-finite or non-positive box so no degenerate
+ * projection ever reaches a matrix.
+ */
+export function framingForCanvas(width: number, height: number): CanvasFraming | null {
+  if (!Number.isFinite(width) || !Number.isFinite(height)) return null;
+  if (width <= 0 || height <= 0) return null;
+  return {
+    left: -width / 2,
+    right: width / 2,
+    top: height / 2,
+    bottom: -height / 2,
+    zoom: zoomForCanvasHeight(height),
+  };
+}
+
 export type VoxelLayout =
   | { ok: true; center: Vector3; scale: number; floorY: number; missing: readonly string[] }
   | { ok: false; reason: 'empty' | 'degenerate' | 'invalid-height'; missing: readonly string[] };

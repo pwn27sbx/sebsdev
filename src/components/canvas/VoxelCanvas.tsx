@@ -1,9 +1,10 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, OrthographicCamera, Html, useProgress } from '@react-three/drei';
+import type { WebGLRenderer } from 'three';
 import ErrorBoundary from '../common/ErrorBoundary';
 import { VoxelModel } from './VoxelModel';
-import { zoomForCanvasHeight } from './voxelFraming';
+import { framingForCanvas } from './voxelFraming';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { useCanvasVisibility } from '../../hooks/useCanvasVisibility';
 
@@ -22,16 +23,58 @@ function CanvasLoader() {
 }
 
 /**
- * El zoom se deriva de la altura real del canvas en lugar de quedar fijo: así el sujeto ocupa la
- * misma fracción del hero en mobile (320px) y en sm+ (420px), en vez de encogerse en el más alto.
+ * Ground truth for the framing: the canvas element's own box, not R3F's `size`.
+ *
+ * R3F measures its container with a debounced ResizeObserver and can settle on a transient layout
+ * size (observed: 205x210.60 while the element was really 285x211). `FramedCamera` derived the zoom
+ * from that value, so the zoom came out at exactly half the correct one and the model rendered at
+ * half scale, off centre. The element's `clientWidth`/`clientHeight` cannot disagree with itself, and
+ * because the frustum and the zoom below are both derived from this one measurement, they can never
+ * disagree with each other either.
  */
+function useCanvasBox(gl: WebGLRenderer): { w: number; h: number } | null {
+  const [box, setBox] = useState<{ w: number; h: number } | null>(null);
+  useEffect(() => {
+    const el = gl.domElement;
+    const read = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      // A detached or not-yet-laid-out element reports 0; keep the last good measurement instead.
+      if (w <= 0 || h <= 0) return;
+      setBox((prev) => (prev && prev.w === w && prev.h === h ? prev : { w, h }));
+    };
+    read();
+    const observer = new ResizeObserver(read);
+    observer.observe(el);
+    window.addEventListener('resize', read);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', read);
+    };
+  }, [gl]);
+  return box;
+}
+
 function FramedCamera() {
-  const height = useThree((state) => state.size.height);
+  const r3fSize = useThree((state) => state.size);
+  const gl = useThree((state) => state.gl);
+  const box = useCanvasBox(gl);
+  // Fall back to R3F's size only until the element has been measured once.
+  const width = box?.w ?? r3fSize.width;
+  const height = box?.h ?? r3fSize.height;
+  const framing = framingForCanvas(width, height);
+  if (!framing) return null;
   return (
     <OrthographicCamera
       makeDefault
       position={CAMERA_POSITION}
-      zoom={zoomForCanvasHeight(height)}
+      // Explicit frustum: these props are spread after drei's own size-derived values, so they win.
+      // Derived from the same height as the zoom, keeping scale and framing consistent.
+      left={framing.left}
+      right={framing.right}
+      top={framing.top}
+      bottom={framing.bottom}
+      zoom={framing.zoom}
       near={0.01}
       far={50000}
     />
@@ -45,7 +88,7 @@ export default function VoxelCanvas() {
   return (
     <div
       ref={visibilityRef}
-      className="w-full h-full cursor-grab active:cursor-grabbing"
+      className="relative w-full h-full cursor-grab active:cursor-grabbing"
       data-lenis-prevent="true"
       onWheel={(e) => e.stopPropagation()}
     >

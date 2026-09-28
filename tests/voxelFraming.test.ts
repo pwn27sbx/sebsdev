@@ -23,6 +23,7 @@ import {
   deriveLayout,
   measureComposition,
   measureSubject,
+  framingForCanvas,
   zoomForCanvasHeight,
 } from '../src/components/canvas/voxelFraming';
 
@@ -436,6 +437,52 @@ describe('measureSubject', () => {
     expect(root.parent).toBeNull();
     expect(child.parent).toBe(root);
     expect(child.matrixWorld.equals(worldBefore)).toBe(true);
+  });
+});
+
+describe('framingForCanvas', () => {
+  test('derives the frustum and the zoom from one measurement, so they cannot disagree', () => {
+    for (const [w, h] of [
+      [650, 420],
+      [354, 320],
+      [285, 211],
+    ] as const) {
+      const f = framingForCanvas(w, h);
+      expect(f).not.toBeNull();
+      if (!f) return;
+      // The frustum spans exactly the measured box, and the zoom comes from that same height, so the
+      // subject fills SUBJECT_FILL of the framed height. A zoom taken from any other height would
+      // break this ratio — which is exactly the half-scale regression this guards.
+      expect(f.right - f.left).toBeCloseTo(w, 9);
+      expect(f.top - f.bottom).toBeCloseTo(h, 9);
+      expect(SUBJECT_HEIGHT / (h / f.zoom)).toBeCloseTo(SUBJECT_FILL, 10);
+    }
+  });
+
+  test('reproduces the real observed canvases, including the one that rendered at half scale', () => {
+    // The broken case: the element was really 420 tall while a stale R3F size reported 210.60.
+    // Framing from the element's own box must give the full-size zoom, not the half-size one.
+    const correct = framingForCanvas(650, 420);
+    const halved = framingForCanvas(650, 210.6);
+    expect(correct).not.toBeNull();
+    expect(halved).not.toBeNull();
+    if (!correct || !halved) return;
+    expect(correct.zoom).toBeCloseTo(38.1818, 3);
+    expect(halved.zoom).toBeCloseTo(19.1455, 3);
+    expect(correct.zoom / halved.zoom).toBeCloseTo(2, 1);
+  });
+
+  test('rejects a degenerate or non-finite box instead of building a broken projection', () => {
+    for (const [w, h] of [
+      [0, 420],
+      [650, 0],
+      [-650, 420],
+      [650, -420],
+      [Number.NaN, 420],
+      [650, Number.POSITIVE_INFINITY],
+    ] as const) {
+      expect(framingForCanvas(w, h)).toBeNull();
+    }
   });
 });
 
