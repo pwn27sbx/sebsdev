@@ -11,6 +11,44 @@ import { useCanvasVisibility } from '../../hooks/useCanvasVisibility';
 /** Fixed viewing angle. The orthographic zoom, not this position, controls the framed size. */
 const CAMERA_POSITION: [number, number, number] = [15, 10, 15];
 
+/**
+ * Reconciles R3F's size against the canvas container's layout box.
+ *
+ * R3F seeds its size from `canvas.parentElement.getBoundingClientRect()`, which reports the
+ * *transformed* box, and three.js then pins the canvas to those pixels through
+ * `gl.setSize(..., updateStyle)`. So a wrong value at mount is self-sealing: the canvas stops filling
+ * its container, the container therefore never changes size, and the ResizeObserver never fires
+ * again. Measured in the browser over 3.5s: every ancestor steady at 650x420 and the hero reporting
+ * `h=420px maxW=650px` from t+7ms, while the canvas stayed pinned at 285.217x210.6 the whole time.
+ *
+ * `clientWidth`/`clientHeight` are the layout box and ignore ancestor transforms, so reconciling
+ * against them makes the render match the real box. Only acts when the two disagree, so it settles
+ * after one pass and is a no-op once R3F's own measurement is right.
+ */
+function SizeReconciler() {
+  const gl = useThree((state) => state.gl);
+  const setSize = useThree((state) => state.setSize);
+  const width = useThree((state) => state.size.width);
+  const height = useThree((state) => state.size.height);
+  useEffect(() => {
+    const container = gl.domElement.parentElement;
+    if (!container) return;
+    const read = () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      if (w <= 0 || h <= 0) return;
+      if (w === width && h === height) return;
+      const rect = container.getBoundingClientRect();
+      setSize(w, h, rect.top, rect.left);
+    };
+    read();
+    const observer = new ResizeObserver(read);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [gl, setSize, width, height]);
+  return null;
+}
+
 function CanvasLoader() {
   const { progress } = useProgress();
   return (
@@ -98,6 +136,7 @@ export default function VoxelCanvas() {
         {/* Pausa el render loop cuando el canvas está fuera de viewport o la pestaña está oculta,
             en vez de seguir dibujando frames que nadie ve. */}
         <Canvas gl={{ antialias: true, alpha: true }} frameloop={isVisible ? 'always' : 'never'}>
+          <SizeReconciler />
           <FramedCamera />
 
           {/* Sin shadow map: ningún mesh del glTF proyecta ni recibe sombras, la única sombra
