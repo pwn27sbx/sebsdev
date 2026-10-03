@@ -6,7 +6,7 @@ import { t } from '../../data/i18n';
 import GlitchText from '../common/GlitchText';
 
 const HeaderCyberpunk = () => {
-  const { setIsHovering, darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode, layoutMode, setLayoutMode } = usePortfolio();
+  const { darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode, layoutMode, setLayoutMode } = usePortfolio();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
   const location = useLocation();
@@ -73,8 +73,6 @@ const HeaderCyberpunk = () => {
               onClick={() => { setIsThemeMenuOpen(!isThemeMenuOpen); setIsMenuOpen(false); }}
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 relative overflow-hidden group ${isThemeMenuOpen ? 'text-white dark:text-black bg-primary shadow-[0_0_15px_var(--color-primary)] border-primary [.immersion-full_&]:bg-accent [.immersion-full_&]:shadow-[0_0_15px_var(--color-accent)] [.immersion-full_&]:border-accent [.immersion-full_&]:text-bg-dark' : 'text-primary hover:text-primary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-primary hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)]'}`}
               aria-label="Open color themes"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
@@ -132,8 +130,6 @@ const HeaderCyberpunk = () => {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex flex-col items-center justify-center w-10 h-10 rounded-full text-primary hover:text-primary bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-primary/30 hover:border-primary transition-all duration-500 hover:scale-105 hover:shadow-[0_0_15px_var(--color-primary)] [.immersion-full_&]:bg-tertiary/50 [.immersion-full_&]:border-accent/30 [.immersion-full_&]:text-accent [.immersion-full_&]:hover:border-accent [.immersion-full_&]:hover:shadow-[0_0_20px_var(--color-accent)] gap-1 relative overflow-hidden group"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
           >
             <motion.div 
               animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 6 : 0 }}
@@ -174,8 +170,7 @@ const HeaderCyberpunk = () => {
                       <Link
                         to={link.path}
                         onClick={() => setIsMenuOpen(false)}
-                        onMouseEnter={() => setIsHovering(true)}
-                        onMouseLeave={() => setIsHovering(false)}
+
                         className={`group flex items-center justify-between px-3 py-3 transition-colors duration-200 border-b border-secondary/20 last:border-b-0 ${isActive ? 'bg-secondary/10' : 'hover:bg-secondary'}`}
                       >
                         <div className="flex items-center gap-3">
@@ -209,16 +204,12 @@ const HeaderCyberpunk = () => {
                     <button
                       onClick={() => setLang('es')}
                       className={`transition-all duration-200 px-2 py-0.5 border ${lang === 'es' ? 'bg-primary text-white border-primary shadow-[0_0_10px_var(--color-primary)]' : 'bg-transparent text-secondary/80 dark:text-secondary/70 border-secondary/50 dark:border-secondary/30 hover:bg-secondary/20 hover:text-secondary'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       ES
                     </button>
                     <button
                       onClick={() => setLang('en')}
                       className={`transition-all duration-200 px-2 py-0.5 border ${lang === 'en' ? 'bg-primary text-white border-primary shadow-[0_0_10px_var(--color-primary)]' : 'bg-transparent text-secondary/80 dark:text-secondary/70 border-secondary/50 dark:border-secondary/30 hover:bg-secondary/20 hover:text-secondary'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       EN
                     </button>
@@ -257,16 +248,12 @@ const HeaderCyberpunk = () => {
                     <button
                       onClick={() => setLayoutMode('cyberpunk')}
                       className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${layoutMode === 'cyberpunk' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark [.immersion-full_&]:shadow-[0_0_10px_var(--color-accent)]' : 'text-gray-500 hover:text-primary [.immersion-full_&]:hover:text-accent'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       Cyberpunk
                     </button>
                     <button
                       onClick={() => setLayoutMode('minimal')}
                       className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${layoutMode === 'minimal' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark [.immersion-full_&]:shadow-[0_0_10px_var(--color-accent)]' : 'text-gray-500 hover:text-primary [.immersion-full_&]:hover:text-accent'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       Minimal 3D
                     </button>
@@ -287,16 +274,12 @@ const HeaderCyberpunk = () => {
                     <button
                       onClick={() => setImmersionMode('relax')}
                       className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${immersionMode === 'relax' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)]' : 'text-gray-500 hover:text-primary'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       Relax
                     </button>
                     <button
                       onClick={() => setImmersionMode('full')}
                       className={`flex-1 py-1 font-mono text-xs uppercase tracking-wider transition-all ${immersionMode === 'full' ? 'bg-primary text-white shadow-[0_0_10px_var(--color-primary)] [.immersion-full_&]:bg-accent [.immersion-full_&]:text-bg-dark [.immersion-full_&]:shadow-[0_0_10px_var(--color-accent)]' : 'text-gray-500 hover:text-primary [.immersion-full_&]:hover:text-accent'}`}
-                      onMouseEnter={() => setIsHovering(true)}
-                      onMouseLeave={() => setIsHovering(false)}
                     >
                       Full
                     </button>
@@ -318,8 +301,7 @@ const HeaderCyberpunk = () => {
                       <motion.div key={theme.id} variants={itemVariants}>
                         <button
                           onClick={() => { setColorTheme(theme.id); setIsThemeMenuOpen(false); }}
-                          onMouseEnter={() => setIsHovering(true)}
-                          onMouseLeave={() => setIsHovering(false)}
+
                           className={`w-full group flex items-center justify-between px-3 py-2 transition-colors duration-200 border-b border-primary/10 last:border-b-0 ${isActive ? 'bg-primary/10' : 'hover:bg-primary/5'}`}
                         >
                           <div className="flex items-center gap-3">

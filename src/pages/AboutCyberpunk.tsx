@@ -10,7 +10,7 @@ import DecryptedText from '../components/common/DecryptedText';
 import { techs } from '../data/profile';
 
 const AboutCyberpunk = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
   return (
     <div className="min-h-screen relative bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] bg-fixed text-[#111] dark:text-white font-sans transition-colors duration-500 overflow-x-hidden pt-24 pb-20 px-6 sm:px-12 md:px-24">
       <Helmet>
@@ -24,8 +24,6 @@ const AboutCyberpunk = () => {
         <Link 
           to="/" 
           className="ml-0 sm:ml-4 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 text-secondary bg-transparent hover:text-primary transition-colors duration-300"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
         >
           <span className="relative z-10 font-mono">[ ← {t('back', lang) || 'BACK'} ]</span>
         </Link>
@@ -71,7 +69,7 @@ const AboutCyberpunk = () => {
               </motion.span>
             ))}
           </div>
-          <a href="mailto:pwn27sbx@gmail.com" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
+          <a href="mailto:pwn27sbx@gmail.com"
             className="inline-block mt-12 px-6 py-3 border border-secondary text-secondary font-mono text-xs sm:text-sm uppercase tracking-widest hover:text-white transition-colors duration-300 md:cursor-none relative group overflow-hidden"
           >
             <div className="absolute inset-0 bg-secondary origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 z-0" />

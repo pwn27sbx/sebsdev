@@ -6,7 +6,7 @@ import FuzzyText from '../components/common/FuzzyText';
 import ScrambledText from '../components/common/ScrambledText';
 
 const NotFoundCyberpunk = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
   const [isDark, setIsDark] = React.useState(false);
 
   React.useEffect(() => {
@@ -56,7 +56,7 @@ const NotFoundCyberpunk = () => {
         <ScrambledText text="[ ERR_404: SECTOR_NOT_FOUND ]" speed={0.5} />
       </div>
 
-      <Link to="/" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
+      <Link to="/"
         className="mt-12 px-6 py-3 border border-secondary text-secondary font-mono text-xs sm:text-sm uppercase tracking-widest hover:text-black hover:bg-secondary transition-all duration-300 md:cursor-none relative group overflow-hidden z-20"
       >
         <span className="relative z-10">[ {t('goHome', lang) || 'RETURN_TO_ROOT'} ]</span>

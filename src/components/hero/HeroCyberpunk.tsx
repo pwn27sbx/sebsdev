@@ -12,7 +12,7 @@ interface CustomCSSProperties extends React.CSSProperties {
 }
 
 const HeroCyberpunk = () => {
-  const { setIsHovering, lang } = usePortfolio();
+  const { lang } = usePortfolio();
   const containerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -23,9 +23,6 @@ const HeroCyberpunk = () => {
   const lineWidth = useTransform(scrollYProgress, [0, 1], ["8vw", "150vw"]);
   const textParallax = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
   const descParallax = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-
-  const hEnter = () => setIsHovering(true);
-  const hLeave = () => setIsHovering(false);
 
   return (
     <section
@@ -60,8 +57,6 @@ const HeroCyberpunk = () => {
             {" "}
             <div
               className="font-anton text-[12vw] sm:text-[11vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
-              onMouseEnter={hEnter}
-              onMouseLeave={hLeave}
             >
               <GlitchText speed={0.9} enableShadows enableOnHover={false}>
                 {t("heroFront", lang)}
@@ -79,8 +74,6 @@ const HeroCyberpunk = () => {
             />
             <div
               className="font-anton text-[12vw] sm:text-[11vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero gpu"
-              onMouseEnter={hEnter}
-              onMouseLeave={hLeave}
             >
               <GlitchText
                 speed={0.9}
@@ -101,8 +94,6 @@ const HeroCyberpunk = () => {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 0.8, ease: [0.85, 0, 0.15, 1], delay: 0.5 }}
               className="font-anton text-[12vw] sm:text-[10vw] leading-[0.9] sm:leading-[0.8] uppercase tracking-tighter shrink-0 text-transparent text-stroke-hero"
-              onMouseEnter={hEnter}
-              onMouseLeave={hLeave}
             >
               <GlitchText
                 speed={0.9}

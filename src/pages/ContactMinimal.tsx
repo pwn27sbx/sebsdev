@@ -5,7 +5,7 @@ import { t } from '../data/i18n';
 import FooterMinimal from '../components/layout/FooterMinimal';
 
 const ContactMinimal = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
 
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-24 pb-10">
@@ -25,8 +25,6 @@ const ContactMinimal = () => {
           <a 
             href="mailto:contact@sebastian.dev"
             className="inline-block w-max px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded shadow hover:scale-105 transition-transform"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
           >
             Say Hello
           </a>

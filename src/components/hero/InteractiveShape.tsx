@@ -1,11 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { motion, useSpring, useMotionValue, useInView } from 'framer-motion';
-import { usePortfolio } from '../../context/PortfolioContext';
 
 const InteractiveShape = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { margin: "200px" });
-  const { setIsHovering } = usePortfolio();
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -69,7 +67,6 @@ const InteractiveShape = () => {
     <div 
       ref={containerRef}
       className="relative w-[85vw] h-[85vw] max-w-[400px] max-h-[400px] sm:max-w-none sm:max-h-none sm:w-[90vw] sm:h-[90vw] lg:w-[900px] lg:h-[900px] flex items-center justify-center cursor-crosshair group [perspective:1000px]"
-      onMouseEnter={() => setIsHovering(true)}
     >
       {/* Background Shadow/Reflection (Moves opposite) */}
       <motion.div 

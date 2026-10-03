@@ -1,13 +1,11 @@
 import React from 'react';
 import { ARCHIVE_PROJECTS } from '../../data/projects';
-import { usePortfolio } from '../../context/PortfolioContext';
 
 interface ProjectsMinimalProps {
   limit?: number;
 }
 
 const ProjectsMinimal: React.FC<ProjectsMinimalProps> = ({ limit }) => {
-  const { setIsHovering } = usePortfolio();
 
   const displayedProjects = limit ? ARCHIVE_PROJECTS.slice(0, limit) : ARCHIVE_PROJECTS;
 
@@ -20,8 +18,7 @@ const ProjectsMinimal: React.FC<ProjectsMinimalProps> = ({ limit }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+
             className="group block"
           >
             <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4 shadow-sm transition-shadow duration-300 group-hover:shadow-md">

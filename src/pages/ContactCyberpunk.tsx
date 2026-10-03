@@ -10,7 +10,7 @@ import GlitchText from '../components/common/GlitchText';
 import TextType from '../components/common/TextType';
 
 const ContactCyberpunk = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,8 +32,6 @@ const ContactCyberpunk = () => {
         <Link 
           to="/" 
           className="ml-0 sm:ml-4 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 text-secondary bg-transparent hover:text-primary transition-colors duration-300"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
         >
           <span className="relative z-10 font-mono">[ ← {t('back', lang) || 'BACK'} ]</span>
         </Link>
@@ -113,7 +111,7 @@ const ContactCyberpunk = () => {
             </div>
           </div>
 
-          <button type="submit" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
+          <button type="submit"
             className="self-start mt-4 px-6 py-3 border border-secondary text-secondary font-mono text-xs sm:text-sm uppercase tracking-widest hover:text-black hover:bg-secondary transition-all duration-300 md:cursor-none relative group overflow-hidden"
           >
             <span className="relative z-10">[ TRANSMIT_MESSAGE ]</span>

@@ -20,7 +20,7 @@ const HollowDashedLine = ({ className = "" }) => {
 };
 
 const Footer = () => {
-  const { setIsHovering, lang } = usePortfolio();
+  const { lang } = usePortfolio();
   const marqueeText = t('footerCta', lang);
 
   const TextBlock = ({ isHovered, setRef }: { isHovered: boolean, setRef: (el: HTMLDivElement | null) => void }) => {
@@ -91,7 +91,7 @@ const Footer = () => {
         <HollowDashedLine />
 
         <div className="w-full py-2 sm:py-3 overflow-hidden relative flex items-center h-full">
-          <a href={'mailto:' + EMAIL} className="flex md:cursor-none w-full items-center h-full group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <a href={'mailto:' + EMAIL} className="flex md:cursor-none w-full items-center h-full group">
             <div className="flex animate-marquee font-anton text-4xl sm:text-[5vw] uppercase items-center h-full hover-pause gpu" style={{ width: 'max-content', animationDuration: '15s' }}>
               {[...Array(8)].map((_, i) => (
                 <TextBlock
@@ -108,7 +108,7 @@ const Footer = () => {
       </div>
 
       <div className="mt-12 mb-12 z-10 text-center flex justify-center">
-        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 [.immersion-full_&]:text-secondary hover:text-secondary dark:hover:text-secondary transition-colors duration-300 relative inline-block group md:cursor-none font-mono" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <a href={'mailto:' + EMAIL} className="text-2xl sm:text-4xl text-gray-800 dark:text-gray-300 [.immersion-full_&]:text-secondary hover:text-secondary dark:hover:text-secondary transition-colors duration-300 relative inline-block group md:cursor-none font-mono">
           <DecryptedText text={EMAIL} animateOn="hover" maxIterations={12} encryptedClassName="text-secondary [text-shadow:0_0_8px_var(--color-secondary)]" />
           <span className="absolute -bottom-2 sm:-bottom-3 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>

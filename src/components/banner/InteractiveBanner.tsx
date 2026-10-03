@@ -45,7 +45,7 @@ const HollowDashedLine = ({ className = "", style }: { className?: string, style
 };
 
 const InteractiveBanner = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
   
   // Use global scroll since this is now inside a sticky horizontal container
   const { scrollYProgress } = useScroll();
@@ -69,8 +69,6 @@ const InteractiveBanner = () => {
   return (
     <div 
       className="w-full py-8 md:py-10 bg-transparent flex flex-col justify-center overflow-hidden relative z-30 group/banner transition-colors duration-500"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
     >
       <HollowDashedLine className="absolute top-0 left-0" style={{ x: xMoveRight }} />
       <HollowDashedLine className="absolute bottom-0 left-0" style={{ x: xMoveLeft }} />

@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import { motion, useTransform, MotionValue } from 'framer-motion';
-import { usePortfolio } from '../../context/PortfolioContext';
 import type { GalleryProject } from '../../data/projects';
 
 interface PolaroidProps {
@@ -12,7 +11,6 @@ interface PolaroidProps {
 }
 
 const DraggablePolaroid = ({ project, index, scrollYProgress, bringToFront, onProjectClick }: PolaroidProps) => {
-  const { setIsHovering } = usePortfolio();
   const startDrop = index * 0.05;
   const endDrop = startDrop + 0.25;
   const yDrop = useTransform(scrollYProgress, [startDrop, endDrop], ['-120vh', '0vh']);
@@ -30,8 +28,7 @@ const DraggablePolaroid = ({ project, index, scrollYProgress, bringToFront, onPr
           drag dragTransition={{ power: 0.05, timeConstant: 150 }}
           initial={{ rotate: project.rot }}
           whileDrag={{ scale: 1.05, rotate: 0, cursor: 'grabbing' }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+
           className={`group relative pointer-events-auto cursor-grab w-[65vw] sm:w-[40vw] lg:w-[28vw] aspect-[4/3] rounded-none p-1 sm:p-1.5 bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)] border-4 border-[#000] dark:border-[#222] shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#000] hover:-translate-y-1 hover:-translate-x-1 overflow-hidden transform-gpu will-change-transform transition-all duration-75 ${isMagenta ? 'hover:shadow-[12px_12px_0_var(--color-primary)]' : 'hover:shadow-[12px_12px_0_var(--color-secondary)]'}`}
         >            
           <div className="relative w-full h-full overflow-hidden bg-[var(--color-bg-dark)] rounded-none">

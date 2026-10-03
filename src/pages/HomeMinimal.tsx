@@ -9,7 +9,7 @@ import ProjectsMinimal from '../components/gallery/ProjectsMinimal';
 import FooterMinimal from '../components/layout/FooterMinimal';
 
 const HomeMinimal = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
 
   return (
     <div className="bg-[#fafafa] dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-500 pt-16 sm:pt-24">
@@ -55,8 +55,6 @@ const HomeMinimal = () => {
             <Link 
               to="/proyectos"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded shadow-lg hover:bg-primary/90 hover:scale-105 transition-all"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
             >
               My portfolio <span className="text-xl leading-none">›</span>
             </Link>
@@ -116,8 +114,6 @@ const HomeMinimal = () => {
             <Link 
               to="/proyectos"
               className="inline-flex items-center gap-2 text-primary font-bold hover:underline"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
             >
               View all works <span className="text-xl leading-none">›</span>
             </Link>

@@ -6,7 +6,7 @@ import GlitchText from '../common/GlitchText';
 import { useIntermittentTrigger } from '../../hooks/useIntermittentTrigger';
 
 const ViewAllBlock = () => {
-  const { setIsHovering, lang } = usePortfolio();
+  const { lang } = usePortfolio();
   const intermittent = useIntermittentTrigger(5000, 1500);
   return (
     <motion.div
@@ -17,7 +17,7 @@ const ViewAllBlock = () => {
       className="relative w-full flex justify-center px-4 py-8 sm:py-16"
     >
       <div className="group w-full max-w-5xl flex flex-col pointer-events-auto relative">
-        <Link to="/proyectos" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
+        <Link to="/proyectos"
           className="relative w-full flex flex-col items-center justify-center py-10 sm:py-16 md:cursor-none"
         >
           {/* Top/Bottom Tech Borders */}

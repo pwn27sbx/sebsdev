@@ -7,8 +7,6 @@ export type ImmersionMode = 'relax' | 'full';
 export type LayoutMode = 'cyberpunk' | 'minimal';
 
 interface PortfolioContextType {
-  isHovering: boolean;
-  setIsHovering: (v: boolean) => void;
   darkMode: boolean;
   setDarkMode: (v: boolean) => void;
   lang: Lang;
@@ -24,7 +22,6 @@ interface PortfolioContextType {
 const PortfolioContext = createContext<PortfolioContextType | null>(null);
 
 export function PortfolioProvider({ children }: { children: React.ReactNode }) {
-  const [isHovering, setIsHovering] = useState(false);
   const [lang, setLangState] = useState<Lang>(() => {
     if (typeof window !== 'undefined') {
       const savedLang = localStorage.getItem('portfolio_lang');
@@ -153,7 +150,7 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <PortfolioContext.Provider value={{ isHovering, setIsHovering, darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode, layoutMode, setLayoutMode }}>
+    <PortfolioContext.Provider value={{ darkMode, setDarkMode, lang, setLang, colorTheme, setColorTheme, immersionMode, setImmersionMode, layoutMode, setLayoutMode }}>
       {children}
     </PortfolioContext.Provider>
   );

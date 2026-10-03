@@ -11,7 +11,7 @@ interface ProjectModalProps {
 }
 
 const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
-  const { setIsHovering, lang } = usePortfolio();
+  const { lang } = usePortfolio();
   const isMagenta = (index ?? 0) % 2 === 0;
 
   const [mounted, setMounted] = useState(false);
@@ -31,8 +31,6 @@ const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
           transition={{ duration: 0.3 }}
           className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8 bg-black/60 backdrop-blur-sm"
           onClick={onClose}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -73,15 +71,13 @@ const ProjectModal = ({ project, index, onClose }: ProjectModalProps) => {
               
               <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
                 <a href={project.link} target="_blank" rel="noopener noreferrer"
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
+
                   className={`px-8 py-3 text-black border-2 border-black font-anton text-sm uppercase tracking-widest shadow-[6px_6px_0_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none transition-all duration-75 md:cursor-none ${isMagenta ? 'bg-secondary' : 'bg-primary'}`}
                 >
                   {lang === 'es' ? 'Ver Proyecto' : 'View Project'}
                 </a>
                 <button onClick={onClose}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
+
                   className="px-8 py-3 bg-white dark:bg-[#111] text-black dark:text-white border-2 border-black dark:border-white font-anton text-sm uppercase tracking-widest shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#fff] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none transition-all duration-75 md:cursor-none"
                 >
                   Cerrar

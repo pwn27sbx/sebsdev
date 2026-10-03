@@ -13,7 +13,7 @@ import GlitchText from '../components/common/GlitchText';
 import TextType from '../components/common/TextType';
 
 const ArchiveCyberpunk = () => {
-  const { lang, setIsHovering } = usePortfolio();
+  const { lang } = usePortfolio();
   const [activeProject, setActiveProject] = useState<ArchiveProject | null>(null);
   const { showButton: showBackToTop, scrollToTop } = useScrollToTop(600);
 
@@ -41,8 +41,6 @@ const ArchiveCyberpunk = () => {
         <Link 
           to="/" 
           className="ml-4 sm:ml-8 pointer-events-auto group flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 text-secondary bg-transparent hover:text-primary transition-colors duration-300"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
         >
           <span className="relative z-10 font-mono">[ ← {t('back', lang) || 'BACK'} ]</span>
         </Link>
@@ -85,8 +83,8 @@ const ArchiveCyberpunk = () => {
                 href={project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                onMouseEnter={() => { setActiveProject(project); setIsHovering(true); }}
-                onMouseLeave={() => { setActiveProject(null); setIsHovering(false); }}
+                onMouseEnter={() => { setActiveProject(project); }}
+                onMouseLeave={() => { setActiveProject(null); }}
                 className="group relative flex items-center py-6 sm:py-8 px-4 border border-transparent hover:border-secondary/30 bg-transparent hover:bg-black/5 dark:hover:bg-secondary/5 [.immersion-full_&]:hover:bg-secondary/10 transition-all duration-300"
               >
                 {/* Active Indicator */}
