@@ -9,6 +9,23 @@ function readRepoFile(relPath: string): string {
   return readFileSync(path.join(ROOT, relPath), 'utf-8');
 }
 
+/**
+ * Runs a git command and returns its result only when git actually ran and
+ * succeeded. git may be missing (ENOENT -> error) or the tree may not be a
+ * git checkout (non-zero status), so null means "unavailable" and callers must
+ * never dereference it blindly.
+ */
+function runGit(args: string[]) {
+  const result = spawnSync('git', args, { cwd: ROOT, encoding: 'utf-8' });
+  if (result.error || typeof result.stdout !== 'string' || result.status !== 0) {
+    return null;
+  }
+  return result;
+}
+
+// Resolved once so every git-dependent assertion guards on the same signal.
+const gitAvailable = runGit(['rev-parse', '--git-dir']) !== null;
+
 describe('repo hygiene', () => {
   test('App.tsx does not block context menu, devtools shortcuts, or image drag', () => {
     const source = readRepoFile('src/App.tsx');
@@ -22,9 +39,10 @@ describe('repo hygiene', () => {
     expect(source).not.toContain('dragstart');
   });
 
-  test('every public/cyber_mask*.png file is referenced somewhere under src/', () => {
+  // Enumerating tracked files fundamentally needs git; skip honestly when absent.
+  test.skipIf(!gitAvailable)('every public/cyber_mask*.png file is referenced somewhere under src/', () => {
     // Tracked files only, so the result never depends on untracked local files.
-    const tracked = spawnSync('git', ['ls-files', 'public'], { cwd: ROOT, encoding: 'utf8' }).stdout;
+    const tracked = runGit(['ls-files', 'public'])?.stdout ?? '';
     const maskFiles = tracked
       .split('\n')
       .map((f) => path.basename(f))
@@ -53,13 +71,20 @@ describe('repo hygiene', () => {
   });
 
   test('odd/ directory is gitignored and not tracked by git', () => {
-    const lsFiles = spawnSync('git', ['ls-files', 'odd'], { cwd: ROOT, encoding: 'utf-8' });
-    expect(lsFiles.stdout.trim()).toBe('');
+    // Primary check is git-free so it still runs when git is unavailable or the
+    // tree is not a checkout; the suite must not depend on the environment.
+    expect(readRepoFile('.gitignore')).toMatch(/^odd\/$/m);
 
-    const checkIgnore = spawnSync('git', ['check-ignore', '-q', 'odd/tasks/x.md'], {
-      cwd: ROOT,
-    });
-    expect(checkIgnore.status).toBe(0);
+    // Secondary checks need git; guard them rather than dereferencing null.
+    if (gitAvailable) {
+      const lsFiles = runGit(['ls-files', 'odd']);
+      expect(lsFiles).not.toBeNull();
+      expect(lsFiles!.stdout.trim()).toBe('');
+
+      const checkIgnore = runGit(['check-ignore', '-q', 'odd/tasks/x.md']);
+      expect(checkIgnore).not.toBeNull();
+      expect(checkIgnore!.status).toBe(0);
+    }
   });
 
   test('README.md is a real document referencing bun dev/build/test commands', () => {
