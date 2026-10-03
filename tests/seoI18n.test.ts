@@ -47,6 +47,9 @@ describe('Page SEO metadata follows the active language (both layouts)', () => {
 
           expect(langs.es).toHaveProperty(key!);
           expect(langs.en).toHaveProperty(key!);
+          expect((langs.es as Record<string, string>)[key!]).not.toBe(
+            (langs.en as Record<string, string>)[key!],
+          );
         });
 
         test(`${layoutName} Helmet meta description uses t(...) with a key present in both es and en dictionaries`, () => {
@@ -59,6 +62,9 @@ describe('Page SEO metadata follows the active language (both layouts)', () => {
 
           expect(langs.es).toHaveProperty(key!);
           expect(langs.en).toHaveProperty(key!);
+          expect((langs.es as Record<string, string>)[key!]).not.toBe(
+            (langs.en as Record<string, string>)[key!],
+          );
         });
       }
 
