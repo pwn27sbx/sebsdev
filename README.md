@@ -91,10 +91,14 @@ a permanent redirect from `/contacto` to `/contact`. The canonical site origin
 used for SEO metadata, canonical URLs, and the sitemap is defined once in
 `src/config/site.ts` (`SITE_ORIGIN`).
 
-## Asset scripts
+## Asset scripts (legacy)
 
 `scripts/process_mask.py`, `scripts/extract_glow.py`, and `scripts/create_depth.py`
-are optional, standalone image-processing helpers (Pillow-based CLI tools that
-take input/output paths as arguments) used to prepare hero mask artwork. They
-are not invoked by `bun run build` or any other script and are kept for manual,
-occasional use when regenerating that artwork.
+are standalone Pillow-based CLI helpers (they take input/output paths as
+arguments). They are **legacy**: they were used to produce a family of hero mask
+artwork that the site no longer ships, and they are not invoked by
+`bun run build` or by any other script. Keep them only if you intend to
+regenerate mask artwork; otherwise they are safe to delete.
+
+Of that artwork family, only `public/cyber_mask_transparent.png` is still
+referenced by `src/`. The other variants were removed.
