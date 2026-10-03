@@ -81,9 +81,10 @@ describe('repo hygiene', () => {
       expect(lsFiles).not.toBeNull();
       expect(lsFiles!.stdout.trim()).toBe('');
 
-      const checkIgnore = runGit(['check-ignore', '-q', 'odd/tasks/x.md']);
-      expect(checkIgnore).not.toBeNull();
-      expect(checkIgnore!.status).toBe(0);
+      // runGit nulls any non-zero exit, and check-ignore -q exits 1 when the path
+      // is NOT ignored, so this assertion is the ignore check; asserting the
+      // status as well could never fail independently.
+      expect(runGit(['check-ignore', '-q', 'odd/tasks/x.md'])).not.toBeNull();
     }
   });
 
